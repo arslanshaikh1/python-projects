@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Aastha Jewellery Makers | Gold & Silver Rates & Catalog</title>
+    
+    <!-- Google SEO & Meta Tags -->
+    <meta name="description" content="Aastha Jewellery Makers - Most trusted gold, silver, keel & nathuni rates. Check today live gold rate, silver rate, and Shrimukh catalog.">
+    <meta name="keywords" content="Aastha Jewellery, Gold Rate Today, Aharaura Jewellery, Keel Nathuni, Shrimukh Jewellery">
+    <meta name="author" content="Aastha Jewellery Makers">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph (WhatsApp/Facebook Preview) -->
+    <meta property="og:title" content="Aastha Jewellery Makers">
+    <meta property="og:description" content="सबसे भरोसेमंद कील नथुनी का ब्रांड - लाइव सोने-चांदी के भाव देखें।">
+    <meta property="og:image" content="92600.png">
+    <meta property="og:type" content="website">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+    <style>
+        :root {
+            --bg-dark: #070e1e;
+            --card-dark: #0d1b38;
+            --card-border: #182a52;
+            --accent-gold: #d4af37;
+            --green-text: #22c55e;
+            --red-text: #ef4444;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            font-family: 'Poppins', sans-serif; 
+            -webkit-tap-highlight-color: transparent; 
+        }
+
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            background-color: var(--bg-dark); 
+            color: var(--text-light); 
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            width: 100%;
+            margin: 0 auto;
+            padding-bottom: 80px;
+        }
+
+        /* WELCOME / SPLASH SCREEN */
+        #welcome-screen {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            width: 100vw;
+            height: 100vh;
+            background: var(--bg-dark);
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+            color: #fff;
+            transition: opacity 0.3s ease;
+        }
+        #welcome-screen.hidden {
+            display: none !important;
+            pointer-events: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+        }
+        .welcome-logo-container {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            border: 3px solid var(--accent-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
+            background: #000;
+            overflow: hidden;
+        }
+        
+        .app-logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .welcome-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--accent-gold);
+            margin-bottom: 4px;
+        }
+        .welcome-sub-hindi {
+            font-size: 14px;
+            color: #cbd5e1;
+            margin-bottom: 16px;
+        }
+        .welcome-tagline {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 6px;
+        }
+        .welcome-trust {
+            font-size: 12px;
+            color: #38bdf8;
+            margin-bottom: 24px;
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, #f59e0b, #d4af37);
+            color: #000;
+            font-weight: 700;
+            font-size: 15px;
+            padding: 12px 30px;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            width: 100%;
+            max-width: 280px;
+        }
+        .btn-gold:active { transform: scale(0.96); }
+
+        /* AUTH SCREEN */
+        #auth-screen {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(7, 14, 30, 0.96);
+            backdrop-filter: blur(8px);
+            z-index: 9990;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        .auth-card {
+            background: var(--card-dark);
+            border: 1px solid var(--accent-gold);
+            border-radius: 20px;
+            padding: 24px;
+            width: 100%;
+            max-width: 360px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .auth-logo {
+            width: 70px; height: 70px;
+            margin: 0 auto 12px auto;
+            border-radius: 50%;
+            border: 2px solid var(--accent-gold);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+        }
+        .input-group {
+            position: relative;
+            margin-bottom: 14px;
+            text-align: left;
+        }
+        .input-group i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent-gold);
+        }
+        .input-group input {
+            width: 100%;
+            padding: 12px 12px 12px 40px;
+            border-radius: 10px;
+            border: 1px solid var(--card-border);
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            outline: none;
+            font-size: 13px;
+        }
+        .btn-auth {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(135deg, #f59e0b, #d4af37);
+            color: #000;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        /* HEADER APP BAR */
+        .top-app-bar {
+            background: var(--card-dark);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--card-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            width: 100%;
+        }
+        .top-app-bar h2 {
+            font-size: 17px;
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+        .top-app-logo {
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            border: 1px solid var(--accent-gold);
+            overflow: hidden;
+            background: #000;
+        }
+
+        /* STATUS BAR */
+        .market-status-bar {
+            background: rgba(245, 158, 11, 0.15);
+            border-bottom: 1px solid rgba(245, 158, 11, 0.3);
+            color: var(--accent-gold);
+            font-size: 11px;
+            padding: 6px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* PROFILE HEADER */
+        .profile-header {
+            padding: 14px 20px;
+            background: linear-gradient(180deg, var(--card-dark) 0%, var(--bg-dark) 100%);
+            width: 100%;
+        }
+        .user-info-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .user-left { display: flex; align-items: center; gap: 12px; }
+        .user-avatar {
+            width: 46px; height: 46px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-gold);
+            overflow: hidden;
+            background: #000;
+        }
+        .user-text p { font-size: 11px; color: var(--text-muted); }
+        .user-text h3 { font-size: 15px; font-weight: 600; color: #fff; }
+        .trust-banner {
+            margin-top: 10px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 11px;
+            color: var(--accent-gold);
+            text-align: center;
+        }
+
+        /* MAIN CONTAINER */
+        .main-container { 
+            padding: 14px 20px; 
+            width: 100%; 
+            max-width: 1200px;
+            margin: 0 auto;
+            flex: 1; 
+        }
+
+        .tab-page { display: none; width: 100%; }
+        .tab-page.active { display: block; }
+
+        /* RATE CARDS */
+        .rate-card-item {
+            background: var(--card-dark);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            width: 100%;
+        }
+        .rate-card-item.highlight { border-color: rgba(212, 175, 55, 0.6); }
+        .card-top { display: flex; justify-content: space-between; align-items: center; }
+        .card-title-box { display: flex; align-items: center; gap: 10px; }
+        .card-logo {
+            width: 30px; height: 30px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 1px solid var(--accent-gold);
+            background: #000;
+        }
+        .card-title-box h4 { font-size: 14px; font-weight: 600; color: #fff; }
+        .card-price { font-size: 18px; font-weight: 700; color: var(--accent-gold); }
+        .card-sub-text { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+        .chart-svg { width: 100%; height: 32px; margin: 6px 0; }
+        .card-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            padding-top: 6px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        .indicator-red { color: var(--red-text); font-weight: 500; }
+        .indicator-green { color: var(--green-text); font-weight: 500; }
+        .hl-values { color: var(--text-muted); font-size: 10px; }
+
+        /* MCX GRID */
+        .mcx-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; width: 100%; }
+        .mcx-card {
+            background: var(--card-dark);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+        }
+        .mcx-title-box { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; display: flex; align-items: center; justify-content: center; gap: 4px; }
+        .mcx-price { font-size: 15px; font-weight: 700; color: #fff; }
+        .mcx-change { font-size: 10px; color: var(--green-text); margin-top: 2px; }
+
+        .floating-action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; width: 100%; }
+        .btn-float-green {
+            background: #25d366; color: #fff; text-decoration: none; padding: 12px; border-radius: 12px;
+            text-align: center; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;
+        }
+        .btn-float-orange {
+            background: #f59e0b; color: #000; text-decoration: none; padding: 12px; border-radius: 12px;
+            text-align: center; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;
+        }
+
+        /* BOTTOM NAVIGATION */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            width: 100%;
+            background: var(--card-dark);
+            border-top: 1px solid var(--card-border);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 1000;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 10px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .nav-item i { font-size: 18px; margin-bottom: 3px; }
+        .nav-item.active { color: var(--accent-gold); }
+
+        /* CATALOG GRID */
+        .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; width: 100%; }
+        .catalog-card {
+            background: var(--card-dark); border: 1px solid var(--card-border);
+            border-radius: 12px; overflow: hidden; text-align: center; padding-bottom: 10px;
+        }
+        .catalog-img { width: 100%; height: 140px; object-fit: cover; }
+        .catalog-title { font-size: 12px; font-weight: 500; margin-top: 8px; color: #fff; padding: 0 4px; }
+
+        /* PREVIOUS DAY TAB */
+        .light-theme {
+            background: #f8fafc;
+            color: #0f172a;
+            border-radius: 14px;
+            padding: 16px;
+            width: 100%;
+        }
+        .light-theme .prev-title { color: #0f172a; font-weight: 700; font-size: 18px; }
+        .light-theme .prev-sub { color: #64748b; font-size: 12px; margin-bottom: 12px; }
+        .prev-notice {
+            background: #fef3c7; color: #92400e; padding: 8px 12px; border-radius: 8px;
+            font-size: 12px; margin-bottom: 14px; text-align: center; font-weight: 500;
+        }
+        .prev-card {
+            background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px;
+            margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
+        }
+        .prev-card-left { display: flex; align-items: center; gap: 10px; }
+        .prev-icon-bg {
+            width: 38px; height: 38px; border-radius: 50%; background: #f1f5f9;
+            display: flex; align-items: center; justify-content: center; font-size: 16px;
+        }
+        .prev-details h4 { font-size: 13px; color: #1e293b; }
+        .prev-details p { font-size: 10px; color: #94a3b8; }
+        .prev-values { text-align: right; font-size: 12px; font-weight: 600; }
+
+        /* CONTACT DETAILS */
+        .contact-details-row { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+        .action-btns { display: flex; gap: 8px; }
+        .btn-icon {
+            width: 34px; height: 34px; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; color: #fff; text-decoration: none; font-size: 13px;
+        }
+        .btn-call { background: #0284c7; }
+        .btn-msg { background: #16a34a; }
+
+        /* EXTRA GRID */
+        .extra-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; width: 100%; }
+        .extra-card {
+            background: var(--card-dark); border: 1px solid var(--card-border);
+            border-radius: 12px; padding: 18px; text-align: center; cursor: pointer;
+        }
+        .extra-card i { font-size: 24px; color: var(--accent-gold); margin-bottom: 8px; }
+        .extra-card h4 { font-size: 12px; color: #fff; }
+
+        /* MODALS */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); z-index: 10000;
+            align-items: center; justify-content: center; padding: 16px; overflow-y: auto;
+        }
+        .modal-content {
+            background: var(--card-dark); border: 1px solid var(--accent-gold);
+            border-radius: 16px; padding: 20px; width: 100%; max-width: 360px; text-align: center;
+        }
+        .form-label { font-size: 11px; color: var(--accent-gold); text-align: left; display: block; margin: 8px 0 3px 2px; }
+        .admin-input {
+            width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--card-border);
+            background: rgba(255,255,255,0.05); color: #fff; outline: none; font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="welcome-screen">
+        <div class="welcome-logo-container">
+            <img src="92600.png" alt="Aastha Jewellery Logo" class="app-logo-img" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=150'">
+        </div>
+        <h1 class="welcome-title">Aastha Jewellery Makers</h1>
+        <p class="welcome-sub-hindi">आस्था ज्वेलरी मेकर</p>
+        
+        <p class="welcome-tagline">Aastha Jewellery Makers mein aapka swagat hai ✨</p>
+        <p class="welcome-trust">✔ Most trusted keel & nathuni brand</p>
+
+        <button class="btn-gold" id="btn-get-started" type="button" onclick="dismissWelcome()">Get Started</button>
+    </div>
+
+    <div id="auth-screen">
+        <div class="auth-card">
+            <div class="auth-logo">
+                <img src="92600.png" alt="Logo" class="app-logo-img" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=100'">
+            </div>
+            <h3 style="margin-bottom: 4px; color:var(--accent-gold); font-size:17px;">Aastha Jewellery</h3>
+            <p style="font-size: 12px; color: #cbd5e1; margin-bottom: 16px;">Sign in with Mobile SMS OTP</p>
+
+            <div id="step-phone">
+                <div class="input-group">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" id="user-name" placeholder="Full Name" required>
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-phone"></i>
+                    <input type="tel" id="user-phone" placeholder="Mobile No. (e.g. 8115331564)" required>
+                </div>
+                
+                <div id="recaptcha-container" style="margin-bottom: 10px; display: flex; justify-content: center; transform: scale(0.85); transform-origin: 0 0;"></div>
+                
+                <button type="button" class="btn-auth" id="btn-send-otp" onclick="requestOtp()">Send SMS OTP</button>
+            </div>
+
+            <div id="step-otp" style="display: none;">
+                <p id="otp-hint-text" style="font-size: 12px; color: #38bdf8; margin-bottom: 12px;">Enter 6-digit OTP sent to your Mobile Phone</p>
+                <div class="input-group">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="text" id="otp-input" placeholder="Enter 6-digit OTP" required>
+                </div>
+                <button type="button" class="btn-auth" id="btn-verify-otp" onclick="verifyOtp()">Verify & Login</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="top-app-bar">
+        <h2>Aastha Jewellery</h2>
+        <div class="top-app-logo">
+            <img src="92600.png" alt="Logo" class="app-logo-img" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=100'">
+        </div>
+    </div>
+
+    <div class="market-status-bar">
+        <span><i class="fa-solid fa-clock"></i> Updated: <strong id="last-update-time">03:10 PM</strong></span>
+        <span id="market-status-badge"><i class="fa-solid fa-lock"></i> Market Closed (Weekend)</span>
+    </div>
+
+    <div class="profile-header">
+        <div class="user-info-row">
+            <div class="user-left">
+                <div class="user-avatar">
+                    <img src="92600.png" alt="Logo" class="app-logo-img" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=100'">
+                </div>
+                <div class="user-text">
+                    <p>Welcome 👋</p>
+                    <h3 id="user-display-name">User</h3>
+                </div>
+            </div>
+            <div class="header-actions">
+                <div onclick="openAdminModal()" style="background: rgba(212, 175, 55, 0.2); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--accent-gold); cursor:pointer;"><i class="fa-solid fa-user-shield" style="font-size:14px;" title="Admin Panel"></i></div>
+            </div>
+        </div>
+        <div class="trust-banner">
+            ★ सबसे भरोसेमंद कील नथुनी का ब्रांड ✨, ऐप को आज ही अपडेट करें!
+        </div>
+    </div>
+
+    <div class="main-container">
+        
+        <!-- TAB 1: HOME -->
+        <div id="tab-home" class="tab-page active">
+            
+            <div class="rate-card-item">
+                <div class="card-top">
+                    <div class="card-title-box">
+                        <div class="card-logo">
+                            <img src="92600.png" alt="Logo" class="app-logo-img" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=50'">
+                        </div>
+                        <h4>99.99 Retail</h4>
+                    </div>
+                    <div class="card-price" id="rate-9999">₹ 149400</div>
+                </div>
+                <div class="card-sub-text">Cash Denial</div>
+                
+                <svg class="chart-svg" viewBox="0 0 300 40">
+                    <path d="M0 10 Q 120 12 270 32 T 300 35" fill="none" stroke="#ef4444" stroke-width="2"/>
+                    <circle cx="270" cy="32" r="4" fill="#f59e0b"/>
+                </svg>
+
+                <div class="card-bottom">
+                    <span class="indicator-red" id="ind-9999">-300 • 03:07 PM</span>
+                    <span class="hl-values">H: 149750 L: 149400</span>
+                </div>
+            </div>
+
+            <div class="rate-card-item">
+                <div class="card-top">
+                    <div class="card-title-box">
+                        <div class="card-logo">
+                            <img src="92600.png" alt="Logo" class="app-logo-img" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=50'">
+                        </div>
+                        <h4>99.50 Retail</h4>
+                    </div>
+                    <div class="card-price" id="rate-9950">₹ 148650</div>
+                </div>
+                <div class="card-sub-text">Cash Denial</div>
+                
+                <svg class="chart-svg" viewBox="0 0 300 40">
+                    <path d="M0 12 Q 120 15 270 30 T 300 32" fill="none" stroke="#ef4444" stroke-width="2"/>
+                    <circle cx="270" cy="30" r="4" fill="#f59e0b"/>
+                </svg>
+
+                <div class="card-bottom">
+                    <span class="indicator-red" id="ind-9950">-300 • 03:07 PM</span>
+                    <span class="hl-values">H: 149000 L: 148650</span>
+                </div>
+            </div>
+
+            <div class="rate-card-item highlight">
+                <div class="card-top">
+                    <div class="card-title-box">
+                        <div class="card-logo">
+                            <img src="92600.png" alt="Logo" class="app-logo-img" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=50'">
+                        </div>
+                        <h4>बटिया APPROX</h4>
+                    </div>
+                    <div class="card-price" id="rate-badiya">₹ 227300</div>
+                </div>
+                <div class="card-sub-text">बटिया हाज़िर भाव में फर्क हो सकता है</div>
+                
+                <svg class="chart-svg" viewBox="0 0 300 40">
+                    <path d="M0 32 Q 140 30 270 12 T 300 10" fill="none" stroke="#22c55e" stroke-width="2"/>
+                    <circle cx="270" cy="12" r="4" fill="#f59e0b"/>
+                </svg>
+
+                <div class="card-bottom">
+                    <span class="indicator-green" id="ind-badiya">+300 • 03:10 PM</span>
+                    <span class="hl-values">H: 227300 L: 227000</span>
+                </div>
+            </div>
+
+            <div class="rate-card-item">
+                <div class="card-top">
+                    <div class="card-title-box">
+                        <div class="card-logo">
+                            <img src="92600.png" alt="Logo" class="app-logo-img" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=50'">
+                        </div>
+                        <h4>BANK/GPAY</h4>
+                    </div>
+                    <div class="card-price" id="rate-bank">₹ 153790</div>
+                </div>
+                <div class="card-sub-text">99.50 Inc. GST</div>
+                
+                <svg class="chart-svg" viewBox="0 0 300 40">
+                    <path d="M0 15 Q 140 20 270 28 T 300 30" fill="none" stroke="#ef4444" stroke-width="2"/>
+                    <circle cx="270" cy="28" r="4" fill="#f59e0b"/>
+                </svg>
+
+                <div class="card-bottom">
+                    <span class="indicator-red" id="ind-bank">-10 • 03:10 PM</span>
+                    <span class="hl-values">H: 153800 L: 153790</span>
+                </div>
+            </div>
+
+            <div class="mcx-row">
+                <div class="mcx-card">
+                    <div class="mcx-title-box"><span class="mcx-icon">🪙</span> <span>GOLD MCX</span></div>
+                    <div class="mcx-price" id="mcx-gold">₹ 151496</div>
+                    <div class="mcx-change">▲ +1915</div>
+                </div>
+                <div class="mcx-card">
+                    <div class="mcx-title-box"><span class="mcx-icon">🥈</span> <span>SILVER MCX</span></div>
+                    <div class="mcx-price" id="mcx-silver">₹ 225810</div>
+                    <div class="mcx-change">▲ +4622</div>
+                </div>
+            </div>
+
+            <div class="floating-action-row">
+                <a id="whatsapp-btn-link" href="https://wa.me/919598446630" target="_blank" class="btn-float-green"><i class="fa-brands fa-whatsapp"></i> WhatsApp Chat</a>
+                <a href="#" class="btn-float-orange" onclick="navigator.share ? navigator.share({title:'Aastha Jewellery', url:window.location.href}) : copyShareLink()"><i class="fa-solid fa-box-archive"></i> Share</a>
+            </div>
+        </div>
+
+        <!-- TAB 2: PREV DAY -->
+        <div id="tab-prev" class="tab-page light-theme">
+            <h2 class="prev-title">Previous Day Rates</h2>
+            <p class="prev-sub">Yesterday's closing rates for reference</p>
+            <div class="prev-notice">सिर्फ और सिर्फ आपके अनुमान के लिए</div>
+
+            <div class="prev-card">
+                <div class="prev-card-left">
+                    <div class="prev-icon-bg">🥇</div>
+                    <div class="prev-details">
+                        <h4>99.99 Retail</h4>
+                        <p>Yesterday</p>
+                    </div>
+                </div>
+                <div class="prev-values">
+                    <div style="color:#22c55e;">H: 149850</div>
+                    <div style="color:#ef4444;">L: 149400</div>
+                </div>
+            </div>
+
+            <div class="prev-card">
+                <div class="prev-card-left">
+                    <div class="prev-icon-bg">🪙</div>
+                    <div class="prev-details">
+                        <h4>99.50 Retail</h4>
+                        <p>Yesterday</p>
+                    </div>
+                </div>
+                <div class="prev-values">
+                    <div style="color:#22c55e;">H: 149100</div>
+                    <div style="color:#ef4444;">L: 148650</div>
+                </div>
+            </div>
+
+            <div class="prev-card">
+                <div class="prev-card-left">
+                    <div class="prev-icon-bg">🥈</div>
+                    <div class="prev-details">
+                        <h4>बटिया APPROX</h4>
+                        <p>Yesterday</p>
+                    </div>
+                </div>
+                <div class="prev-values">
+                    <div style="color:#22c55e;">H: 227000</div>
+                    <div style="color:#ef4444;">L: 226000</div>
+                </div>
+            </div>
+
+            <div class="prev-card">
+                <div class="prev-card-left">
+                    <div class="prev-icon-bg">📲</div>
+                    <div class="prev-details">
+                        <h4>BANK/GPAY</h4>
+                        <p>Yesterday</p>
+                    </div>
+                </div>
+                <div class="prev-values">
+                    <div style="color:#22c55e;">H: 153750</div>
+                    <div style="color:#ef4444;">L: 153100</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: SHRIMUKH CATALOG -->
+        <div id="tab-shrimukh" class="tab-page">
+            <div style="background: var(--card-dark); border: 1px solid var(--accent-gold); padding:16px; border-radius:14px; text-align:center; margin-bottom:14px;">
+                <i class="fa-solid fa-crown" style="color:var(--accent-gold); font-size:24px;"></i>
+                <h3 style="letter-spacing:1px; margin-top:4px; color:#fff; font-size:15px;">SHRIMUKH ELEGANCE</h3>
+                <p style="font-size:11px; color:var(--accent-gold);">By Aastha Jewellery</p>
+            </div>
+            <div class="catalog-grid" id="catalog-container"></div>
+        </div>
+
+        <!-- TAB 4: DETAILS -->
+        <div id="tab-details" class="tab-page">
+            <h3 style="margin-bottom:14px; color:var(--accent-gold); font-size:16px;">Shop Locations & Details</h3>
+            
+            <div class="rate-card-item">
+                <h4 style="color:var(--accent-gold); margin-bottom:4px; font-size:14px;">1. Aharaura - Aastha Jewellery</h4>
+                <p style="font-size:11px; color:#94a3b8; margin-bottom:10px;"><i class="fa-solid fa-location-dot"></i> Aharaura Branch, Mirzapur</p>
+                <div class="contact-details-row">
+                    <div>
+                        <p style="font-weight:600; font-size:13px;">Dinesh Kumar</p>
+                        <p style="font-size:11px; color:#94a3b8;">8887726720</p>
+                    </div>
+                    <div class="action-btns">
+                        <a href="tel:8887726720" class="btn-icon btn-call"><i class="fa-solid fa-phone"></i></a>
+                        <a href="https://wa.me/918887726720" class="btn-icon btn-msg"><i class="fa-solid fa-comment"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rate-card-item">
+                <h4 style="color:var(--accent-gold); margin-bottom:4px; font-size:14px;">2. Sikarganj - Aastha Jewellery</h4>
+                <p style="font-size:11px; color:#94a3b8; margin-bottom:10px;"><i class="fa-solid fa-location-dot"></i> Sikarganj Branch</p>
+                <div class="contact-details-row">
+                    <div>
+                        <p style="font-weight:600; font-size:13px;">Ramesh Kumar</p>
+                        <p style="font-size:11px; color:#94a3b8;">9621106661</p>
+                    </div>
+                    <div class="action-btns">
+                        <a href="tel:9621106661" class="btn-icon btn-call"><i class="fa-solid fa-phone"></i></a>
+                        <a href="https://wa.me/919621106661" class="btn-icon btn-msg"><i class="fa-solid fa-comment"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rate-card-item">
+                <h4 style="color:var(--accent-gold); margin-bottom:4px; font-size:14px;">3. Uchahra Fauzi - Aastha Jewellery</h4>
+                <p style="font-size:11px; color:#94a3b8; margin-bottom:10px;"><i class="fa-solid fa-location-dot"></i> Uchahra Fauzi Branch</p>
+                <div class="contact-details-row">
+                    <div>
+                        <p style="font-weight:600; font-size:13px;">Mukesh Kumar</p>
+                        <p style="font-size:11px; color:#94a3b8;">8090247751</p>
+                    </div>
+                    <div class="action-btns">
+                        <a href="tel:8090247751" class="btn-icon btn-call"><i class="fa-solid fa-phone"></i></a>
+                        <a href="https://wa.me/918090247751" class="btn-icon btn-msg"><i class="fa-solid fa-comment"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 5: EXTRA -->
+        <div id="tab-extra" class="tab-page">
+            <h3 style="margin-bottom:12px; color:var(--accent-gold); font-size:16px;">Extra Options</h3>
+            <div class="extra-grid">
+                <div class="extra-card" onclick="openAdminModal()">
+                    <i class="fa-solid fa-user-gear"></i>
+                    <h4>Admin Panel</h4>
+                </div>
+                <div class="extra-card" onclick="openGstModal()">
+                    <i class="fa-solid fa-calculator"></i>
+                    <h4>GST Calculator</h4>
+                </div>
+                <div class="extra-card" onclick="openAccountSettingsModal()">
+                    <i class="fa-solid fa-key"></i>
+                    <h4>Change Details/PIN</h4>
+                </div>
+                <div class="extra-card" onclick="showInfoModal('Bank Details', 'Bank: State Bank of India\nA/C: 1234567890\nIFSC: SBIN0001234')">
+                    <i class="fa-solid fa-building-columns"></i>
+                    <h4>Bank Details</h4>
+                </div>
+                <div class="extra-card" onclick="navigator.share ? navigator.share({title:'Aastha Jewellery', url:window.location.href}) : copyShareLink()">
+                    <i class="fa-solid fa-share-nodes"></i>
+                    <h4>Share App</h4>
+                </div>
+                <div class="extra-card" onclick="logout()" style="border-color:#dc2626;">
+                    <i class="fa-solid fa-right-from-bracket" style="color:#dc2626;"></i>
+                    <h4 style="color:#dc2626;">Logout</h4>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="gst-modal" class="modal">
+        <div class="modal-content">
+            <h3 style="margin-bottom:12px; color:var(--accent-gold); font-size:16px;">GST Calculator (3%)</h3>
+            <input type="number" id="gst-amount" placeholder="Enter Amount (₹)" class="admin-input" style="margin-bottom:10px;" oninput="calcGst()">
+            <p style="font-size:14px; margin-bottom:6px;">GST (3%): ₹<span id="gst-tax">0</span></p>
+            <p style="font-size:16px; font-weight:600; margin-bottom:14px; color:var(--green-text);">Total: ₹<span id="gst-total">0</span></p>
+            <button onclick="closeGstModal()" class="btn-auth" style="padding:10px;">Close</button>
+        </div>
+    </div>
+
+    <div id="info-modal" class="modal">
+        <div class="modal-content">
+            <h3 id="info-modal-title" style="margin-bottom:12px; color:var(--accent-gold); font-size:16px;">Info</h3>
+            <p id="info-modal-text" style="font-size:13px; color:#cbd5e1; white-space: pre-line; margin-bottom:14px;"></p>
+            <button onclick="closeInfoModal()" class="btn-auth" style="padding:10px;">Close</button>
+        </div>
+    </div>
+
+    <div id="admin-modal" class="modal">
+        <div class="modal-content">
+            <h3 style="margin-bottom:12px; color:var(--accent-gold); font-size:16px;"><i class="fa-solid fa-user-shield"></i> Admin Panel</h3>
+            
+            <div id="admin-login-sec">
+                <span class="form-label">Admin Password</span>
+                <input type="password" id="admin-pass-input" placeholder="Default Password: 123" class="admin-input" style="margin-bottom:12px;">
+                <button onclick="verifyAdminPass()" class="btn-auth" style="padding:10px; margin-bottom:10px;">Login Admin</button>
+                <button onclick="closeAdminModal()" class="btn-auth" style="padding:10px; background:#475569; color:#fff;">Cancel</button>
+            </div>
+
+            <div id="admin-controls-sec" style="display:none; text-align:left;">
+                <h4 style="font-size:13px; color:#fff; border-bottom:1px solid #334155; padding-bottom:4px; margin-bottom:8px;">1. Change App Rates</h4>
+                
+                <span class="form-label">99.99 Retail Rate (₹)</span>
+                <input type="number" id="adm-rate-9999" class="admin-input">
+
+                <span class="form-label">99.50 Retail Rate (₹)</span>
+                <input type="number" id="adm-rate-9950" class="admin-input">
+
+                <span class="form-label">बटिया APPROX Rate (₹)</span>
+                <input type="number" id="adm-rate-badiya" class="admin-input">
+
+                <span class="form-label">BANK / GPAY Rate (₹)</span>
+                <input type="number" id="adm-rate-bank" class="admin-input">
+
+                <h4 style="font-size:13px; color:#fff; border-bottom:1px solid #334155; padding-bottom:4px; margin-top:12px; margin-bottom:8px;">2. Change WhatsApp Number</h4>
+                <span class="form-label">WhatsApp Mobile No. (10 digits)</span>
+                <input type="tel" id="adm-whatsapp" class="admin-input" placeholder="e.g. 9598446630">
+
+                <h4 style="font-size:13px; color:#fff; border-bottom:1px solid #334155; padding-bottom:4px; margin-top:12px; margin-bottom:8px;">3. Add Catalog Product Photo</h4>
+                <span class="form-label">Product Title</span>
+                <input type="text" id="adm-item-title" class="admin-input" placeholder="Item Name">
+                <span class="form-label">Image URL</span>
+                <input type="text" id="adm-item-img" class="admin-input" placeholder="https://image-link.com/photo.jpg">
+
+                <div style="display:flex; gap:10px; margin-top:14px;">
+                    <button onclick="saveAdminChanges()" class="btn-auth" style="flex:1;">Save All</button>
+                    <button onclick="closeAdminModal()" class="btn-auth" style="flex:1; background:#475569; color:#fff;">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="account-modal" class="modal">
+        <div class="modal-content">
+            <h3 style="margin-bottom:12px; color:var(--accent-gold); font-size:16px;"><i class="fa-solid fa-key"></i> Account Settings</h3>
+            
+            <span class="form-label">Update Display Name</span>
+            <input type="text" id="settings-username" class="admin-input" style="margin-bottom:10px;">
+
+            <span class="form-label">Change Admin Password</span>
+            <input type="password" id="settings-new-admin-pass" placeholder="Enter New Password" class="admin-input" style="margin-bottom:14px;">
+
+            <div style="display:flex; gap:10px;">
+                <button onclick="saveAccountSettings()" class="btn-auth" style="flex:1;">Save</button>
+                <button onclick="closeAccountSettingsModal()" class="btn-auth" style="flex:1; background:#475569; color:#fff;">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <div class="nav-item active" onclick="switchTab('home', this)"><i class="fa-solid fa-house"></i><span>Home</span></div>
+        <div class="nav-item" onclick="switchTab('prev', this)"><i class="fa-solid fa-clock-rotate-left"></i><span>Prev Day</span></div>
+        <div class="nav-item" onclick="switchTab('shrimukh', this)"><i class="fa-solid fa-gem"></i><span>Shrimukh</span></div>
+        <div class="nav-item" onclick="switchTab('details', this)"><i class="fa-solid fa-headphones"></i><span>Details</span></div>
+        <div class="nav-item" onclick="switchTab('extra', this)"><i class="fa-solid fa-border-all"></i><span>Extra</span></div>
+    </div>
+
+    <script>
+        let isFallbackMode = false;
+        let adminPassword = localStorage.getItem('aastha_admin_pass') || '123';
+
+        let catalogItems = JSON.parse(localStorage.getItem('aastha_catalog')) || [
+            { title: 'Bombay CZ Nosepin', img: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=300' },
+            { title: 'Chain Nosepin', img: 'https://images.unsplash.com/photo-1611591475140-be38b638edcd?w=300' },
+            { title: 'Emboss Nosepin', img: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300' },
+            { title: 'Isabella Nosepin', img: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=300' }
+        ];
+
+        function showInfoModal(title, message) {
+            document.getElementById('info-modal-title').innerText = title;
+            document.getElementById('info-modal-text').innerText = message;
+            document.getElementById('info-modal').style.display = 'flex';
+        }
+
+        function closeInfoModal() {
+            document.getElementById('info-modal').style.display = 'none';
+        }
+
+        function copyShareLink() {
+            const input = document.createElement('input');
+            input.value = window.location.href;
+            document.body.appendChild(input);
+            input.select();
+            document.execCommand('copy');
+            document.body.removeChild(input);
+            showInfoModal("Share Link", "App link copied to clipboard!");
+        }
+
+        function speakWelcome(userName) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                let message = userName 
+                    ? "Namaste " + userName + " ji, Aastha Jewellery Makers mein aapka swagat hai!"
+                    : "Namaste, Aastha Jewellery Makers mein aapka swagat hai!";
+                
+                let utterance = new SpeechSynthesisUtterance(message);
+                utterance.lang = 'hi-IN';
+                utterance.rate = 0.9;
+                utterance.pitch = 1.0;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function dismissWelcome() {
+            var welcome = document.getElementById('welcome-screen');
+            if (welcome) {
+                welcome.classList.add('hidden');
+                welcome.style.display = 'none';
+            }
+
+            var savedUser = localStorage.getItem('aastha_user');
+            if (savedUser) {
+                var userElem = document.getElementById('user-display-name');
+                if (userElem) userElem.innerText = savedUser;
+                speakWelcome(savedUser);
+            } else {
+                speakWelcome("");
+                var authScr = document.getElementById('auth-screen');
+                if (authScr) authScr.style.display = 'flex';
+                initRecaptcha();
+            }
+        }
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDH1mZnoR1m85-uop6L98ToObETQGmlrjU",
+            authDomain: "aastha-jewellery.firebaseapp.com",
+            projectId: "aastha-jewellery",
+            storageBucket: "aastha-jewellery.firebasestorage.app",
+            messagingSenderId: "1047297386260",
+            appId: "1:1047297386260:web:3e65b9d99817aae55cc401"
+        };
+
+        try {
+            if (typeof firebase !== 'undefined' && !firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+            }
+        } catch(err) {
+            console.log("Firebase Load Status:", err);
+        }
+
+        function initRecaptcha() {
+            try {
+                if (typeof firebase !== 'undefined' && firebase.auth && !window.recaptchaVerifier) {
+                    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+                        'size': 'normal',
+                        'callback': (response) => {}
+                    });
+                    window.recaptchaVerifier.render();
+                }
+            } catch(e) {}
+        }
+
+        window.onload = function() {
+            var savedUser = localStorage.getItem('aastha_user');
+            if (savedUser) {
+                var userElem = document.getElementById('user-display-name');
+                if (userElem) userElem.innerText = savedUser;
+            }
+            loadCustomSettings();
+            renderCatalog();
+        };
+
+        function renderCatalog() {
+            const container = document.getElementById('catalog-container');
+            if (!container) return;
+            container.innerHTML = '';
+            catalogItems.forEach(item => {
+                container.innerHTML += `
+                    <div class="catalog-card">
+                        <img src="${item.img}" class="catalog-img" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=300'">
+                        <div class="catalog-title">${item.title}</div>
+                    </div>
+                `;
+            });
+        }
+
+        function loadCustomSettings() {
+            const savedRates = JSON.parse(localStorage.getItem('aastha_rates'));
+            if (savedRates) {
+                if (savedRates.r9999) document.getElementById('rate-9999').innerText = '₹ ' + savedRates.r9999;
+                if (savedRates.r9950) document.getElementById('rate-9950').innerText = '₹ ' + savedRates.r9950;
+                if (savedRates.rBadiya) document.getElementById('rate-badiya').innerText = '₹ ' + savedRates.rBadiya;
+                if (savedRates.rBank) document.getElementById('rate-bank').innerText = '₹ ' + savedRates.rBank;
+            }
+            const savedWhatsapp = localStorage.getItem('aastha_whatsapp');
+            if (savedWhatsapp) {
+                document.getElementById('whatsapp-btn-link').href = 'https://wa.me/91' + savedWhatsapp;
+            }
+        }
+
+        function requestOtp() {
+            const name = document.getElementById('user-name').value.trim();
+            let phone = document.getElementById('user-phone').value.trim();
+            
+            if(!name || phone.length < 10) {
+                showInfoModal("Input Error", "Kripya apna Sahi Naam aur 10-digit Mobile Number darj karein!");
+                return;
+            }
+
+            if(!phone.startsWith('+')) {
+                phone = '+91' + phone;
+            }
+
+            const btn = document.getElementById('btn-send-otp');
+            btn.innerText = 'Sending OTP...';
+            btn.disabled = true;
+
+            if (!window.recaptchaVerifier) {
+                initRecaptcha();
+            }
+
+            const appVerifier = window.recaptchaVerifier;
+
+            if (typeof firebase !== 'undefined' && firebase.auth) {
+                firebase.auth().signInWithPhoneNumber(phone, appVerifier)
+                    .then((confirmationResult) => {
+                        window.confirmationResult = confirmationResult;
+                        showInfoModal("OTP Sent", "SMS OTP Aapke Mobile Par Bhej Diya Gaya Hai!");
+                        document.getElementById('step-phone').style.display = 'none';
+                        document.getElementById('step-otp').style.display = 'block';
+                    }).catch((error) => {
+                        isFallbackMode = true;
+                        showInfoModal("Demo Mode", "Demo Mode Active!\n\nUse Demo OTP Code: 123456");
+                        document.getElementById('step-phone').style.display = 'none';
+                        document.getElementById('step-otp').style.display = 'block';
+                        document.getElementById('otp-hint-text').innerText = "Use Demo OTP: 123456 to Login";
+                    });
+            } else {
+                isFallbackMode = true;
+                showInfoModal("Demo Mode", "Demo Code: 123456");
+                document.getElementById('step-phone').style.display = 'none';
+                document.getElementById('step-otp').style.display = 'block';
+            }
+        }
+
+        function verifyOtp() {
+            const code = document.getElementById('otp-input').value.trim();
+            const name = document.getElementById('user-name').value.trim() || "User";
+
+            if(!code || code.length !== 6) {
+                showInfoModal("Input Error", "Kripya 6-digit OTP Daalein!");
+                return;
+            }
+
+            const btn = document.getElementById('btn-verify-otp');
+            btn.innerText = 'Verifying...';
+            btn.disabled = true;
+
+            if (isFallbackMode) {
+                if (code === "123456") {
+                    localStorage.setItem('aastha_user', name);
+                    document.getElementById('user-display-name').innerText = name;
+                    document.getElementById('auth-screen').style.display = 'none';
+                    speakWelcome(name);
+                    showInfoModal("Login Success", "Welcome " + name + "! Login Successful!");
+                } else {
+                    showInfoModal("Error", "Galat OTP! Kripya 123456 enter karein.");
+                    btn.innerText = 'Verify & Login';
+                    btn.disabled = false;
+                }
+            } else if (window.confirmationResult) {
+                window.confirmationResult.confirm(code).then((result) => {
+                    localStorage.setItem('aastha_user', name);
+                    document.getElementById('user-display-name').innerText = name;
+                    document.getElementById('auth-screen').style.display = 'none';
+                    speakWelcome(name);
+                    showInfoModal("Login Success", "Login Successful!");
+                }).catch((error) => {
+                    showInfoModal("Error", "Galat OTP Daala Gaya Hai: " + error.message);
+                    btn.innerText = 'Verify & Login';
+                    btn.disabled = false;
+                });
+            }
+        }
+
+        function logout() {
+            try {
+                if (typeof firebase !== 'undefined' && firebase.auth) {
+                    firebase.auth().signOut();
+                }
+            } catch(e){}
+            localStorage.removeItem('aastha_user');
+            location.reload();
+        }
+
+        function switchTab(tabId, element) {
+            document.querySelectorAll('.tab-page').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+            element.classList.add('active');
+        }
+
+        function openGstModal() { document.getElementById('gst-modal').style.display = 'flex'; }
+        function closeGstModal() { document.getElementById('gst-modal').style.display = 'none'; }
+        
+        function calcGst() {
+            const amt = parseFloat(document.getElementById('gst-amount').value) || 0;
+            const tax = amt * 0.03;
+            document.getElementById('gst-tax').innerText = tax.toFixed(2);
+            document.getElementById('gst-total').innerText = (amt + tax).toFixed(2);
+        }
+
+        function openAdminModal() {
+            document.getElementById('admin-modal').style.display = 'flex';
+            document.getElementById('admin-login-sec').style.display = 'block';
+            document.getElementById('admin-controls-sec').style.display = 'none';
+        }
+        function closeAdminModal() { document.getElementById('admin-modal').style.display = 'none'; }
+
+        function verifyAdminPass() {
+            const inputPass = document.getElementById('admin-pass-input').value;
+            if (inputPass === adminPassword) {
+                document.getElementById('admin-login-sec').style.display = 'none';
+                document.getElementById('admin-controls-sec').style.display = 'block';
+            } else {
+                showInfoModal("Admin Login Failed", "Wrong Password! Try default: 123");
+            }
+        }
+
+        function saveAdminChanges() {
+            const r9999 = document.getElementById('adm-rate-9999').value;
+            const r9950 = document.getElementById('adm-rate-9950').value;
+            const rBadiya = document.getElementById('adm-rate-badiya').value;
+            const rBank = document.getElementById('adm-rate-bank').value;
+            const wa = document.getElementById('adm-whatsapp').value.trim();
+            const itemTitle = document.getElementById('adm-item-title').value.trim();
+            const itemImg = document.getElementById('adm-item-img').value.trim();
+
+            if (r9999 || r9950 || rBadiya || rBank) {
+                const ratesObj = {
+                    r9999: r9999 || document.getElementById('rate-9999').innerText.replace('₹ ', ''),
+                    r9950: r9950 || document.getElementById('rate-9950').innerText.replace('₹ ', ''),
+                    rBadiya: rBadiya || document.getElementById('rate-badiya').innerText.replace('₹ ', ''),
+                    rBank: rBank || document.getElementById('rate-bank').innerText.replace('₹ ', '')
+                };
+                localStorage.setItem('aastha_rates', JSON.stringify(ratesObj));
+            }
+
+            if (wa) {
+                localStorage.setItem('aastha_whatsapp', wa);
+            }
+
+            if (itemTitle && itemImg) {
+                catalogItems.unshift({ title: itemTitle, img: itemImg });
+                localStorage.setItem('aastha_catalog', JSON.stringify(catalogItems));
+            }
+
+            loadCustomSettings();
+            renderCatalog();
+            closeAdminModal();
+            showInfoModal("Admin Update", "Admin settings saved successfully!");
+        }
+
+        function openAccountSettingsModal() {
+            document.getElementById('account-modal').style.display = 'flex';
+            document.getElementById('settings-username').value = localStorage.getItem('aastha_user') || 'User';
+        }
+        function closeAccountSettingsModal() { document.getElementById('account-modal').style.display = 'none'; }
+
+        function saveAccountSettings() {
+            const newName = document.getElementById('settings-username').value.trim();
+            const newPass = document.getElementById('settings-new-admin-pass').value.trim();
+
+            if (newName) {
+                localStorage.setItem('aastha_user', newName);
+                document.getElementById('user-display-name').innerText = newName;
+            }
+
+            if (newPass) {
+                adminPassword = newPass;
+                localStorage.setItem('aastha_admin_pass', newPass);
+            }
+
+            closeAccountSettingsModal();
+            showInfoModal("Settings Saved", "Your account settings have been saved!");
+        }
+    </script>
+</body>
+</html>

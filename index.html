@@ -64,6 +64,76 @@
             padding-bottom: 80px;
         }
 
+        /* PUSH NOTIFICATION TOAST POPUP (AS SHOWN IN YOUR SCREENSHOT) */
+        #rate-notification-toast {
+            position: fixed;
+            top: -120px;
+            left: 16px;
+            right: 16px;
+            max-width: 480px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #0d214a, #132a5a);
+            border: 1px solid var(--accent-gold);
+            border-radius: 16px;
+            padding: 12px 16px;
+            z-index: 9999999;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7), 0 0 20px rgba(212, 175, 55, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        #rate-notification-toast.show {
+            top: 16px;
+        }
+        .toast-app-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-gold);
+            overflow: hidden;
+            background: #000;
+            flex-shrink: 0;
+        }
+        .toast-content {
+            flex: 1;
+        }
+        .toast-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2px;
+        }
+        .toast-app-name {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .toast-time {
+            font-size: 9px;
+            color: var(--text-muted);
+        }
+        .toast-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 2px;
+        }
+        .toast-desc {
+            font-size: 11px;
+            color: #cbd5e1;
+        }
+        .toast-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 16px;
+            cursor: pointer;
+            padding: 4px;
+        }
+
         /* WELCOME / SPLASH SCREEN */
         #welcome-screen {
             position: fixed;
@@ -274,6 +344,14 @@
         }
         .user-text p { font-size: 11px; color: var(--text-muted); }
         .user-text h3 { font-size: 15px; font-weight: 600; color: #fff; }
+
+        /* STATUSES IN HEADER (INLINE AS IN SCREENSHOT) */
+        .header-right-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
         .trust-banner {
             margin-top: 10px;
             background: rgba(212, 175, 55, 0.1);
@@ -285,11 +363,75 @@
             text-align: center;
         }
 
-        /* APP STATUS / STORIES SECTION */
+        /* FESTIVE BANNER CAROUSEL */
+        .festive-banner-box {
+            position: relative;
+            width: 100%;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 14px;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+            background: linear-gradient(135deg, #4a0000 0%, #1a0005 100%);
+        }
+        .festive-banner-img {
+            width: 100%;
+            height: auto;
+            max-height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+        .festive-banner-content {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            padding: 12px;
+            background: linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0.1));
+            color: #fff;
+        }
+        .festive-tag {
+            font-size: 10px;
+            background: #ef4444;
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        .festive-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--accent-gold);
+        }
+
+        /* PROMO HIGHLIGHT CARD */
+        .promo-highlight-card {
+            background: linear-gradient(135deg, #0d214a, #132a5a);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 14px;
+            padding: 12px 16px;
+            margin-bottom: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .promo-title { font-size: 14px; font-weight: 700; color: #fff; }
+        .promo-subtitle { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+        .promo-btn {
+            color: #38bdf8;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* APP STATUS / STORIES SECTION (HOME ONLY) */
         .status-container {
             display: flex;
             gap: 12px;
-            padding: 12px 0;
+            padding: 4px 0 12px 0;
             overflow-x: auto;
             scrollbar-width: none;
             margin-bottom: 12px;
@@ -627,9 +769,38 @@
         }
         .view-detail-row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px; color: #cbd5e1; }
         .view-detail-val { font-weight: 600; color: var(--accent-gold); }
+
+        /* ADMIN DELETE LIST */
+        .admin-delete-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--card-border);
+            padding: 8px 10px;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            font-size: 12px;
+        }
     </style>
 </head>
 <body>
+
+    <!-- PUSH NOTIFICATION TOAST (SIMULATING SCREENSHOT ALERT) -->
+    <div id="rate-notification-toast">
+        <div class="toast-app-icon">
+            <img src="92600.png" alt="Aastha Logo" class="app-logo-img" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=100'">
+        </div>
+        <div class="toast-content">
+            <div class="toast-header-row">
+                <span class="toast-app-name">Aastha Jewellery</span>
+                <span class="toast-time">Just now</span>
+            </div>
+            <div class="toast-title" id="toast-title-text">Gold Rate Updated! 🪙</div>
+            <div class="toast-desc" id="toast-desc-text">99.99 Retail: ₹ 149,150 (+₹300)</div>
+        </div>
+        <button class="toast-close" onclick="hideRateToast()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
 
     <div id="welcome-screen">
         <div class="welcome-logo-container">
@@ -701,8 +872,8 @@
                     <h3 id="user-display-name">User</h3>
                 </div>
             </div>
-            <div class="header-actions">
-                <div onclick="openAdminModal()" style="background: rgba(212, 175, 55, 0.2); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--accent-gold); cursor:pointer;"><i class="fa-solid fa-user-shield" style="font-size:14px;" title="Admin Panel"></i></div>
+            <div class="header-right-status" id="header-status-ring-box">
+                <!-- Status rings shown top right as per screenshot -->
             </div>
         </div>
         <div class="trust-banner">
@@ -711,12 +882,31 @@
     </div>
 
     <div class="main-container">
-        
-        <!-- STATUS / STORIES BAR -->
-        <div class="status-container" id="app-status-bar"></div>
 
         <!-- TAB 1: HOME -->
         <div id="tab-home" class="tab-page active">
+            
+            <!-- STATUS / STORIES BAR (ONLY INSIDE HOME TAB) -->
+            <div class="status-container" id="app-status-bar"></div>
+
+            <!-- FESTIVE NAVRATRI BANNER SECTION -->
+            <div class="festive-banner-box">
+                <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800" class="festive-banner-img" alt="Aastha Navratri Banner" onerror="this.src='92600.png'">
+                <div class="festive-banner-content">
+                    <span class="festive-tag">✨ आस्था पर्व ऑफर</span>
+                    <div class="festive-title">आस्था नवरात्रि की शुभकामनाएं 🙏</div>
+                    <p style="font-size:11px; color:#f1f5f9; margin-top:2px;">माँ दुर्गा आपके जीवन में सुख, समृद्धि और खुशियां लाएं!</p>
+                </div>
+            </div>
+
+            <!-- PROMO CARD -->
+            <div class="promo-highlight-card">
+                <div>
+                    <div class="promo-title">दबंग स्टाइल वाली जेंट्स बाली 💪</div>
+                    <div class="promo-subtitle">दबदबा तो इसी से बनेगा 🗿</div>
+                </div>
+                <a href="#" onclick="switchTab('shrimukh', document.querySelectorAll('.nav-item')[2]); return false;" class="promo-btn">View More <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
             
             <div class="rate-card-item">
                 <div class="card-top">
@@ -726,7 +916,7 @@
                         </div>
                         <h4>99.99 Retail</h4>
                     </div>
-                    <div class="card-price" id="rate-9999">₹ 149400</div>
+                    <div class="card-price" id="rate-9999">₹ 149150</div>
                 </div>
                 <div class="card-sub-text">Cash Denial</div>
                 
@@ -736,8 +926,8 @@
                 </svg>
 
                 <div class="card-bottom">
-                    <span class="indicator-red" id="ind-9999">-300 • 03:07 PM</span>
-                    <span class="hl-values">H: 149750 L: 149400</span>
+                    <span class="indicator-green" id="ind-9999">+300 • 11:38 AM</span>
+                    <span class="hl-values">H: 149150 L: 148850</span>
                 </div>
             </div>
 
@@ -749,7 +939,7 @@
                         </div>
                         <h4>99.50 Retail</h4>
                     </div>
-                    <div class="card-price" id="rate-9950">₹ 148650</div>
+                    <div class="card-price" id="rate-9950">₹ 148400</div>
                 </div>
                 <div class="card-sub-text">Cash Denial</div>
                 
@@ -759,8 +949,8 @@
                 </svg>
 
                 <div class="card-bottom">
-                    <span class="indicator-red" id="ind-9950">-300 • 03:07 PM</span>
-                    <span class="hl-values">H: 149000 L: 148650</span>
+                    <span class="indicator-green" id="ind-9950">+300 • 11:38 AM</span>
+                    <span class="hl-values">H: 148400 L: 148100</span>
                 </div>
             </div>
 
@@ -772,7 +962,7 @@
                         </div>
                         <h4>बटिया APPROX</h4>
                     </div>
-                    <div class="card-price" id="rate-badiya">₹ 227300</div>
+                    <div class="card-price" id="rate-badiya">₹ 226500</div>
                 </div>
                 <div class="card-sub-text">बटिया हाज़िर भाव में फर्क हो सकता है</div>
                 
@@ -783,7 +973,7 @@
 
                 <div class="card-bottom">
                     <span class="indicator-green" id="ind-badiya">+300 • 03:10 PM</span>
-                    <span class="hl-values">H: 227300 L: 227000</span>
+                    <span class="hl-values">H: 227300 L: 226500</span>
                 </div>
             </div>
 
@@ -824,7 +1014,7 @@
             </div>
 
             <div class="floating-action-row">
-                <a id="whatsapp-btn-link" href="https://wa.me/918887726720" target="_blank" class="btn-float-green"><i class="fa-brands fa-whatsapp"></i> WhatsApp Chat</a>
+                <a id="whatsapp-btn-link" href="#" onclick="openWhatsAppChat(); return false;" class="btn-float-green"><i class="fa-brands fa-whatsapp"></i> WhatsApp Chat</a>
                 <a href="#" class="btn-float-orange" onclick="navigator.share ? navigator.share({title:'Aastha Jewellery', url:window.location.href}) : copyShareLink()"><i class="fa-solid fa-box-archive"></i> Share</a>
             </div>
         </div>
@@ -916,7 +1106,7 @@
                     </div>
                     <div class="action-btns">
                         <a href="tel:8887726720" class="btn-icon btn-call"><i class="fa-solid fa-phone"></i></a>
-                        <a href="https://wa.me/918887726720" class="btn-icon btn-msg"><i class="fa-solid fa-comment"></i></a>
+                        <a href="#" onclick="openBranchWhatsApp('8887726720'); return false;" class="btn-icon btn-msg"><i class="fa-solid fa-comment"></i></a>
                     </div>
                 </div>
             </div>
@@ -931,7 +1121,7 @@
                     </div>
                     <div class="action-btns">
                         <a href="tel:9621106661" class="btn-icon btn-call"><i class="fa-solid fa-phone"></i></a>
-                        <a href="https://wa.me/919621106661" class="btn-icon btn-msg"><i class="fa-solid fa-comment"></i></a>
+                        <a href="#" onclick="openBranchWhatsApp('9621106661'); return false;" class="btn-icon btn-msg"><i class="fa-solid fa-comment"></i></a>
                     </div>
                 </div>
             </div>
@@ -946,7 +1136,7 @@
                     </div>
                     <div class="action-btns">
                         <a href="tel:8090247751" class="btn-icon btn-call"><i class="fa-solid fa-phone"></i></a>
-                        <a href="https://wa.me/918090247751" class="btn-icon btn-msg"><i class="fa-solid fa-comment"></i></a>
+                        <a href="#" onclick="openBranchWhatsApp('8090247751'); return false;" class="btn-icon btn-msg"><i class="fa-solid fa-comment"></i></a>
                     </div>
                 </div>
             </div>
@@ -959,6 +1149,10 @@
                 <div class="extra-card" onclick="openAdminModal()">
                     <i class="fa-solid fa-user-gear"></i>
                     <h4>Admin Panel</h4>
+                </div>
+                <div class="extra-card" onclick="triggerRateToast('Gold Market Alert', 'Live Gold rates have been updated successfully!')">
+                    <i class="fa-solid fa-bell"></i>
+                    <h4>Test Notification</h4>
                 </div>
                 <div class="extra-card" onclick="openGstModal()">
                     <i class="fa-solid fa-calculator"></i>
@@ -1039,7 +1233,7 @@
         </div>
     </div>
 
-    <!-- ADMIN PANEL MODAL WITH CATALOG & EXCLUSIVE STATUS POSTING -->
+    <!-- ADMIN PANEL MODAL WITH CATALOG & EXCLUSIVE STATUS POSTING + DELETE PRODUCT -->
     <div id="admin-modal" class="modal">
         <div class="modal-content">
             <h3 style="margin-bottom:12px; color:var(--accent-gold); font-size:16px;"><i class="fa-solid fa-user-shield"></i> Admin Panel</h3>
@@ -1054,7 +1248,7 @@
             <div id="admin-controls-sec" style="display:none; text-align:left;">
                 
                 <!-- STATUS CREATOR (ADMIN ONLY) -->
-                <h4 style="font-size:13px; color:var(--accent-gold); border-bottom:1px solid #334155; padding-bottom:4px; margin-bottom:8px;"><i class="fa-solid fa-circle-plus"></i> Add New Status / Story (Admin Only)</h4>
+                <h4 style="font-size:13px; color:var(--accent-gold); border-bottom:1px solid #334155; padding-bottom:4px; margin-bottom:8px;"><i class="fa-solid fa-circle-plus"></i> Add New Status / Story</h4>
                 <span class="form-label">Status Title / Label</span>
                 <input type="text" id="adm-status-title" class="admin-input" placeholder="e.g. Today Offer / Live Rates">
 
@@ -1104,10 +1298,12 @@
                 <span class="form-label">Or Direct Image URL</span>
                 <input type="text" id="adm-item-img" class="admin-input" placeholder="https://image-link.com/photo.jpg">
 
-                <div style="display:flex; gap:10px; margin-top:16px;">
-                    <button onclick="saveAdminChanges()" class="btn-auth" style="flex:1;">Save Rates & Items</button>
-                    <button onclick="closeAdminModal()" class="btn-auth" style="flex:1; background:#475569; color:#fff;">Close</button>
-                </div>
+                <button onclick="saveAdminChanges()" class="btn-auth" style="margin-top:8px; margin-bottom:14px;">Save Rates & Add Item</button>
+
+                <h4 style="font-size:13px; color:#ef4444; border-bottom:1px solid #334155; padding-bottom:4px; margin-top:14px; margin-bottom:8px;"><i class="fa-solid fa-trash-can"></i> 4. Delete Catalog Products</h4>
+                <div id="admin-catalog-delete-list" style="margin-bottom:16px; max-height:160px; overflow-y:auto;"></div>
+
+                <button onclick="closeAdminModal()" class="btn-auth" style="background:#475569; color:#fff;">Close Panel</button>
             </div>
         </div>
     </div>
@@ -1150,9 +1346,44 @@
         ];
 
         let appStatuses = JSON.parse(localStorage.getItem('aastha_statuses')) || [
-            { id: 1, title: 'Live Update', media: '92600.png', caption: 'Welcome to Aastha Jewellery Live Rates', seen: false },
+            { id: 1, title: '18K Offer', media: '92600.png', caption: '18K Collection Available Today!', seen: false },
             { id: 2, title: 'Keel Offer', media: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600', caption: 'Exclusive Gold Keel & Nathuni Available Today!', seen: false }
         ];
+
+        /* PUSH NOTIFICATION TOAST POPUP HANDLER */
+        function triggerRateToast(title, desc) {
+            const toast = document.getElementById('rate-notification-toast');
+            document.getElementById('toast-title-text').innerText = title || 'Gold Rate Updated! 🪙';
+            document.getElementById('toast-desc-text').innerText = desc || '99.99 Retail: ₹ 149,150 (+₹300)';
+            
+            toast.classList.add('show');
+            
+            // Auto hide after 5 seconds
+            setTimeout(() => {
+                hideRateToast();
+            }, 5500);
+        }
+
+        function hideRateToast() {
+            const toast = document.getElementById('rate-notification-toast');
+            toast.classList.remove('show');
+        }
+
+        function openWhatsAppChat() {
+            const currWa = localStorage.getItem('aastha_whatsapp') || '8887726720';
+            const r9999 = document.getElementById('rate-9999').innerText;
+            const r9950 = document.getElementById('rate-9950').innerText;
+            const rBadiya = document.getElementById('rate-badiya').innerText;
+            const rBank = document.getElementById('rate-bank').innerText;
+
+            const msg = encodeURIComponent(`Namaste Dinesh ji,\n\nMaine Aastha Jewellery App par live bhav dekhe hain:\n- 99.99 Retail: ${r9999}\n- 99.50 Retail: ${r9950}\n- बटिया APPROX: ${rBadiya}\n- BANK/GPAY: ${rBank}\n\nKripya aaj ke taza bhav ki jankari dein.`);
+            window.open(`https://wa.me/91${currWa}?text=${msg}`, '_blank');
+        }
+
+        function openBranchWhatsApp(phoneNum) {
+            const msg = encodeURIComponent(`Namaste, Aastha Jewellery के इस branch पर inquiry करनी है।`);
+            window.open(`https://wa.me/91${phoneNum}?text=${msg}`, '_blank');
+        }
 
         function showInfoModal(title, message) {
             document.getElementById('info-modal-title').innerText = title;
@@ -1207,6 +1438,11 @@
                 if (authScr) authScr.style.display = 'flex';
                 initRecaptcha();
             }
+            
+            // Trigger sample push notification toast 3 seconds after opening app
+            setTimeout(() => {
+                triggerRateToast('Gold Market Alert 🪙', '99.99 Retail updated to ₹ 149,150 (+₹300)');
+            }, 2500);
         }
 
         const firebaseConfig = {
@@ -1250,18 +1486,33 @@
         /* STATUS / STORIES FUNCTIONS */
         function renderStatuses() {
             const bar = document.getElementById('app-status-bar');
-            if(!bar) return;
-            bar.innerHTML = '';
+            const headerBox = document.getElementById('header-status-ring-box');
+            
+            if(bar) bar.innerHTML = '';
+            if(headerBox) headerBox.innerHTML = '';
 
             appStatuses.forEach((st, idx) => {
-                bar.innerHTML += `
-                    <div class="status-item" onclick="openStatusViewer(${idx})">
-                        <div class="status-ring ${st.seen ? 'seen' : ''}">
-                            <img src="${st.media}" class="status-thumb" onerror="this.src='92600.png'">
+                if(bar) {
+                    bar.innerHTML += `
+                        <div class="status-item" onclick="openStatusViewer(${idx})">
+                            <div class="status-ring ${st.seen ? 'seen' : ''}">
+                                <img src="${st.media}" class="status-thumb" onerror="this.src='92600.png'">
+                            </div>
+                            <div class="status-title">${st.title}</div>
                         </div>
-                        <div class="status-title">${st.title}</div>
-                    </div>
-                `;
+                    `;
+                }
+
+                if(headerBox && idx < 2) {
+                    headerBox.innerHTML += `
+                        <div style="text-align:center; cursor:pointer;" onclick="openStatusViewer(${idx})">
+                            <div class="status-ring ${st.seen ? 'seen' : ''}" style="width:38px; height:38px;">
+                                <img src="${st.media}" class="status-thumb" onerror="this.src='92600.png'">
+                            </div>
+                            <span style="font-size:9px; color:var(--accent-gold); display:block; margin-top:2px;">${st.title}</span>
+                        </div>
+                    `;
+                }
             });
         }
 
@@ -1326,6 +1577,9 @@
                 document.getElementById('adm-status-title').value = '';
                 document.getElementById('adm-status-caption').value = '';
                 document.getElementById('adm-status-url').value = '';
+                
+                // Also trigger push notification for new status
+                triggerRateToast('New Story / Update! ✨', title);
             };
 
             if (fileInput && fileInput.files && fileInput.files[0]) {
@@ -1359,6 +1613,36 @@
             });
         }
 
+        function renderAdminCatalogDeleteList() {
+            const listContainer = document.getElementById('admin-catalog-delete-list');
+            if (!listContainer) return;
+            listContainer.innerHTML = '';
+
+            if (catalogItems.length === 0) {
+                listContainer.innerHTML = '<p style="font-size:11px; color:#94a3b8; text-align:center;">No catalog items found.</p>';
+                return;
+            }
+
+            catalogItems.forEach((item, idx) => {
+                listContainer.innerHTML += `
+                    <div class="admin-delete-row">
+                        <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:200px;">${idx + 1}. ${item.title}</span>
+                        <button onclick="deleteCatalogItem(${idx})" style="background:#ef4444; color:#fff; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; font-size:11px;"><i class="fa-solid fa-trash"></i> Delete</button>
+                    </div>
+                `;
+            });
+        }
+
+        function deleteCatalogItem(index) {
+            if (confirm(`Kya aap "${catalogItems[index].title}" ko delete karna chahte hain?`)) {
+                catalogItems.splice(index, 1);
+                localStorage.setItem('aastha_catalog', JSON.stringify(catalogItems));
+                renderCatalog();
+                renderAdminCatalogDeleteList();
+                showInfoModal("Deleted", "Catalog item successfully deleted!");
+            }
+        }
+
         function openCatalogViewModal(index) {
             const item = catalogItems[index];
             if (!item) return;
@@ -1388,10 +1672,6 @@
                 if (savedRates.r9950) document.getElementById('rate-9950').innerText = '₹ ' + savedRates.r9950;
                 if (savedRates.rBadiya) document.getElementById('rate-badiya').innerText = '₹ ' + savedRates.rBadiya;
                 if (savedRates.rBank) document.getElementById('rate-bank').innerText = '₹ ' + savedRates.rBank;
-            }
-            const savedWhatsapp = localStorage.getItem('aastha_whatsapp');
-            if (savedWhatsapp) {
-                document.getElementById('whatsapp-btn-link').href = 'https://wa.me/91' + savedWhatsapp;
             }
         }
 
@@ -1459,7 +1739,7 @@
                     document.getElementById('user-display-name').innerText = name;
                     document.getElementById('auth-screen').style.display = 'none';
                     speakWelcome(name);
-                    showInfoModal("Login Success", "Welcome " + name + "! Login Successful!");
+                    showInfoModal("Login Success", "Welcome " + name + " ! Login Successful!");
                 } else {
                     showInfoModal("Error", "Galat OTP! Kripya 123456 enter karein.");
                     btn.innerText = 'Verify & Login';
@@ -1494,7 +1774,7 @@
             document.querySelectorAll('.tab-page').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             document.getElementById('tab-' + tabId).classList.add('active');
-            element.classList.add('active');
+            if(element) element.classList.add('active');
         }
 
         function openGstModal() { document.getElementById('gst-modal').style.display = 'flex'; }
@@ -1519,6 +1799,7 @@
             if (inputPass === adminPassword) {
                 document.getElementById('admin-login-sec').style.display = 'none';
                 document.getElementById('admin-controls-sec').style.display = 'block';
+                renderAdminCatalogDeleteList();
             } else {
                 showInfoModal("Admin Login Failed", "Wrong Password! Try default: 123");
             }
@@ -1545,6 +1826,9 @@
                     rBank: rBank || document.getElementById('rate-bank').innerText.replace('₹ ', '')
                 };
                 localStorage.setItem('aastha_rates', JSON.stringify(ratesObj));
+                
+                // Trigger notification banner for rate change
+                triggerRateToast('Rates Updated by Admin! 📈', `99.99 Retail: ₹ ${ratesObj.r9999}`);
             }
 
             if (wa) {
@@ -1563,8 +1847,15 @@
                 }
                 loadCustomSettings();
                 renderCatalog();
-                closeAdminModal();
-                showInfoModal("Admin Update", "Changes saved successfully!");
+                renderAdminCatalogDeleteList();
+                
+                document.getElementById('adm-item-title').value = '';
+                document.getElementById('adm-item-weight').value = '';
+                document.getElementById('adm-item-price').value = '';
+                document.getElementById('adm-item-img').value = '';
+                if(itemFileInput) itemFileInput.value = '';
+
+                showInfoModal("Admin Update", "Changes saved & new item added successfully!");
             };
 
             if (itemFileInput && itemFileInput.files && itemFileInput.files[0]) {

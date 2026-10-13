@@ -285,6 +285,132 @@
             text-align: center;
         }
 
+        /* APP STATUS / STORIES SECTION */
+        .status-container {
+            display: flex;
+            gap: 12px;
+            padding: 12px 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--card-border);
+        }
+        .status-container::-webkit-scrollbar { display: none; }
+        .status-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            min-width: 65px;
+        }
+        .status-ring {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            padding: 2px;
+            background: linear-gradient(45deg, var(--accent-gold), #f59e0b, #ef4444);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .status-ring.seen {
+            background: #475569;
+        }
+        .status-thumb {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--bg-dark);
+            background: #000;
+        }
+        .status-title {
+            font-size: 10px;
+            color: #cbd5e1;
+            margin-top: 4px;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 65px;
+        }
+
+        /* STATUS VIEWER MODAL */
+        #status-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            width: 100vw; height: 100vh;
+            background: #000;
+            z-index: 999999;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .status-progress-bar {
+            width: 100%;
+            height: 3px;
+            background: rgba(255,255,255,0.3);
+            position: absolute;
+            top: 10px;
+            left: 0;
+            z-index: 10;
+        }
+        .status-progress-fill {
+            height: 100%;
+            background: var(--accent-gold);
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+        .status-header-view {
+            position: absolute;
+            top: 20px;
+            left: 15px;
+            right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 10;
+            color: #fff;
+        }
+        .status-close-btn {
+            font-size: 20px;
+            color: #fff;
+            cursor: pointer;
+            background: rgba(0,0,0,0.4);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .status-media-box {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .status-media-box img, .status-media-box video {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        .status-caption {
+            position: absolute;
+            bottom: 30px;
+            left: 20px;
+            right: 20px;
+            text-align: center;
+            background: rgba(0,0,0,0.6);
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            color: #fff;
+            backdrop-filter: blur(4px);
+        }
+
         /* MAIN CONTAINER */
         .main-container { 
             padding: 14px 20px; 
@@ -380,14 +506,40 @@
         .nav-item i { font-size: 18px; margin-bottom: 3px; }
         .nav-item.active { color: var(--accent-gold); }
 
-        /* CATALOG GRID */
+        /* CATALOG STYLING & AUTO-BACKGROUND CONTAINER */
         .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; width: 100%; }
         .catalog-card {
             background: var(--card-dark); border: 1px solid var(--card-border);
-            border-radius: 12px; overflow: hidden; text-align: center; padding-bottom: 10px;
+            border-radius: 14px; overflow: hidden; text-align: center; padding-bottom: 12px;
+            cursor: pointer; transition: transform 0.2s ease, border-color 0.2s ease;
+            position: relative;
         }
-        .catalog-img { width: 100%; height: 140px; object-fit: cover; }
-        .catalog-title { font-size: 12px; font-weight: 500; margin-top: 8px; color: #fff; padding: 0 4px; }
+        .catalog-card:active { transform: scale(0.97); border-color: var(--accent-gold); }
+        
+        .catalog-img-wrapper {
+            width: 100%;
+            height: 150px;
+            background: radial-gradient(circle, #2a3d66 0%, #080f1e 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            padding: 6px;
+        }
+        .catalog-img { 
+            max-width: 100%; 
+            max-height: 100%; 
+            object-fit: contain; 
+            filter: drop-shadow(0px 8px 12px rgba(0,0,0,0.7));
+            transition: transform 0.3s ease;
+        }
+        .catalog-card:hover .catalog-img { transform: scale(1.05); }
+
+        .catalog-title { font-size: 12px; font-weight: 600; margin-top: 8px; color: #fff; padding: 0 6px; }
+        .catalog-meta { display: flex; justify-content: space-between; align-items: center; padding: 4px 10px 0 10px; font-size: 11px; }
+        .catalog-weight { color: var(--text-muted); font-size: 10px; }
+        .catalog-price { color: var(--accent-gold); font-weight: 700; font-size: 12px; }
 
         /* PREVIOUS DAY TAB */
         .light-theme {
@@ -439,18 +591,42 @@
         .modal {
             display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             width: 100vw; height: 100vh;
-            background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); z-index: 10000;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); z-index: 10000;
             align-items: center; justify-content: center; padding: 16px; overflow-y: auto;
         }
         .modal-content {
             background: var(--card-dark); border: 1px solid var(--accent-gold);
-            border-radius: 16px; padding: 20px; width: 100%; max-width: 360px; text-align: center;
+            border-radius: 16px; padding: 20px; width: 100%; max-width: 380px; text-align: center;
+            max-height: 90vh; overflow-y: auto;
         }
         .form-label { font-size: 11px; color: var(--accent-gold); text-align: left; display: block; margin: 8px 0 3px 2px; }
         .admin-input {
             width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--card-border);
             background: rgba(255,255,255,0.05); color: #fff; outline: none; font-size: 13px;
         }
+
+        /* CATALOG PRODUCT VIEW MODAL */
+        #catalog-view-modal .modal-content { text-align: left; }
+        .catalog-view-bg-box {
+            width: 100%;
+            height: 240px;
+            background: radial-gradient(circle, #2a3d66 0%, #080f1e 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            border: 1px solid var(--card-border);
+            padding: 10px;
+        }
+        #catalog-item-img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.8));
+        }
+        .view-detail-row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px; color: #cbd5e1; }
+        .view-detail-val { font-weight: 600; color: var(--accent-gold); }
     </style>
 </head>
 <body>
@@ -536,6 +712,9 @@
 
     <div class="main-container">
         
+        <!-- STATUS / STORIES BAR -->
+        <div class="status-container" id="app-status-bar"></div>
+
         <!-- TAB 1: HOME -->
         <div id="tab-home" class="tab-page active">
             
@@ -645,7 +824,7 @@
             </div>
 
             <div class="floating-action-row">
-                <a id="whatsapp-btn-link" href="https://wa.me/919598446630" target="_blank" class="btn-float-green"><i class="fa-brands fa-whatsapp"></i> WhatsApp Chat</a>
+                <a id="whatsapp-btn-link" href="https://wa.me/918887726720" target="_blank" class="btn-float-green"><i class="fa-brands fa-whatsapp"></i> WhatsApp Chat</a>
                 <a href="#" class="btn-float-orange" onclick="navigator.share ? navigator.share({title:'Aastha Jewellery', url:window.location.href}) : copyShareLink()"><i class="fa-solid fa-box-archive"></i> Share</a>
             </div>
         </div>
@@ -718,7 +897,7 @@
             <div style="background: var(--card-dark); border: 1px solid var(--accent-gold); padding:16px; border-radius:14px; text-align:center; margin-bottom:14px;">
                 <i class="fa-solid fa-crown" style="color:var(--accent-gold); font-size:24px;"></i>
                 <h3 style="letter-spacing:1px; margin-top:4px; color:#fff; font-size:15px;">SHRIMUKH ELEGANCE</h3>
-                <p style="font-size:11px; color:var(--accent-gold);">By Aastha Jewellery</p>
+                <p style="font-size:11px; color:var(--accent-gold);">Exclusive Keel & Nathuni Catalog</p>
             </div>
             <div class="catalog-grid" id="catalog-container"></div>
         </div>
@@ -806,6 +985,42 @@
 
     </div>
 
+    <!-- FULLSCREEN STATUS VIEW MODAL -->
+    <div id="status-modal">
+        <div class="status-progress-bar"><div class="status-progress-fill" id="status-progress"></div></div>
+        <div class="status-header-view">
+            <span id="status-author-name" style="font-weight:600; font-size:14px;">Aastha Jewellery Status</span>
+            <div class="status-close-btn" onclick="closeStatusViewer()"><i class="fa-solid fa-xmark"></i></div>
+        </div>
+        <div class="status-media-box" id="status-media-container"></div>
+        <div class="status-caption" id="status-caption-text"></div>
+    </div>
+
+    <!-- CATALOG ITEM VIEW MODAL -->
+    <div id="catalog-view-modal" class="modal">
+        <div class="modal-content">
+            <h3 id="catalog-item-title" style="margin-bottom:12px; color:var(--accent-gold); font-size:16px;">Item Preview</h3>
+            
+            <div class="catalog-view-bg-box">
+                <img id="catalog-item-img" src="" alt="Jewellery Design">
+            </div>
+
+            <div class="view-detail-row">
+                <span>Weight / वजन:</span>
+                <span class="view-detail-val" id="catalog-item-weight">-</span>
+            </div>
+            <div class="view-detail-row" style="margin-bottom:14px;">
+                <span>Approx Price:</span>
+                <span class="view-detail-val" id="catalog-item-price">-</span>
+            </div>
+
+            <div style="display:flex; gap:10px;">
+                <button id="catalog-wa-inquire" class="btn-auth" style="flex:1; background:#25d366; color:#fff;"><i class="fa-brands fa-whatsapp"></i> Order On WhatsApp</button>
+                <button onclick="closeCatalogViewModal()" class="btn-auth" style="flex:1; background:#475569; color:#fff;">Close</button>
+            </div>
+        </div>
+    </div>
+
     <div id="gst-modal" class="modal">
         <div class="modal-content">
             <h3 style="margin-bottom:12px; color:var(--accent-gold); font-size:16px;">GST Calculator (3%)</h3>
@@ -824,6 +1039,7 @@
         </div>
     </div>
 
+    <!-- ADMIN PANEL MODAL WITH CATALOG & EXCLUSIVE STATUS POSTING -->
     <div id="admin-modal" class="modal">
         <div class="modal-content">
             <h3 style="margin-bottom:12px; color:var(--accent-gold); font-size:16px;"><i class="fa-solid fa-user-shield"></i> Admin Panel</h3>
@@ -836,7 +1052,24 @@
             </div>
 
             <div id="admin-controls-sec" style="display:none; text-align:left;">
-                <h4 style="font-size:13px; color:#fff; border-bottom:1px solid #334155; padding-bottom:4px; margin-bottom:8px;">1. Change App Rates</h4>
+                
+                <!-- STATUS CREATOR (ADMIN ONLY) -->
+                <h4 style="font-size:13px; color:var(--accent-gold); border-bottom:1px solid #334155; padding-bottom:4px; margin-bottom:8px;"><i class="fa-solid fa-circle-plus"></i> Add New Status / Story (Admin Only)</h4>
+                <span class="form-label">Status Title / Label</span>
+                <input type="text" id="adm-status-title" class="admin-input" placeholder="e.g. Today Offer / Live Rates">
+
+                <span class="form-label">Status Caption Text</span>
+                <input type="text" id="adm-status-caption" class="admin-input" placeholder="e.g. Special Discount on Nathuni today!">
+
+                <span class="form-label">Upload Status Photo</span>
+                <input type="file" id="adm-status-file" accept="image/*" class="admin-input" style="padding:6px; margin-bottom:6px;">
+
+                <span class="form-label">Or Direct Image/Video Link URL</span>
+                <input type="text" id="adm-status-url" class="admin-input" placeholder="https://image-link.com/photo.jpg">
+
+                <button onclick="postAdminStatus()" class="btn-auth" style="margin-top:6px; margin-bottom:14px; background:#22c55e; color:#fff;">Publish Status</button>
+
+                <h4 style="font-size:13px; color:#fff; border-bottom:1px solid #334155; padding-bottom:4px; margin-bottom:8px;">1. Change App Live Rates</h4>
                 
                 <span class="form-label">99.99 Retail Rate (₹)</span>
                 <input type="number" id="adm-rate-9999" class="admin-input">
@@ -850,18 +1083,29 @@
                 <span class="form-label">BANK / GPAY Rate (₹)</span>
                 <input type="number" id="adm-rate-bank" class="admin-input">
 
-                <h4 style="font-size:13px; color:#fff; border-bottom:1px solid #334155; padding-bottom:4px; margin-top:12px; margin-bottom:8px;">2. Change WhatsApp Number</h4>
+                <h4 style="font-size:13px; color:#fff; border-bottom:1px solid #334155; padding-bottom:4px; margin-top:14px; margin-bottom:8px;">2. Change Order WhatsApp Number</h4>
                 <span class="form-label">WhatsApp Mobile No. (10 digits)</span>
-                <input type="tel" id="adm-whatsapp" class="admin-input" placeholder="e.g. 9598446630">
+                <input type="tel" id="adm-whatsapp" class="admin-input" placeholder="e.g. 8887726720">
 
-                <h4 style="font-size:13px; color:#fff; border-bottom:1px solid #334155; padding-bottom:4px; margin-top:12px; margin-bottom:8px;">3. Add Catalog Product Photo</h4>
-                <span class="form-label">Product Title</span>
-                <input type="text" id="adm-item-title" class="admin-input" placeholder="Item Name">
-                <span class="form-label">Image URL</span>
+                <h4 style="font-size:13px; color:var(--accent-gold); border-bottom:1px solid #334155; padding-bottom:4px; margin-top:14px; margin-bottom:8px;">3. Add New Shrimukh Catalog Item</h4>
+                
+                <span class="form-label">Product Name / Title</span>
+                <input type="text" id="adm-item-title" class="admin-input" placeholder="e.g. Bombay CZ Gold Nosepin">
+
+                <span class="form-label">Weight (Vajan)</span>
+                <input type="text" id="adm-item-weight" class="admin-input" placeholder="e.g. 1.250 gms / 500 mg">
+
+                <span class="form-label">Approx Price (₹)</span>
+                <input type="number" id="adm-item-price" class="admin-input" placeholder="e.g. 4500">
+
+                <span class="form-label">Photo Upload (Select Image File)</span>
+                <input type="file" id="adm-item-file" accept="image/*" class="admin-input" style="padding:6px; margin-bottom:6px;">
+
+                <span class="form-label">Or Direct Image URL</span>
                 <input type="text" id="adm-item-img" class="admin-input" placeholder="https://image-link.com/photo.jpg">
 
-                <div style="display:flex; gap:10px; margin-top:14px;">
-                    <button onclick="saveAdminChanges()" class="btn-auth" style="flex:1;">Save All</button>
+                <div style="display:flex; gap:10px; margin-top:16px;">
+                    <button onclick="saveAdminChanges()" class="btn-auth" style="flex:1;">Save Rates & Items</button>
                     <button onclick="closeAdminModal()" class="btn-auth" style="flex:1; background:#475569; color:#fff;">Close</button>
                 </div>
             </div>
@@ -896,12 +1140,18 @@
     <script>
         let isFallbackMode = false;
         let adminPassword = localStorage.getItem('aastha_admin_pass') || '123';
+        let statusProgressInterval = null;
 
         let catalogItems = JSON.parse(localStorage.getItem('aastha_catalog')) || [
-            { title: 'Bombay CZ Nosepin', img: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=300' },
-            { title: 'Chain Nosepin', img: 'https://images.unsplash.com/photo-1611591475140-be38b638edcd?w=300' },
-            { title: 'Emboss Nosepin', img: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300' },
-            { title: 'Isabella Nosepin', img: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=300' }
+            { title: 'Bombay CZ Nosepin', weight: '350 mg', price: '2800', img: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=300' },
+            { title: 'Chain Gold Nathuni', weight: '1.200 gms', price: '9500', img: 'https://images.unsplash.com/photo-1611591475140-be38b638edcd?w=300' },
+            { title: 'Emboss Designer Nosepin', weight: '500 mg', price: '3900', img: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300' },
+            { title: 'Isabella Bridal Nathuni', weight: '2.500 gms', price: '19800', img: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=300' }
+        ];
+
+        let appStatuses = JSON.parse(localStorage.getItem('aastha_statuses')) || [
+            { id: 1, title: 'Live Update', media: '92600.png', caption: 'Welcome to Aastha Jewellery Live Rates', seen: false },
+            { id: 2, title: 'Keel Offer', media: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600', caption: 'Exclusive Gold Keel & Nathuni Available Today!', seen: false }
         ];
 
         function showInfoModal(title, message) {
@@ -972,9 +1222,7 @@
             if (typeof firebase !== 'undefined' && !firebase.apps.length) {
                 firebase.initializeApp(firebaseConfig);
             }
-        } catch(err) {
-            console.log("Firebase Load Status:", err);
-        }
+        } catch(err) {}
 
         function initRecaptcha() {
             try {
@@ -996,20 +1244,141 @@
             }
             loadCustomSettings();
             renderCatalog();
+            renderStatuses();
         };
+
+        /* STATUS / STORIES FUNCTIONS */
+        function renderStatuses() {
+            const bar = document.getElementById('app-status-bar');
+            if(!bar) return;
+            bar.innerHTML = '';
+
+            appStatuses.forEach((st, idx) => {
+                bar.innerHTML += `
+                    <div class="status-item" onclick="openStatusViewer(${idx})">
+                        <div class="status-ring ${st.seen ? 'seen' : ''}">
+                            <img src="${st.media}" class="status-thumb" onerror="this.src='92600.png'">
+                        </div>
+                        <div class="status-title">${st.title}</div>
+                    </div>
+                `;
+            });
+        }
+
+        function openStatusViewer(index) {
+            const st = appStatuses[index];
+            if(!st) return;
+
+            st.seen = true;
+            localStorage.setItem('aastha_statuses', JSON.stringify(appStatuses));
+            renderStatuses();
+
+            document.getElementById('status-author-name').innerText = st.title || 'Aastha Jewellery Status';
+            document.getElementById('status-caption-text').innerText = st.caption || '';
+            
+            const mediaBox = document.getElementById('status-media-container');
+            mediaBox.innerHTML = `<img src="${st.media}" onerror="this.src='92600.png'">`;
+
+            const modal = document.getElementById('status-modal');
+            modal.style.display = 'flex';
+
+            let progress = 0;
+            const fill = document.getElementById('status-progress');
+            fill.style.width = '0%';
+
+            clearInterval(statusProgressInterval);
+            statusProgressInterval = setInterval(() => {
+                progress += 2;
+                fill.style.width = progress + '%';
+                if(progress >= 100) {
+                    clearInterval(statusProgressInterval);
+                    if(index + 1 < appStatuses.length) {
+                        openStatusViewer(index + 1);
+                    } else {
+                        closeStatusViewer();
+                    }
+                }
+            }, 100);
+        }
+
+        function closeStatusViewer() {
+            clearInterval(statusProgressInterval);
+            document.getElementById('status-modal').style.display = 'none';
+        }
+
+        function postAdminStatus() {
+            const title = document.getElementById('adm-status-title').value.trim() || 'Aastha Update';
+            const caption = document.getElementById('adm-status-caption').value.trim();
+            const url = document.getElementById('adm-status-url').value.trim();
+            const fileInput = document.getElementById('adm-status-file');
+
+            const commitStatus = (mediaSrc) => {
+                appStatuses.unshift({
+                    id: Date.now(),
+                    title: title,
+                    caption: caption,
+                    media: mediaSrc || '92600.png',
+                    seen: false
+                });
+                localStorage.setItem('aastha_statuses', JSON.stringify(appStatuses));
+                renderStatuses();
+                showInfoModal("Status Published", "New Status posted successfully in App!");
+                document.getElementById('adm-status-title').value = '';
+                document.getElementById('adm-status-caption').value = '';
+                document.getElementById('adm-status-url').value = '';
+            };
+
+            if (fileInput && fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    commitStatus(e.target.result);
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                commitStatus(url);
+            }
+        }
 
         function renderCatalog() {
             const container = document.getElementById('catalog-container');
             if (!container) return;
             container.innerHTML = '';
-            catalogItems.forEach(item => {
+            catalogItems.forEach((item, index) => {
                 container.innerHTML += `
-                    <div class="catalog-card">
-                        <img src="${item.img}" class="catalog-img" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=300'">
+                    <div class="catalog-card" onclick="openCatalogViewModal(${index})">
+                        <div class="catalog-img-wrapper">
+                            <img src="${item.img}" class="catalog-img" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=300'">
+                        </div>
                         <div class="catalog-title">${item.title}</div>
+                        <div class="catalog-meta">
+                            <span class="catalog-weight"><i class="fa-solid fa-weight-scale"></i> ${item.weight || 'Std'}</span>
+                            <span class="catalog-price">₹${item.price || 'NA'}</span>
+                        </div>
                     </div>
                 `;
             });
+        }
+
+        function openCatalogViewModal(index) {
+            const item = catalogItems[index];
+            if (!item) return;
+            document.getElementById('catalog-item-title').innerText = item.title;
+            document.getElementById('catalog-item-img').src = item.img;
+            document.getElementById('catalog-item-weight').innerText = item.weight || 'Standard';
+            document.getElementById('catalog-item-price').innerText = item.price ? ('₹ ' + item.price) : 'Contact for Price';
+            
+            const currWa = localStorage.getItem('aastha_whatsapp') || '8887726720';
+            const msg = encodeURIComponent(`Hello Aastha Jewellery, I want to inquire about Shrimukh Design:\n\nItem: ${item.title}\nWeight: ${item.weight || 'Std'}\nPrice: ₹${item.price || 'NA'}`);
+            
+            document.getElementById('catalog-wa-inquire').onclick = function() {
+                window.open(`https://wa.me/91${currWa}?text=${msg}`, '_blank');
+            };
+
+            document.getElementById('catalog-view-modal').style.display = 'flex';
+        }
+
+        function closeCatalogViewModal() {
+            document.getElementById('catalog-view-modal').style.display = 'none';
         }
 
         function loadCustomSettings() {
@@ -1161,8 +1530,12 @@
             const rBadiya = document.getElementById('adm-rate-badiya').value;
             const rBank = document.getElementById('adm-rate-bank').value;
             const wa = document.getElementById('adm-whatsapp').value.trim();
+            
             const itemTitle = document.getElementById('adm-item-title').value.trim();
-            const itemImg = document.getElementById('adm-item-img').value.trim();
+            const itemWeight = document.getElementById('adm-item-weight').value.trim();
+            const itemPrice = document.getElementById('adm-item-price').value.trim();
+            const itemImgUrl = document.getElementById('adm-item-img').value.trim();
+            const itemFileInput = document.getElementById('adm-item-file');
 
             if (r9999 || r9950 || rBadiya || rBank) {
                 const ratesObj = {
@@ -1178,15 +1551,31 @@
                 localStorage.setItem('aastha_whatsapp', wa);
             }
 
-            if (itemTitle && itemImg) {
-                catalogItems.unshift({ title: itemTitle, img: itemImg });
-                localStorage.setItem('aastha_catalog', JSON.stringify(catalogItems));
-            }
+            const commitNewProduct = (finalImgSrc) => {
+                if (itemTitle) {
+                    catalogItems.unshift({ 
+                        title: itemTitle, 
+                        weight: itemWeight || 'Std', 
+                        price: itemPrice || 'NA', 
+                        img: finalImgSrc || 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=300' 
+                    });
+                    localStorage.setItem('aastha_catalog', JSON.stringify(catalogItems));
+                }
+                loadCustomSettings();
+                renderCatalog();
+                closeAdminModal();
+                showInfoModal("Admin Update", "Changes saved successfully!");
+            };
 
-            loadCustomSettings();
-            renderCatalog();
-            closeAdminModal();
-            showInfoModal("Admin Update", "Admin settings saved successfully!");
+            if (itemFileInput && itemFileInput.files && itemFileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    commitNewProduct(e.target.result);
+                };
+                reader.readAsDataURL(itemFileInput.files[0]);
+            } else {
+                commitNewProduct(itemImgUrl);
+            }
         }
 
         function openAccountSettingsModal() {

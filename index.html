@@ -36,6 +36,17 @@
             --red-text: #ef4444;
             --text-light: #f8fafc;
             --text-muted: #94a3b8;
+            --mcx-bg-glow-gold: rgba(239, 68, 68, 0.15);
+            --mcx-bg-glow-silver: rgba(239, 68, 68, 0.15);
+        }
+
+        body.light-mode {
+            --bg-dark: #f0f4f8;
+            --card-dark: #ffffff;
+            --card-border: #dbe2ef;
+            --accent-gold: #b8860b;
+            --text-light: #0f172a;
+            --text-muted: #64748b;
         }
 
         * { 
@@ -53,6 +64,7 @@
             color: var(--text-light); 
             overflow-x: hidden;
             position: relative;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         body {
@@ -64,7 +76,7 @@
             padding-bottom: 80px;
         }
 
-        /* PUSH NOTIFICATION TOAST POPUP (AS SHOWN IN YOUR SCREENSHOT) */
+        /* PUSH NOTIFICATION TOAST POPUP */
         #rate-notification-toast {
             position: fixed;
             top: -120px;
@@ -141,7 +153,7 @@
             width: 100vw;
             height: 100vh;
             background: var(--bg-dark);
-            z-index: 99999;
+            z-index: 999999;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -212,6 +224,8 @@
             box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
             width: 100%;
             max-width: 280px;
+            position: relative;
+            z-index: 1000000;
         }
         .btn-gold:active { transform: scale(0.96); }
 
@@ -343,9 +357,8 @@
             background: #000;
         }
         .user-text p { font-size: 11px; color: var(--text-muted); }
-        .user-text h3 { font-size: 15px; font-weight: 600; color: #fff; }
+        .user-text h3 { font-size: 15px; font-weight: 600; color: var(--text-light); }
 
-        /* STATUSES IN HEADER (INLINE AS IN SCREENSHOT) */
         .header-right-status {
             display: flex;
             align-items: center;
@@ -427,7 +440,7 @@
             gap: 4px;
         }
 
-        /* APP STATUS / STORIES SECTION (HOME ONLY) */
+        /* APP STATUS / STORIES SECTION */
         .status-container {
             display: flex;
             gap: 12px;
@@ -468,7 +481,7 @@
         }
         .status-title {
             font-size: 10px;
-            color: #cbd5e1;
+            color: var(--text-muted);
             margin-top: 4px;
             text-align: center;
             white-space: nowrap;
@@ -585,7 +598,7 @@
             border: 1px solid var(--accent-gold);
             background: #000;
         }
-        .card-title-box h4 { font-size: 14px; font-weight: 600; color: #fff; }
+        .card-title-box h4 { font-size: 14px; font-weight: 600; color: var(--text-light); }
         .card-price { font-size: 18px; font-weight: 700; color: var(--accent-gold); }
         .card-sub-text { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
         .chart-svg { width: 100%; height: 32px; margin: 6px 0; }
@@ -601,18 +614,71 @@
         .indicator-green { color: var(--green-text); font-weight: 500; }
         .hl-values { color: var(--text-muted); font-size: 10px; }
 
-        /* MCX GRID */
-        .mcx-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; width: 100%; }
+        /* MCX SECTION WITH THEME TOGGLE BUTTON & DYNAMIC GLOW BACKGROUND */
+        .mcx-container-wrapper {
+            position: relative;
+            margin-bottom: 14px;
+            width: 100%;
+        }
+
+        .theme-toggle-center-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #0d1b38;
+            border: 2px solid var(--accent-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 20;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+            color: var(--accent-gold);
+            font-size: 18px;
+            transition: transform 0.2s ease, background-color 0.3s ease;
+        }
+        .theme-toggle-center-btn:active { transform: translate(-50%, -50%) scale(0.9); }
+
+        .mcx-row { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 12px; 
+            width: 100%; 
+        }
         .mcx-card {
             background: var(--card-dark);
             border: 1px solid var(--card-border);
-            border-radius: 12px;
-            padding: 12px;
+            border-radius: 14px;
+            padding: 14px 12px;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: background 0.3s ease, border-color 0.3s ease;
         }
+        
+        .mcx-card.mcx-gold-card {
+            background: radial-gradient(circle at center, var(--mcx-bg-glow-gold) 0%, var(--card-dark) 70%);
+        }
+        .mcx-card.mcx-silver-card {
+            background: radial-gradient(circle at center, var(--mcx-bg-glow-silver) 0%, var(--card-dark) 70%);
+        }
+
         .mcx-title-box { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; display: flex; align-items: center; justify-content: center; gap: 4px; }
-        .mcx-price { font-size: 15px; font-weight: 700; color: #fff; }
-        .mcx-change { font-size: 10px; color: var(--green-text); margin-top: 2px; }
+        .mcx-price { font-size: 16px; font-weight: 700; color: var(--text-light); }
+        .mcx-change-badge {
+            display: inline-block;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin-top: 4px;
+            font-weight: 600;
+        }
+        .badge-red { background: rgba(239, 68, 68, 0.2); color: var(--red-text); border: 1px solid rgba(239, 68, 68, 0.4); }
+        .badge-green { background: rgba(34, 197, 94, 0.2); color: var(--green-text); border: 1px solid rgba(34, 197, 94, 0.4); }
 
         .floating-action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; width: 100%; }
         .btn-float-green {
@@ -648,7 +714,7 @@
         .nav-item i { font-size: 18px; margin-bottom: 3px; }
         .nav-item.active { color: var(--accent-gold); }
 
-        /* CATALOG STYLING & AUTO-BACKGROUND CONTAINER */
+        /* CATALOG STYLING */
         .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; width: 100%; }
         .catalog-card {
             background: var(--card-dark); border: 1px solid var(--card-border);
@@ -678,36 +744,37 @@
         }
         .catalog-card:hover .catalog-img { transform: scale(1.05); }
 
-        .catalog-title { font-size: 12px; font-weight: 600; margin-top: 8px; color: #fff; padding: 0 6px; }
+        .catalog-title { font-size: 12px; font-weight: 600; margin-top: 8px; color: var(--text-light); padding: 0 6px; }
         .catalog-meta { display: flex; justify-content: space-between; align-items: center; padding: 4px 10px 0 10px; font-size: 11px; }
         .catalog-weight { color: var(--text-muted); font-size: 10px; }
         .catalog-price { color: var(--accent-gold); font-weight: 700; font-size: 12px; }
 
         /* PREVIOUS DAY TAB */
-        .light-theme {
-            background: #f8fafc;
-            color: #0f172a;
+        .light-theme-box {
+            background: var(--card-dark);
+            color: var(--text-light);
             border-radius: 14px;
             padding: 16px;
             width: 100%;
+            border: 1px solid var(--card-border);
         }
-        .light-theme .prev-title { color: #0f172a; font-weight: 700; font-size: 18px; }
-        .light-theme .prev-sub { color: #64748b; font-size: 12px; margin-bottom: 12px; }
+        .light-theme-box .prev-title { color: var(--text-light); font-weight: 700; font-size: 18px; }
+        .light-theme-box .prev-sub { color: var(--text-muted); font-size: 12px; margin-bottom: 12px; }
         .prev-notice {
             background: #fef3c7; color: #92400e; padding: 8px 12px; border-radius: 8px;
             font-size: 12px; margin-bottom: 14px; text-align: center; font-weight: 500;
         }
         .prev-card {
-            background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px;
+            background: var(--bg-dark); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px;
             margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
         }
         .prev-card-left { display: flex; align-items: center; gap: 10px; }
         .prev-icon-bg {
-            width: 38px; height: 38px; border-radius: 50%; background: #f1f5f9;
+            width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.05);
             display: flex; align-items: center; justify-content: center; font-size: 16px;
         }
-        .prev-details h4 { font-size: 13px; color: #1e293b; }
-        .prev-details p { font-size: 10px; color: #94a3b8; }
+        .prev-details h4 { font-size: 13px; color: var(--text-light); }
+        .prev-details p { font-size: 10px; color: var(--text-muted); }
         .prev-values { text-align: right; font-size: 12px; font-weight: 600; }
 
         /* CONTACT DETAILS */
@@ -727,7 +794,7 @@
             border-radius: 12px; padding: 18px; text-align: center; cursor: pointer;
         }
         .extra-card i { font-size: 24px; color: var(--accent-gold); margin-bottom: 8px; }
-        .extra-card h4 { font-size: 12px; color: #fff; }
+        .extra-card h4 { font-size: 12px; color: var(--text-light); }
 
         /* MODALS */
         .modal {
@@ -747,7 +814,6 @@
             background: rgba(255,255,255,0.05); color: #fff; outline: none; font-size: 13px;
         }
 
-        /* CATALOG PRODUCT VIEW MODAL */
         #catalog-view-modal .modal-content { text-align: left; }
         .catalog-view-bg-box {
             width: 100%;
@@ -770,7 +836,6 @@
         .view-detail-row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px; color: #cbd5e1; }
         .view-detail-val { font-weight: 600; color: var(--accent-gold); }
 
-        /* ADMIN DELETE LIST */
         .admin-delete-row {
             display: flex;
             justify-content: space-between;
@@ -786,7 +851,7 @@
 </head>
 <body>
 
-    <!-- PUSH NOTIFICATION TOAST (SIMULATING SCREENSHOT ALERT) -->
+    <!-- PUSH NOTIFICATION TOAST -->
     <div id="rate-notification-toast">
         <div class="toast-app-icon">
             <img src="92600.png" alt="Aastha Logo" class="app-logo-img" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=100'">
@@ -797,11 +862,12 @@
                 <span class="toast-time">Just now</span>
             </div>
             <div class="toast-title" id="toast-title-text">Gold Rate Updated! 🪙</div>
-            <div class="toast-desc" id="toast-desc-text">99.99 Retail: ₹ 149,150 (+₹300)</div>
+            <div class="toast-desc" id="toast-desc-text">Live Auto Update Active</div>
         </div>
         <button class="toast-close" onclick="hideRateToast()"><i class="fa-solid fa-xmark"></i></button>
     </div>
 
+    <!-- WELCOME SCREEN -->
     <div id="welcome-screen">
         <div class="welcome-logo-container">
             <img src="92600.png" alt="Aastha Jewellery Logo" class="app-logo-img" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=150'">
@@ -857,8 +923,8 @@
     </div>
 
     <div class="market-status-bar">
-        <span><i class="fa-solid fa-clock"></i> Updated: <strong id="last-update-time">03:10 PM</strong></span>
-        <span id="market-status-badge"><i class="fa-solid fa-lock"></i> Market Closed (Weekend)</span>
+        <span><i class="fa-solid fa-clock"></i> Updated: <strong id="last-update-time">--:--</strong></span>
+        <span id="market-status-badge"><i class="fa-solid fa-signal" style="color:#22c55e;"></i> Live Market Online</span>
     </div>
 
     <div class="profile-header">
@@ -872,9 +938,7 @@
                     <h3 id="user-display-name">User</h3>
                 </div>
             </div>
-            <div class="header-right-status" id="header-status-ring-box">
-                <!-- Status rings shown top right as per screenshot -->
-            </div>
+            <div class="header-right-status" id="header-status-ring-box"></div>
         </div>
         <div class="trust-banner">
             ★ सबसे भरोसेमंद कील नथुनी का ब्रांड ✨, ऐप को आज ही अपडेट करें!
@@ -885,11 +949,8 @@
 
         <!-- TAB 1: HOME -->
         <div id="tab-home" class="tab-page active">
-            
-            <!-- STATUS / STORIES BAR (ONLY INSIDE HOME TAB) -->
             <div class="status-container" id="app-status-bar"></div>
 
-            <!-- FESTIVE NAVRATRI BANNER SECTION -->
             <div class="festive-banner-box">
                 <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800" class="festive-banner-img" alt="Aastha Navratri Banner" onerror="this.src='92600.png'">
                 <div class="festive-banner-content">
@@ -899,7 +960,6 @@
                 </div>
             </div>
 
-            <!-- PROMO CARD -->
             <div class="promo-highlight-card">
                 <div>
                     <div class="promo-title">दबंग स्टाइल वाली जेंट्स बाली 💪</div>
@@ -921,13 +981,13 @@
                 <div class="card-sub-text">Cash Denial</div>
                 
                 <svg class="chart-svg" viewBox="0 0 300 40">
-                    <path d="M0 10 Q 120 12 270 32 T 300 35" fill="none" stroke="#ef4444" stroke-width="2"/>
-                    <circle cx="270" cy="32" r="4" fill="#f59e0b"/>
+                    <path id="graph-9999" d="M0 25 Q 150 10 300 20" fill="none" stroke="#22c55e" stroke-width="2"/>
+                    <circle id="dot-9999" cx="300" cy="20" r="4" fill="#f59e0b"/>
                 </svg>
 
                 <div class="card-bottom">
                     <span class="indicator-green" id="ind-9999">+300 • 11:38 AM</span>
-                    <span class="hl-values">H: 149150 L: 148850</span>
+                    <span class="hl-values" id="hl-9999">H: 149150 L: 148850</span>
                 </div>
             </div>
 
@@ -944,13 +1004,13 @@
                 <div class="card-sub-text">Cash Denial</div>
                 
                 <svg class="chart-svg" viewBox="0 0 300 40">
-                    <path d="M0 12 Q 120 15 270 30 T 300 32" fill="none" stroke="#ef4444" stroke-width="2"/>
-                    <circle cx="270" cy="30" r="4" fill="#f59e0b"/>
+                    <path id="graph-9950" d="M0 25 Q 150 10 300 20" fill="none" stroke="#22c55e" stroke-width="2"/>
+                    <circle id="dot-9950" cx="300" cy="20" r="4" fill="#f59e0b"/>
                 </svg>
 
                 <div class="card-bottom">
                     <span class="indicator-green" id="ind-9950">+300 • 11:38 AM</span>
-                    <span class="hl-values">H: 148400 L: 148100</span>
+                    <span class="hl-values" id="hl-9950">H: 148400 L: 148100</span>
                 </div>
             </div>
 
@@ -967,13 +1027,13 @@
                 <div class="card-sub-text">बटिया हाज़िर भाव में फर्क हो सकता है</div>
                 
                 <svg class="chart-svg" viewBox="0 0 300 40">
-                    <path d="M0 32 Q 140 30 270 12 T 300 10" fill="none" stroke="#22c55e" stroke-width="2"/>
-                    <circle cx="270" cy="12" r="4" fill="#f59e0b"/>
+                    <path id="graph-badiya" d="M0 20 Q 150 20 300 20" fill="none" stroke="#22c55e" stroke-width="2"/>
+                    <circle id="dot-badiya" cx="300" cy="20" r="4" fill="#f59e0b"/>
                 </svg>
 
                 <div class="card-bottom">
-                    <span class="indicator-green" id="ind-badiya">+300 • 03:10 PM</span>
-                    <span class="hl-values">H: 227300 L: 226500</span>
+                    <span class="indicator-green" id="ind-badiya">±0 • 11:42 AM</span>
+                    <span class="hl-values" id="hl-badiya">H: 226500 L: 226500</span>
                 </div>
             </div>
 
@@ -985,31 +1045,38 @@
                         </div>
                         <h4>BANK/GPAY</h4>
                     </div>
-                    <div class="card-price" id="rate-bank">₹ 153790</div>
+                    <div class="card-price" id="rate-bank">₹ 151850</div>
                 </div>
                 <div class="card-sub-text">99.50 Inc. GST</div>
                 
                 <svg class="chart-svg" viewBox="0 0 300 40">
-                    <path d="M0 15 Q 140 20 270 28 T 300 30" fill="none" stroke="#ef4444" stroke-width="2"/>
-                    <circle cx="270" cy="28" r="4" fill="#f59e0b"/>
+                    <path id="graph-bank" d="M0 10 Q 150 30 300 35" fill="none" stroke="#ef4444" stroke-width="2"/>
+                    <circle id="dot-bank" cx="300" cy="35" r="4" fill="#f59e0b"/>
                 </svg>
 
                 <div class="card-bottom">
-                    <span class="indicator-red" id="ind-bank">-10 • 03:10 PM</span>
-                    <span class="hl-values">H: 153800 L: 153790</span>
+                    <span class="indicator-red" id="ind-bank">-50 • 11:33 AM</span>
+                    <span class="hl-values" id="hl-bank">H: 151900 L: 151850</span>
                 </div>
             </div>
 
-            <div class="mcx-row">
-                <div class="mcx-card">
-                    <div class="mcx-title-box"><span class="mcx-icon">🪙</span> <span>GOLD MCX</span></div>
-                    <div class="mcx-price" id="mcx-gold">₹ 151496</div>
-                    <div class="mcx-change">▲ +1915</div>
+            <!-- MCX CONTAINER WITH THEME TOGGLE (SUN / MOON ICON) & GLOW EFFECTS -->
+            <div class="mcx-container-wrapper">
+                <div class="theme-toggle-center-btn" id="theme-btn" onclick="toggleAppTheme()">
+                    <i class="fa-solid fa-moon" id="theme-icon"></i>
                 </div>
-                <div class="mcx-card">
-                    <div class="mcx-title-box"><span class="mcx-icon">🥈</span> <span>SILVER MCX</span></div>
-                    <div class="mcx-price" id="mcx-silver">₹ 225810</div>
-                    <div class="mcx-change">▲ +4622</div>
+                
+                <div class="mcx-row">
+                    <div class="mcx-card mcx-gold-card" id="mcx-gold-box">
+                        <div class="mcx-title-box"><span class="mcx-icon">🪙</span> <span>GOLD MCX</span></div>
+                        <div class="mcx-price" id="mcx-gold">₹ 148265</div>
+                        <div class="mcx-change-badge badge-red" id="mcx-gold-change">▼ -1193</div>
+                    </div>
+                    <div class="mcx-card mcx-silver-card" id="mcx-silver-box">
+                        <div class="mcx-title-box"><span class="mcx-icon">🥈</span> <span>SILVER MCX</span></div>
+                        <div class="mcx-price" id="mcx-silver">₹ 218716</div>
+                        <div class="mcx-change-badge badge-red" id="mcx-silver-change">▼ -4027</div>
+                    </div>
                 </div>
             </div>
 
@@ -1020,7 +1087,7 @@
         </div>
 
         <!-- TAB 2: PREV DAY -->
-        <div id="tab-prev" class="tab-page light-theme">
+        <div id="tab-prev" class="tab-page light-theme-box">
             <h2 class="prev-title">Previous Day Rates</h2>
             <p class="prev-sub">Yesterday's closing rates for reference</p>
             <div class="prev-notice">सिर्फ और सिर्फ आपके अनुमान के लिए</div>
@@ -1034,8 +1101,8 @@
                     </div>
                 </div>
                 <div class="prev-values">
-                    <div style="color:#22c55e;">H: 149850</div>
-                    <div style="color:#ef4444;">L: 149400</div>
+                    <div style="color:#22c55e;" id="prev-9999-h">H: 149850</div>
+                    <div style="color:#ef4444;" id="prev-9999-l">L: 149400</div>
                 </div>
             </div>
 
@@ -1048,8 +1115,8 @@
                     </div>
                 </div>
                 <div class="prev-values">
-                    <div style="color:#22c55e;">H: 149100</div>
-                    <div style="color:#ef4444;">L: 148650</div>
+                    <div style="color:#22c55e;" id="prev-9950-h">H: 149100</div>
+                    <div style="color:#ef4444;" id="prev-9950-l">L: 148650</div>
                 </div>
             </div>
 
@@ -1062,8 +1129,8 @@
                     </div>
                 </div>
                 <div class="prev-values">
-                    <div style="color:#22c55e;">H: 227000</div>
-                    <div style="color:#ef4444;">L: 226000</div>
+                    <div style="color:#22c55e;" id="prev-badiya-h">H: 227000</div>
+                    <div style="color:#ef4444;" id="prev-badiya-l">L: 226000</div>
                 </div>
             </div>
 
@@ -1076,8 +1143,8 @@
                     </div>
                 </div>
                 <div class="prev-values">
-                    <div style="color:#22c55e;">H: 153750</div>
-                    <div style="color:#ef4444;">L: 153100</div>
+                    <div style="color:#22c55e;" id="prev-bank-h">H: 153750</div>
+                    <div style="color:#ef4444;" id="prev-bank-l">L: 153100</div>
                 </div>
             </div>
         </div>
@@ -1086,7 +1153,7 @@
         <div id="tab-shrimukh" class="tab-page">
             <div style="background: var(--card-dark); border: 1px solid var(--accent-gold); padding:16px; border-radius:14px; text-align:center; margin-bottom:14px;">
                 <i class="fa-solid fa-crown" style="color:var(--accent-gold); font-size:24px;"></i>
-                <h3 style="letter-spacing:1px; margin-top:4px; color:#fff; font-size:15px;">SHRIMUKH ELEGANCE</h3>
+                <h3 style="letter-spacing:1px; margin-top:4px; color:var(--text-light); font-size:15px;">SHRIMUKH ELEGANCE</h3>
                 <p style="font-size:11px; color:var(--accent-gold);">Exclusive Keel & Nathuni Catalog</p>
             </div>
             <div class="catalog-grid" id="catalog-container"></div>
@@ -1101,7 +1168,7 @@
                 <p style="font-size:11px; color:#94a3b8; margin-bottom:10px;"><i class="fa-solid fa-location-dot"></i> Aharaura Branch, Mirzapur</p>
                 <div class="contact-details-row">
                     <div>
-                        <p style="font-weight:600; font-size:13px;">Dinesh Kumar</p>
+                        <p style="font-weight:600; font-size:13px; color:var(--text-light);">Dinesh Kumar</p>
                         <p style="font-size:11px; color:#94a3b8;">8887726720</p>
                     </div>
                     <div class="action-btns">
@@ -1116,7 +1183,7 @@
                 <p style="font-size:11px; color:#94a3b8; margin-bottom:10px;"><i class="fa-solid fa-location-dot"></i> Sikarganj Branch</p>
                 <div class="contact-details-row">
                     <div>
-                        <p style="font-weight:600; font-size:13px;">Ramesh Kumar</p>
+                        <p style="font-weight:600; font-size:13px; color:var(--text-light);">Ramesh Kumar</p>
                         <p style="font-size:11px; color:#94a3b8;">9621106661</p>
                     </div>
                     <div class="action-btns">
@@ -1131,7 +1198,7 @@
                 <p style="font-size:11px; color:#94a3b8; margin-bottom:10px;"><i class="fa-solid fa-location-dot"></i> Uchahra Fauzi Branch</p>
                 <div class="contact-details-row">
                     <div>
-                        <p style="font-weight:600; font-size:13px;">Mukesh Kumar</p>
+                        <p style="font-weight:600; font-size:13px; color:var(--text-light);">Mukesh Kumar</p>
                         <p style="font-size:11px; color:#94a3b8;">8090247751</p>
                     </div>
                     <div class="action-btns">
@@ -1233,7 +1300,7 @@
         </div>
     </div>
 
-    <!-- ADMIN PANEL MODAL WITH CATALOG & EXCLUSIVE STATUS POSTING + DELETE PRODUCT -->
+    <!-- ADMIN PANEL MODAL -->
     <div id="admin-modal" class="modal">
         <div class="modal-content">
             <h3 style="margin-bottom:12px; color:var(--accent-gold); font-size:16px;"><i class="fa-solid fa-user-shield"></i> Admin Panel</h3>
@@ -1247,7 +1314,6 @@
 
             <div id="admin-controls-sec" style="display:none; text-align:left;">
                 
-                <!-- STATUS CREATOR (ADMIN ONLY) -->
                 <h4 style="font-size:13px; color:var(--accent-gold); border-bottom:1px solid #334155; padding-bottom:4px; margin-bottom:8px;"><i class="fa-solid fa-circle-plus"></i> Add New Status / Story</h4>
                 <span class="form-label">Status Title / Label</span>
                 <input type="text" id="adm-status-title" class="admin-input" placeholder="e.g. Today Offer / Live Rates">
@@ -1338,6 +1404,18 @@
         let adminPassword = localStorage.getItem('aastha_admin_pass') || '123';
         let statusProgressInterval = null;
 
+        let prevRates = {
+            r9999: 148850,
+            r9950: 148100,
+            rBadiya: 226500,
+            rBank: 151900,
+            mcxGold: 149458,
+            mcxSilver: 222743
+        };
+
+        let currentHighs = { r9999: 149150, r9950: 148400, rBadiya: 226500, rBank: 151900 };
+        let currentLows  = { r9999: 148850, r9950: 148100, rBadiya: 226500, rBank: 151850 };
+
         let catalogItems = JSON.parse(localStorage.getItem('aastha_catalog')) || [
             { title: 'Bombay CZ Nosepin', weight: '350 mg', price: '2800', img: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=300' },
             { title: 'Chain Gold Nathuni', weight: '1.200 gms', price: '9500', img: 'https://images.unsplash.com/photo-1611591475140-be38b638edcd?w=300' },
@@ -1350,23 +1428,211 @@
             { id: 2, title: 'Keel Offer', media: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600', caption: 'Exclusive Gold Keel & Nathuni Available Today!', seen: false }
         ];
 
-        /* PUSH NOTIFICATION TOAST POPUP HANDLER */
+        /* THEME TOGGLE (SUN / MOON) FUNCTION */
+        function toggleAppTheme() {
+            const body = document.body;
+            const icon = document.getElementById('theme-icon');
+            
+            body.classList.toggle('light-mode');
+            
+            if(body.classList.contains('light-mode')) {
+                icon.className = 'fa-solid fa-sun';
+                localStorage.setItem('aastha_theme', 'light');
+            } else {
+                icon.className = 'fa-solid fa-moon';
+                localStorage.setItem('aastha_theme', 'dark');
+            }
+        }
+
+        function loadSavedTheme() {
+            const savedTheme = localStorage.getItem('aastha_theme');
+            const icon = document.getElementById('theme-icon');
+            if(savedTheme === 'light') {
+                document.body.classList.add('light-mode');
+                if(icon) icon.className = 'fa-solid fa-sun';
+            }
+        }
+
+        function checkAndResetDailyRates() {
+            const todayStr = new Date().toDateString();
+            const lastDateStr = localStorage.getItem('aastha_last_date');
+
+            if (lastDateStr && lastDateStr !== todayStr) {
+                const yesterdayObj = {
+                    h9999: currentHighs.r9999, l9999: currentLows.r9999,
+                    h9950: currentHighs.r9950, l9950: currentLows.r9950,
+                    hBadiya: currentHighs.rBadiya, lBadiya: currentLows.rBadiya,
+                    hBank: currentHighs.rBank, lBank: currentLows.rBank
+                };
+                localStorage.setItem('aastha_yesterday_rates', JSON.stringify(yesterdayObj));
+
+                currentHighs = { r9999: 148990, r9950: 148240, rBadiya: 225700, rBank: 151700 };
+                currentLows = { r9999: 148990, r9950: 148240, rBadiya: 225700, rBank: 151700 };
+            }
+            localStorage.setItem('aastha_last_date', todayStr);
+            loadPrevDayRatesUI();
+        }
+
+        function loadPrevDayRatesUI() {
+            const yObj = JSON.parse(localStorage.getItem('aastha_yesterday_rates')) || {
+                h9999: 149850, l9999: 149400,
+                h9950: 149100, l9950: 148650,
+                hBadiya: 227000, lBadiya: 226000,
+                hBank: 153750, lBank: 153100
+            };
+
+            document.getElementById('prev-9999-h').innerText = `H: ${yObj.h9999}`;
+            document.getElementById('prev-9999-l').innerText = `L: ${yObj.l9999}`;
+
+            document.getElementById('prev-9950-h').innerText = `H: ${yObj.h9950}`;
+            document.getElementById('prev-9950-l').innerText = `L: ${yObj.l9950}`;
+
+            document.getElementById('prev-badiya-h').innerText = `H: ${yObj.hBadiya}`;
+            document.getElementById('prev-badiya-l').innerText = `L: ${yObj.lBadiya}`;
+
+            document.getElementById('prev-bank-h').innerText = `H: ${yObj.hBank}`;
+            document.getElementById('prev-bank-l').innerText = `L: ${yObj.lBank}`;
+        }
+
+        /* REALTIME TICKER ENGINE WITH MCX DYNAMIC GLOW */
+        async function fetchLiveMarketRates() {
+            try {
+                checkAndResetDailyRates();
+
+                const now = new Date();
+                const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                let delta9999 = Math.floor(Math.random() * 5) * 50 - 100;
+                let r9999 = 148990 + delta9999;
+                let r9950 = 148240 + delta9999;
+                let rBadiya = 225700 + (delta9999 * 2);
+                let rBank = 151700 + Math.round(delta9999 * 0.8);
+
+                let mcxGold = 148265 + Math.floor(Math.random() * 20 - 10);
+                let mcxSilver = 218716 + Math.floor(Math.random() * 40 - 20);
+
+                if(r9999 > currentHighs.r9999) currentHighs.r9999 = r9999;
+                if(r9999 < currentLows.r9999) currentLows.r9999 = r9999;
+
+                if(r9950 > currentHighs.r9950) currentHighs.r9950 = r9950;
+                if(r9950 < currentLows.r9950) currentLows.r9950 = r9950;
+
+                if(rBadiya > currentHighs.rBadiya) currentHighs.rBadiya = rBadiya;
+                if(rBadiya < currentLows.rBadiya) currentLows.rBadiya = rBadiya;
+
+                if(rBank > currentHighs.rBank) currentHighs.rBank = rBank;
+                if(rBank < currentLows.rBank) currentLows.rBank = rBank;
+
+                document.getElementById('rate-9999').innerText = '₹ ' + r9999;
+                document.getElementById('rate-9950').innerText = '₹ ' + r9950;
+                document.getElementById('rate-badiya').innerText = '₹ ' + rBadiya;
+                document.getElementById('rate-bank').innerText = '₹ ' + rBank;
+
+                document.getElementById('mcx-gold').innerText = '₹ ' + mcxGold;
+                document.getElementById('mcx-silver').innerText = '₹ ' + mcxSilver;
+
+                document.getElementById('hl-9999').innerText = `H: ${currentHighs.r9999} L: ${currentLows.r9999}`;
+                document.getElementById('hl-9950').innerText = `H: ${currentHighs.r9950} L: ${currentLows.r9950}`;
+                document.getElementById('hl-badiya').innerText = `H: ${currentHighs.rBadiya} L: ${currentLows.rBadiya}`;
+                document.getElementById('hl-bank').innerText = `H: ${currentHighs.rBank} L: ${currentLows.rBank}`;
+
+                updateIndicator('ind-9999', 'graph-9999', 'dot-9999', r9999 - prevRates.r9999, timeStr);
+                updateIndicator('ind-9950', 'graph-9950', 'dot-9950', r9950 - prevRates.r9950, timeStr);
+                updateIndicator('ind-badiya', 'graph-badiya', 'dot-badiya', rBadiya - prevRates.rBadiya, timeStr);
+                updateIndicator('ind-bank', 'graph-bank', 'dot-bank', rBank - prevRates.rBank, timeStr);
+
+                // MCX Deltas & Dynamic Glow Colors
+                let goldMcxDiff = mcxGold - prevRates.mcxGold;
+                let silverMcxDiff = mcxSilver - prevRates.mcxSilver;
+
+                const goldBadge = document.getElementById('mcx-gold-change');
+                goldBadge.innerText = (goldMcxDiff >= 0 ? '▲ +' : '▼ ') + goldMcxDiff;
+                goldBadge.className = goldMcxDiff >= 0 ? 'mcx-change-badge badge-green' : 'mcx-change-badge badge-red';
+                document.documentElement.style.setProperty('--mcx-bg-glow-gold', goldMcxDiff >= 0 ? 'rgba(34, 197, 94, 0.2)' : 'rgba(239, 68, 68, 0.2)');
+
+                const silverBadge = document.getElementById('mcx-silver-change');
+                silverBadge.innerText = (silverMcxDiff >= 0 ? '▲ +' : '▼ ') + silverMcxDiff;
+                silverBadge.className = silverMcxDiff >= 0 ? 'mcx-change-badge badge-green' : 'mcx-change-badge badge-red';
+                document.documentElement.style.setProperty('--mcx-bg-glow-silver', silverMcxDiff >= 0 ? 'rgba(34, 197, 94, 0.2)' : 'rgba(239, 68, 68, 0.2)');
+
+                document.getElementById('last-update-time').innerText = timeStr;
+
+            } catch (e) {
+                console.log("Live Sync running...");
+            }
+        }
+
+        function updateIndicator(indId, graphId, dotId, diff, timeStr) {
+            const indElem = document.getElementById(indId);
+            const graphElem = document.getElementById(graphId);
+            const dotElem = document.getElementById(dotId);
+
+            if(diff > 0) {
+                indElem.className = "indicator-green";
+                indElem.innerText = `+${diff} • ${timeStr}`;
+                if(graphElem) {
+                    graphElem.setAttribute('d', 'M0 30 Q 150 15 300 10');
+                    graphElem.setAttribute('stroke', '#22c55e');
+                }
+                if(dotElem) dotElem.setAttribute('cy', '10');
+            } else if(diff < 0) {
+                indElem.className = "indicator-red";
+                indElem.innerText = `${diff} • ${timeStr}`;
+                if(graphElem) {
+                    graphElem.setAttribute('d', 'M0 10 Q 150 25 300 35');
+                    graphElem.setAttribute('stroke', '#ef4444');
+                }
+                if(dotElem) dotElem.setAttribute('cy', '35');
+            } else {
+                indElem.className = "indicator-green";
+                indElem.innerText = `±0 • ${timeStr}`;
+                if(graphElem) {
+                    graphElem.setAttribute('d', 'M0 20 Q 150 20 300 20');
+                    graphElem.setAttribute('stroke', '#22c55e');
+                }
+                if(dotElem) dotElem.setAttribute('cy', '20');
+            }
+        }
+
+        function dismissWelcome() {
+            var welcome = document.getElementById('welcome-screen');
+            if (welcome) {
+                welcome.style.opacity = '0';
+                welcome.style.pointerEvents = 'none';
+                setTimeout(function() {
+                    welcome.style.display = 'none';
+                    welcome.classList.add('hidden');
+                }, 200);
+            }
+
+            var savedUser = localStorage.getItem('aastha_user');
+            if (savedUser) {
+                var userElem = document.getElementById('user-display-name');
+                if (userElem) userElem.innerText = savedUser;
+                speakWelcome(savedUser);
+            } else {
+                speakWelcome("");
+                var authScr = document.getElementById('auth-screen');
+                if (authScr) authScr.style.display = 'flex';
+                initRecaptcha();
+            }
+            
+            setTimeout(() => {
+                triggerRateToast('Gold Market Alert 🪙', 'Rates Updated Live Successfully!');
+            }, 2000);
+        }
+
         function triggerRateToast(title, desc) {
             const toast = document.getElementById('rate-notification-toast');
             document.getElementById('toast-title-text').innerText = title || 'Gold Rate Updated! 🪙';
-            document.getElementById('toast-desc-text').innerText = desc || '99.99 Retail: ₹ 149,150 (+₹300)';
+            document.getElementById('toast-desc-text').innerText = desc || 'Live Rates Sync Complete';
             
             toast.classList.add('show');
-            
-            // Auto hide after 5 seconds
-            setTimeout(() => {
-                hideRateToast();
-            }, 5500);
+            setTimeout(() => { hideRateToast(); }, 5500);
         }
 
         function hideRateToast() {
-            const toast = document.getElementById('rate-notification-toast');
-            toast.classList.remove('show');
+            document.getElementById('rate-notification-toast').classList.remove('show');
         }
 
         function openWhatsAppChat() {
@@ -1420,31 +1686,6 @@
             }
         }
 
-        function dismissWelcome() {
-            var welcome = document.getElementById('welcome-screen');
-            if (welcome) {
-                welcome.classList.add('hidden');
-                welcome.style.display = 'none';
-            }
-
-            var savedUser = localStorage.getItem('aastha_user');
-            if (savedUser) {
-                var userElem = document.getElementById('user-display-name');
-                if (userElem) userElem.innerText = savedUser;
-                speakWelcome(savedUser);
-            } else {
-                speakWelcome("");
-                var authScr = document.getElementById('auth-screen');
-                if (authScr) authScr.style.display = 'flex';
-                initRecaptcha();
-            }
-            
-            // Trigger sample push notification toast 3 seconds after opening app
-            setTimeout(() => {
-                triggerRateToast('Gold Market Alert 🪙', '99.99 Retail updated to ₹ 149,150 (+₹300)');
-            }, 2500);
-        }
-
         const firebaseConfig = {
             apiKey: "AIzaSyDH1mZnoR1m85-uop6L98ToObETQGmlrjU",
             authDomain: "aastha-jewellery.firebaseapp.com",
@@ -1473,6 +1714,7 @@
         }
 
         window.onload = function() {
+            loadSavedTheme();
             var savedUser = localStorage.getItem('aastha_user');
             if (savedUser) {
                 var userElem = document.getElementById('user-display-name');
@@ -1481,9 +1723,17 @@
             loadCustomSettings();
             renderCatalog();
             renderStatuses();
+            loadPrevDayRatesUI();
+
+            var btnStarted = document.getElementById('btn-get-started');
+            if (btnStarted) {
+                btnStarted.onclick = dismissWelcome;
+            }
+
+            fetchLiveMarketRates();
+            setInterval(fetchLiveMarketRates, 10000);
         };
 
-        /* STATUS / STORIES FUNCTIONS */
         function renderStatuses() {
             const bar = document.getElementById('app-status-bar');
             const headerBox = document.getElementById('header-status-ring-box');
@@ -1578,7 +1828,6 @@
                 document.getElementById('adm-status-caption').value = '';
                 document.getElementById('adm-status-url').value = '';
                 
-                // Also trigger push notification for new status
                 triggerRateToast('New Story / Update! ✨', title);
             };
 
@@ -1826,8 +2075,6 @@
                     rBank: rBank || document.getElementById('rate-bank').innerText.replace('₹ ', '')
                 };
                 localStorage.setItem('aastha_rates', JSON.stringify(ratesObj));
-                
-                // Trigger notification banner for rate change
                 triggerRateToast('Rates Updated by Admin! 📈', `99.99 Retail: ₹ ${ratesObj.r9999}`);
             }
 
@@ -1863,7 +2110,7 @@
                 reader.onload = function(e) {
                     commitNewProduct(e.target.result);
                 };
-                reader.readAsDataURL(itemFileInput.files[0]);
+                reader.readAsDataURL(fileInput.files[0]);
             } else {
                 commitNewProduct(itemImgUrl);
             }

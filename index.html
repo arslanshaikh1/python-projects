@@ -30,14 +30,33 @@
 <body class="bg-slate-50 text-slate-800 antialiased">
     <div id="root"></div>
 
-    <script type="text/babel">
-        const { useState, useEffect } = React;
-        const { 
-          BookOpen, GraduationCap, UserCheck, Award, PlayCircle, CheckCircle, 
-          ChevronDown, ChevronUp, Search, LogOut, User, Sparkles, BrainCircuit, 
-          ShieldCheck, BookMarked, BarChart3, Menu, X, Lock, Mail, KeyCircle, Clock, Star 
-        } = lucide;
-
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+    
+    // Direct string/emoji icons to prevent any React rendering error
+    const BookOpen = () => "📚";
+    const GraduationCap = () => "🎓";
+    const UserCheck = () => "👤";
+    const Award = () => "🏆";
+    const PlayCircle = () => "▶";
+    const CheckCircle = () => "✓";
+    const ChevronDown = () => "▼";
+    const ChevronUp = () => "▲";
+    const Search = () => "🔍";
+    const LogOut = () => "🚪";
+    const User = () => "👤";
+    const Sparkles = () => "✨";
+    const BrainCircuit = () => "🧠";
+    const ShieldCheck = () => "🛡";
+    const BookMarked = () => "📖";
+    const BarChart3 = () => "📊";
+    const Menu = () => "☰";
+    const X = () => "✕";
+    const Lock = () => "🔒";
+    const Mail = () => "✉";
+    const KeyCircle = () => "🔑";
+    const Clock = () => "⏰";
+    const Star = () => "⭐";
         function App() {
           // Navigation & View state
           const [activeTab, setActiveTab] = useState('home'); // 'home', 'courses', 'dashboard', 'about'

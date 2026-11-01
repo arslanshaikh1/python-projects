@@ -2,2143 +2,1160 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Aastha Jewellery Makers | Gold & Silver Rates & Catalog</title>
-    
-    <!-- Google SEO & Meta Tags -->
-    <meta name="google-site-verification" content="z-Wbk1xmUQxxI_NbWY4fSF9pBzWEe1daqq7oOS7avn8" />
-    <meta name="description" content="Aastha Jewellery Makers - Most trusted gold, silver, keel & nathuni rates. Check today live gold rate, silver rate, and Shrimukh catalog.">
-    <meta name="keywords" content="Aastha Jewellery, Gold Rate Today, Aharaura Jewellery, Keel Nathuni, Shrimukh Jewellery">
-    <meta name="author" content="Aastha Jewellery Makers">
-    <meta name="robots" content="index, follow">
-
-    <!-- Open Graph (WhatsApp/Facebook Preview) -->
-    <meta property="og:title" content="Aastha Jewellery Makers">
-    <meta property="og:description" content="सबसे भरोसेमंद कील नथुनी का ब्रांड - लाइव सोने-चांदी के भाव देखें।">
-    <meta property="og:image" content="92600.png">
-    <meta property="og:type" content="website">
-
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn with Gurukul - By Ck Sir</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React 18 & ReactDOM CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <!-- Babel for React JSX Compilation -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Lucide Icons Bundle -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-dark: #070e1e;
-            --card-dark: #0d1b38;
-            --card-border: #182a52;
-            --accent-gold: #d4af37;
-            --green-text: #22c55e;
-            --red-text: #ef4444;
-            --text-light: #f8fafc;
-            --text-muted: #94a3b8;
-            --mcx-bg-glow-gold: rgba(239, 68, 68, 0.15);
-            --mcx-bg-glow-silver: rgba(239, 68, 68, 0.15);
-        }
-
-        body.light-mode {
-            --bg-dark: #f0f4f8;
-            --card-dark: #ffffff;
-            --card-border: #dbe2ef;
-            --accent-gold: #b8860b;
-            --text-light: #0f172a;
-            --text-muted: #64748b;
-        }
-
-        * { 
-            box-sizing: border-box; 
-            margin: 0; 
-            padding: 0; 
-            font-family: 'Poppins', sans-serif; 
-            -webkit-tap-highlight-color: transparent; 
-        }
-
-        html, body {
-            width: 100%;
-            min-height: 100vh;
-            background-color: var(--bg-dark); 
-            color: var(--text-light); 
-            overflow-x: hidden;
-            position: relative;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        body {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            width: 100%;
-            margin: 0 auto;
-            padding-bottom: 80px;
-        }
-
-        /* PUSH NOTIFICATION TOAST POPUP */
-        #rate-notification-toast {
-            position: fixed;
-            top: -120px;
-            left: 16px;
-            right: 16px;
-            max-width: 480px;
-            margin: 0 auto;
-            background: linear-gradient(135deg, #0d214a, #132a5a);
-            border: 1px solid var(--accent-gold);
-            border-radius: 16px;
-            padding: 12px 16px;
-            z-index: 9999999;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.7), 0 0 20px rgba(212, 175, 55, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        #rate-notification-toast.show {
-            top: 16px;
-        }
-        .toast-app-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            border: 2px solid var(--accent-gold);
-            overflow: hidden;
-            background: #000;
-            flex-shrink: 0;
-        }
-        .toast-content {
-            flex: 1;
-        }
-        .toast-header-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2px;
-        }
-        .toast-app-name {
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--accent-gold);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .toast-time {
-            font-size: 9px;
-            color: var(--text-muted);
-        }
-        .toast-title {
-            font-size: 13px;
-            font-weight: 700;
-            color: #fff;
-            margin-bottom: 2px;
-        }
-        .toast-desc {
-            font-size: 11px;
-            color: #cbd5e1;
-        }
-        .toast-close {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 16px;
-            cursor: pointer;
-            padding: 4px;
-        }
-
-        /* WELCOME / SPLASH SCREEN */
-        #welcome-screen {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            width: 100vw;
-            height: 100vh;
-            background: var(--bg-dark);
-            z-index: 999999;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            text-align: center;
-            color: #fff;
-            transition: opacity 0.3s ease;
-        }
-        #welcome-screen.hidden {
-            display: none !important;
-            pointer-events: none !important;
-            opacity: 0 !important;
-            visibility: hidden !important;
-        }
-        .welcome-logo-container {
-            width: 130px;
-            height: 130px;
-            border-radius: 50%;
-            border: 3px solid var(--accent-gold);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-            box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
-            background: #000;
-            overflow: hidden;
-        }
-        
-        .app-logo-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-        .welcome-title {
-            font-size: 22px;
-            font-weight: 700;
-            color: var(--accent-gold);
-            margin-bottom: 4px;
-        }
-        .welcome-sub-hindi {
-            font-size: 14px;
-            color: #cbd5e1;
-            margin-bottom: 16px;
-        }
-        .welcome-tagline {
-            font-size: 13px;
-            color: #94a3b8;
-            margin-bottom: 6px;
-        }
-        .welcome-trust {
-            font-size: 12px;
-            color: #38bdf8;
-            margin-bottom: 24px;
-        }
-
-        .btn-gold {
-            background: linear-gradient(135deg, #f59e0b, #d4af37);
-            color: #000;
-            font-weight: 700;
-            font-size: 15px;
-            padding: 12px 30px;
-            border-radius: 30px;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
-            width: 100%;
-            max-width: 280px;
-            position: relative;
-            z-index: 1000000;
-        }
-        .btn-gold:active { transform: scale(0.96); }
-
-        /* AUTH SCREEN */
-        #auth-screen {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(7, 14, 30, 0.96);
-            backdrop-filter: blur(8px);
-            z-index: 9990;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-        }
-        .auth-card {
-            background: var(--card-dark);
-            border: 1px solid var(--accent-gold);
-            border-radius: 20px;
-            padding: 24px;
-            width: 100%;
-            max-width: 360px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        .auth-logo {
-            width: 70px; height: 70px;
-            margin: 0 auto 12px auto;
-            border-radius: 50%;
-            border: 2px solid var(--accent-gold);
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #000;
-        }
-        .input-group {
-            position: relative;
-            margin-bottom: 14px;
-            text-align: left;
-        }
-        .input-group i {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--accent-gold);
-        }
-        .input-group input {
-            width: 100%;
-            padding: 12px 12px 12px 40px;
-            border-radius: 10px;
-            border: 1px solid var(--card-border);
-            background: rgba(255, 255, 255, 0.05);
-            color: #fff;
-            outline: none;
-            font-size: 13px;
-        }
-        .btn-auth {
-            width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            border: none;
-            background: linear-gradient(135deg, #f59e0b, #d4af37);
-            color: #000;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        /* HEADER APP BAR */
-        .top-app-bar {
-            background: var(--card-dark);
-            padding: 12px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid var(--card-border);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            width: 100%;
-        }
-        .top-app-bar h2 {
-            font-size: 17px;
-            color: var(--accent-gold);
-            font-weight: 600;
-        }
-        .top-app-logo {
-            width: 38px; height: 38px;
-            border-radius: 50%;
-            border: 1px solid var(--accent-gold);
-            overflow: hidden;
-            background: #000;
-        }
-
-        /* STATUS BAR */
-        .market-status-bar {
-            background: rgba(245, 158, 11, 0.15);
-            border-bottom: 1px solid rgba(245, 158, 11, 0.3);
-            color: var(--accent-gold);
-            font-size: 11px;
-            padding: 6px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-        }
-
-        /* PROFILE HEADER */
-        .profile-header {
-            padding: 14px 20px;
-            background: linear-gradient(180deg, var(--card-dark) 0%, var(--bg-dark) 100%);
-            width: 100%;
-        }
-        .user-info-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .user-left { display: flex; align-items: center; gap: 12px; }
-        .user-avatar {
-            width: 46px; height: 46px;
-            border-radius: 50%;
-            border: 2px solid var(--accent-gold);
-            overflow: hidden;
-            background: #000;
-        }
-        .user-text p { font-size: 11px; color: var(--text-muted); }
-        .user-text h3 { font-size: 15px; font-weight: 600; color: var(--text-light); }
-
-        .header-right-status {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .trust-banner {
-            margin-top: 10px;
-            background: rgba(212, 175, 55, 0.1);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            border-radius: 8px;
-            padding: 8px 12px;
-            font-size: 11px;
-            color: var(--accent-gold);
-            text-align: center;
-        }
-
-        /* FESTIVE BANNER CAROUSEL */
-        .festive-banner-box {
-            position: relative;
-            width: 100%;
-            border-radius: 16px;
-            overflow: hidden;
-            margin-bottom: 14px;
-            border: 1px solid var(--card-border);
-            box-shadow: 0 6px 18px rgba(0,0,0,0.4);
-            background: linear-gradient(135deg, #4a0000 0%, #1a0005 100%);
-        }
-        .festive-banner-img {
-            width: 100%;
-            height: auto;
-            max-height: 220px;
-            object-fit: cover;
-            display: block;
-        }
-        .festive-banner-content {
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            padding: 12px;
-            background: linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0.1));
-            color: #fff;
-        }
-        .festive-tag {
-            font-size: 10px;
-            background: #ef4444;
-            color: #fff;
-            padding: 2px 8px;
-            border-radius: 10px;
-            display: inline-block;
-            margin-bottom: 4px;
-            font-weight: 600;
-        }
-        .festive-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--accent-gold);
-        }
-
-        /* PROMO HIGHLIGHT CARD */
-        .promo-highlight-card {
-            background: linear-gradient(135deg, #0d214a, #132a5a);
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            border-radius: 14px;
-            padding: 12px 16px;
-            margin-bottom: 14px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .promo-title { font-size: 14px; font-weight: 700; color: #fff; }
-        .promo-subtitle { font-size: 11px; color: #94a3b8; margin-top: 2px; }
-        .promo-btn {
-            color: #38bdf8;
-            font-size: 12px;
-            font-weight: 600;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        /* APP STATUS / STORIES SECTION */
-        .status-container {
-            display: flex;
-            gap: 12px;
-            padding: 4px 0 12px 0;
-            overflow-x: auto;
-            scrollbar-width: none;
-            margin-bottom: 12px;
-            border-bottom: 1px solid var(--card-border);
-        }
-        .status-container::-webkit-scrollbar { display: none; }
-        .status-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-            min-width: 65px;
-        }
-        .status-ring {
-            width: 58px;
-            height: 58px;
-            border-radius: 50%;
-            padding: 2px;
-            background: linear-gradient(45deg, var(--accent-gold), #f59e0b, #ef4444);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .status-ring.seen {
-            background: #475569;
-        }
-        .status-thumb {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--bg-dark);
-            background: #000;
-        }
-        .status-title {
-            font-size: 10px;
-            color: var(--text-muted);
-            margin-top: 4px;
-            text-align: center;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 65px;
-        }
-
-        /* STATUS VIEWER MODAL */
-        #status-modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            width: 100vw; height: 100vh;
-            background: #000;
-            z-index: 999999;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .status-progress-bar {
-            width: 100%;
-            height: 3px;
-            background: rgba(255,255,255,0.3);
-            position: absolute;
-            top: 10px;
-            left: 0;
-            z-index: 10;
-        }
-        .status-progress-fill {
-            height: 100%;
-            background: var(--accent-gold);
-            width: 0%;
-            transition: width 0.1s linear;
-        }
-        .status-header-view {
-            position: absolute;
-            top: 20px;
-            left: 15px;
-            right: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            z-index: 10;
-            color: #fff;
-        }
-        .status-close-btn {
-            font-size: 20px;
-            color: #fff;
-            cursor: pointer;
-            background: rgba(0,0,0,0.4);
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .status-media-box {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-        .status-media-box img, .status-media-box video {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-        }
-        .status-caption {
-            position: absolute;
-            bottom: 30px;
-            left: 20px;
-            right: 20px;
-            text-align: center;
-            background: rgba(0,0,0,0.6);
-            padding: 10px 14px;
-            border-radius: 10px;
-            font-size: 13px;
-            color: #fff;
-            backdrop-filter: blur(4px);
-        }
-
-        /* MAIN CONTAINER */
-        .main-container { 
-            padding: 14px 20px; 
-            width: 100%; 
-            max-width: 1200px;
-            margin: 0 auto;
-            flex: 1; 
-        }
-
-        .tab-page { display: none; width: 100%; }
-        .tab-page.active { display: block; }
-
-        /* RATE CARDS */
-        .rate-card-item {
-            background: var(--card-dark);
-            border: 1px solid var(--card-border);
-            border-radius: 14px;
-            padding: 14px 16px;
-            margin-bottom: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            width: 100%;
-        }
-        .rate-card-item.highlight { border-color: rgba(212, 175, 55, 0.6); }
-        .card-top { display: flex; justify-content: space-between; align-items: center; }
-        .card-title-box { display: flex; align-items: center; gap: 10px; }
-        .card-logo {
-            width: 30px; height: 30px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 1px solid var(--accent-gold);
-            background: #000;
-        }
-        .card-title-box h4 { font-size: 14px; font-weight: 600; color: var(--text-light); }
-        .card-price { font-size: 18px; font-weight: 700; color: var(--accent-gold); }
-        .card-sub-text { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
-        .chart-svg { width: 100%; height: 32px; margin: 6px 0; }
-        .card-bottom {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 11px;
-            padding-top: 6px;
-            border-top: 1px solid rgba(255,255,255,0.05);
-        }
-        .indicator-red { color: var(--red-text); font-weight: 500; }
-        .indicator-green { color: var(--green-text); font-weight: 500; }
-        .hl-values { color: var(--text-muted); font-size: 10px; }
-
-        /* MCX SECTION WITH THEME TOGGLE BUTTON & DYNAMIC GLOW BACKGROUND */
-        .mcx-container-wrapper {
-            position: relative;
-            margin-bottom: 14px;
-            width: 100%;
-        }
-
-        .theme-toggle-center-btn {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: #0d1b38;
-            border: 2px solid var(--accent-gold);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 20;
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
-            color: var(--accent-gold);
-            font-size: 18px;
-            transition: transform 0.2s ease, background-color 0.3s ease;
-        }
-        .theme-toggle-center-btn:active { transform: translate(-50%, -50%) scale(0.9); }
-
-        .mcx-row { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 12px; 
-            width: 100%; 
-        }
-        .mcx-card {
-            background: var(--card-dark);
-            border: 1px solid var(--card-border);
-            border-radius: 14px;
-            padding: 14px 12px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            transition: background 0.3s ease, border-color 0.3s ease;
-        }
-        
-        .mcx-card.mcx-gold-card {
-            background: radial-gradient(circle at center, var(--mcx-bg-glow-gold) 0%, var(--card-dark) 70%);
-        }
-        .mcx-card.mcx-silver-card {
-            background: radial-gradient(circle at center, var(--mcx-bg-glow-silver) 0%, var(--card-dark) 70%);
-        }
-
-        .mcx-title-box { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; display: flex; align-items: center; justify-content: center; gap: 4px; }
-        .mcx-price { font-size: 16px; font-weight: 700; color: var(--text-light); }
-        .mcx-change-badge {
-            display: inline-block;
-            font-size: 10px;
-            padding: 2px 8px;
-            border-radius: 12px;
-            margin-top: 4px;
-            font-weight: 600;
-        }
-        .badge-red { background: rgba(239, 68, 68, 0.2); color: var(--red-text); border: 1px solid rgba(239, 68, 68, 0.4); }
-        .badge-green { background: rgba(34, 197, 94, 0.2); color: var(--green-text); border: 1px solid rgba(34, 197, 94, 0.4); }
-
-        .floating-action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; width: 100%; }
-        .btn-float-green {
-            background: #25d366; color: #fff; text-decoration: none; padding: 12px; border-radius: 12px;
-            text-align: center; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;
-        }
-        .btn-float-orange {
-            background: #f59e0b; color: #000; text-decoration: none; padding: 12px; border-radius: 12px;
-            text-align: center; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;
-        }
-
-        /* BOTTOM NAVIGATION */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0; left: 0; right: 0;
-            width: 100%;
-            background: var(--card-dark);
-            border-top: 1px solid var(--card-border);
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-            z-index: 1000;
-        }
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: var(--text-muted);
-            font-size: 10px;
-            cursor: pointer;
-            transition: color 0.2s ease;
-        }
-        .nav-item i { font-size: 18px; margin-bottom: 3px; }
-        .nav-item.active { color: var(--accent-gold); }
-
-        /* CATALOG STYLING */
-        .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; width: 100%; }
-        .catalog-card {
-            background: var(--card-dark); border: 1px solid var(--card-border);
-            border-radius: 14px; overflow: hidden; text-align: center; padding-bottom: 12px;
-            cursor: pointer; transition: transform 0.2s ease, border-color 0.2s ease;
-            position: relative;
-        }
-        .catalog-card:active { transform: scale(0.97); border-color: var(--accent-gold); }
-        
-        .catalog-img-wrapper {
-            width: 100%;
-            height: 150px;
-            background: radial-gradient(circle, #2a3d66 0%, #080f1e 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            position: relative;
-            padding: 6px;
-        }
-        .catalog-img { 
-            max-width: 100%; 
-            max-height: 100%; 
-            object-fit: contain; 
-            filter: drop-shadow(0px 8px 12px rgba(0,0,0,0.7));
-            transition: transform 0.3s ease;
-        }
-        .catalog-card:hover .catalog-img { transform: scale(1.05); }
-
-        .catalog-title { font-size: 12px; font-weight: 600; margin-top: 8px; color: var(--text-light); padding: 0 6px; }
-        .catalog-meta { display: flex; justify-content: space-between; align-items: center; padding: 4px 10px 0 10px; font-size: 11px; }
-        .catalog-weight { color: var(--text-muted); font-size: 10px; }
-        .catalog-price { color: var(--accent-gold); font-weight: 700; font-size: 12px; }
-
-        /* PREVIOUS DAY TAB */
-        .light-theme-box {
-            background: var(--card-dark);
-            color: var(--text-light);
-            border-radius: 14px;
-            padding: 16px;
-            width: 100%;
-            border: 1px solid var(--card-border);
-        }
-        .light-theme-box .prev-title { color: var(--text-light); font-weight: 700; font-size: 18px; }
-        .light-theme-box .prev-sub { color: var(--text-muted); font-size: 12px; margin-bottom: 12px; }
-        .prev-notice {
-            background: #fef3c7; color: #92400e; padding: 8px 12px; border-radius: 8px;
-            font-size: 12px; margin-bottom: 14px; text-align: center; font-weight: 500;
-        }
-        .prev-card {
-            background: var(--bg-dark); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px;
-            margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
-        }
-        .prev-card-left { display: flex; align-items: center; gap: 10px; }
-        .prev-icon-bg {
-            width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.05);
-            display: flex; align-items: center; justify-content: center; font-size: 16px;
-        }
-        .prev-details h4 { font-size: 13px; color: var(--text-light); }
-        .prev-details p { font-size: 10px; color: var(--text-muted); }
-        .prev-values { text-align: right; font-size: 12px; font-weight: 600; }
-
-        /* CONTACT DETAILS */
-        .contact-details-row { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
-        .action-btns { display: flex; gap: 8px; }
-        .btn-icon {
-            width: 34px; height: 34px; border-radius: 50%; display: flex;
-            align-items: center; justify-content: center; color: #fff; text-decoration: none; font-size: 13px;
-        }
-        .btn-call { background: #0284c7; }
-        .btn-msg { background: #16a34a; }
-
-        /* EXTRA GRID */
-        .extra-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; width: 100%; }
-        .extra-card {
-            background: var(--card-dark); border: 1px solid var(--card-border);
-            border-radius: 12px; padding: 18px; text-align: center; cursor: pointer;
-        }
-        .extra-card i { font-size: 24px; color: var(--accent-gold); margin-bottom: 8px; }
-        .extra-card h4 { font-size: 12px; color: var(--text-light); }
-
-        /* MODALS */
-        .modal {
-            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            width: 100vw; height: 100vh;
-            background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); z-index: 10000;
-            align-items: center; justify-content: center; padding: 16px; overflow-y: auto;
-        }
-        .modal-content {
-            background: var(--card-dark); border: 1px solid var(--accent-gold);
-            border-radius: 16px; padding: 20px; width: 100%; max-width: 380px; text-align: center;
-            max-height: 90vh; overflow-y: auto;
-        }
-        .form-label { font-size: 11px; color: var(--accent-gold); text-align: left; display: block; margin: 8px 0 3px 2px; }
-        .admin-input {
-            width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--card-border);
-            background: rgba(255,255,255,0.05); color: #fff; outline: none; font-size: 13px;
-        }
-
-        #catalog-view-modal .modal-content { text-align: left; }
-        .catalog-view-bg-box {
-            width: 100%;
-            height: 240px;
-            background: radial-gradient(circle, #2a3d66 0%, #080f1e 100%);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 12px;
-            border: 1px solid var(--card-border);
-            padding: 10px;
-        }
-        #catalog-item-img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.8));
-        }
-        .view-detail-row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px; color: #cbd5e1; }
-        .view-detail-val { font-weight: 600; color: var(--accent-gold); }
-
-        .admin-delete-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--card-border);
-            padding: 8px 10px;
-            border-radius: 8px;
-            margin-bottom: 6px;
-            font-size: 12px;
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
         }
     </style>
 </head>
-<body>
-
-    <!-- PUSH NOTIFICATION TOAST -->
-    <div id="rate-notification-toast">
-        <div class="toast-app-icon">
-            <img src="92600.png" alt="Aastha Logo" class="app-logo-img" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=100'">
-        </div>
-        <div class="toast-content">
-            <div class="toast-header-row">
-                <span class="toast-app-name">Aastha Jewellery</span>
-                <span class="toast-time">Just now</span>
-            </div>
-            <div class="toast-title" id="toast-title-text">Gold Rate Updated! 🪙</div>
-            <div class="toast-desc" id="toast-desc-text">Live Auto Update Active</div>
-        </div>
-        <button class="toast-close" onclick="hideRateToast()"><i class="fa-solid fa-xmark"></i></button>
-    </div>
-
-    <!-- WELCOME SCREEN -->
-    <div id="welcome-screen">
-        <div class="welcome-logo-container">
-            <img src="92600.png" alt="Aastha Jewellery Logo" class="app-logo-img" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=150'">
-        </div>
-        <h1 class="welcome-title">Aastha Jewellery Makers</h1>
-        <p class="welcome-sub-hindi">आस्था ज्वेलरी मेकर</p>
-        
-        <p class="welcome-tagline">Aastha Jewellery Makers mein aapka swagat hai ✨</p>
-        <p class="welcome-trust">✔ Most trusted keel & nathuni brand</p>
-
-        <button class="btn-gold" id="btn-get-started" type="button" onclick="dismissWelcome()">Get Started</button>
-    </div>
-
-    <div id="auth-screen">
-        <div class="auth-card">
-            <div class="auth-logo">
-                <img src="92600.png" alt="Logo" class="app-logo-img" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=100'">
-            </div>
-            <h3 style="margin-bottom: 4px; color:var(--accent-gold); font-size:17px;">Aastha Jewellery</h3>
-            <p style="font-size: 12px; color: #cbd5e1; margin-bottom: 16px;">Sign in with Mobile SMS OTP</p>
-
-            <div id="step-phone">
-                <div class="input-group">
-                    <i class="fa-solid fa-user"></i>
-                    <input type="text" id="user-name" placeholder="Full Name" required>
-                </div>
-                <div class="input-group">
-                    <i class="fa-solid fa-phone"></i>
-                    <input type="tel" id="user-phone" placeholder="Mobile No. (e.g. 8115331564)" required>
-                </div>
-                
-                <div id="recaptcha-container" style="margin-bottom: 10px; display: flex; justify-content: center; transform: scale(0.85); transform-origin: 0 0;"></div>
-                
-                <button type="button" class="btn-auth" id="btn-send-otp" onclick="requestOtp()">Send SMS OTP</button>
-            </div>
-
-            <div id="step-otp" style="display: none;">
-                <p id="otp-hint-text" style="font-size: 12px; color: #38bdf8; margin-bottom: 12px;">Enter 6-digit OTP sent to your Mobile Phone</p>
-                <div class="input-group">
-                    <i class="fa-solid fa-lock"></i>
-                    <input type="text" id="otp-input" placeholder="Enter 6-digit OTP" required>
-                </div>
-                <button type="button" class="btn-auth" id="btn-verify-otp" onclick="verifyOtp()">Verify & Login</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="top-app-bar">
-        <h2>Aastha Jewellery</h2>
-        <div class="top-app-logo">
-            <img src="92600.png" alt="Logo" class="app-logo-img" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=100'">
-        </div>
-    </div>
-
-    <div class="market-status-bar">
-        <span><i class="fa-solid fa-clock"></i> Updated: <strong id="last-update-time">--:--</strong></span>
-        <span id="market-status-badge"><i class="fa-solid fa-signal" style="color:#22c55e;"></i> Live Market Online</span>
-    </div>
-
-    <div class="profile-header">
-        <div class="user-info-row">
-            <div class="user-left">
-                <div class="user-avatar">
-                    <img src="92600.png" alt="Logo" class="app-logo-img" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=100'">
-                </div>
-                <div class="user-text">
-                    <p>Welcome 👋</p>
-                    <h3 id="user-display-name">User</h3>
-                </div>
-            </div>
-            <div class="header-right-status" id="header-status-ring-box"></div>
-        </div>
-        <div class="trust-banner">
-            ★ सबसे भरोसेमंद कील नथुनी का ब्रांड ✨, ऐप को आज ही अपडेट करें!
-        </div>
-    </div>
-
-    <div class="main-container">
-
-        <!-- TAB 1: HOME -->
-        <div id="tab-home" class="tab-page active">
-            <div class="status-container" id="app-status-bar"></div>
-
-            <div class="festive-banner-box">
-                <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800" class="festive-banner-img" alt="Aastha Navratri Banner" onerror="this.src='92600.png'">
-                <div class="festive-banner-content">
-                    <span class="festive-tag">✨ आस्था पर्व ऑफर</span>
-                    <div class="festive-title">आस्था नवरात्रि की शुभकामनाएं 🙏</div>
-                    <p style="font-size:11px; color:#f1f5f9; margin-top:2px;">माँ दुर्गा आपके जीवन में सुख, समृद्धि और खुशियां लाएं!</p>
-                </div>
-            </div>
-
-            <div class="promo-highlight-card">
-                <div>
-                    <div class="promo-title">दबंग स्टाइल वाली जेंट्स बाली 💪</div>
-                    <div class="promo-subtitle">दबदबा तो इसी से बनेगा 🗿</div>
-                </div>
-                <a href="#" onclick="switchTab('shrimukh', document.querySelectorAll('.nav-item')[2]); return false;" class="promo-btn">View More <i class="fa-solid fa-arrow-right"></i></a>
-            </div>
-            
-            <div class="rate-card-item">
-                <div class="card-top">
-                    <div class="card-title-box">
-                        <div class="card-logo">
-                            <img src="92600.png" alt="Logo" class="app-logo-img" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=50'">
-                        </div>
-                        <h4>99.99 Retail</h4>
-                    </div>
-                    <div class="card-price" id="rate-9999">₹ 149150</div>
-                </div>
-                <div class="card-sub-text">Cash Denial</div>
-                
-                <svg class="chart-svg" viewBox="0 0 300 40">
-                    <path id="graph-9999" d="M0 25 Q 150 10 300 20" fill="none" stroke="#22c55e" stroke-width="2"/>
-                    <circle id="dot-9999" cx="300" cy="20" r="4" fill="#f59e0b"/>
-                </svg>
-
-                <div class="card-bottom">
-                    <span class="indicator-green" id="ind-9999">+300 • 11:38 AM</span>
-                    <span class="hl-values" id="hl-9999">H: 149150 L: 148850</span>
-                </div>
-            </div>
-
-            <div class="rate-card-item">
-                <div class="card-top">
-                    <div class="card-title-box">
-                        <div class="card-logo">
-                            <img src="92600.png" alt="Logo" class="app-logo-img" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=50'">
-                        </div>
-                        <h4>99.50 Retail</h4>
-                    </div>
-                    <div class="card-price" id="rate-9950">₹ 148400</div>
-                </div>
-                <div class="card-sub-text">Cash Denial</div>
-                
-                <svg class="chart-svg" viewBox="0 0 300 40">
-                    <path id="graph-9950" d="M0 25 Q 150 10 300 20" fill="none" stroke="#22c55e" stroke-width="2"/>
-                    <circle id="dot-9950" cx="300" cy="20" r="4" fill="#f59e0b"/>
-                </svg>
-
-                <div class="card-bottom">
-                    <span class="indicator-green" id="ind-9950">+300 • 11:38 AM</span>
-                    <span class="hl-values" id="hl-9950">H: 148400 L: 148100</span>
-                </div>
-            </div>
-
-            <div class="rate-card-item highlight">
-                <div class="card-top">
-                    <div class="card-title-box">
-                        <div class="card-logo">
-                            <img src="92600.png" alt="Logo" class="app-logo-img" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=50'">
-                        </div>
-                        <h4>बटिया APPROX</h4>
-                    </div>
-                    <div class="card-price" id="rate-badiya">₹ 226500</div>
-                </div>
-                <div class="card-sub-text">बटिया हाज़िर भाव में फर्क हो सकता है</div>
-                
-                <svg class="chart-svg" viewBox="0 0 300 40">
-                    <path id="graph-badiya" d="M0 20 Q 150 20 300 20" fill="none" stroke="#22c55e" stroke-width="2"/>
-                    <circle id="dot-badiya" cx="300" cy="20" r="4" fill="#f59e0b"/>
-                </svg>
-
-                <div class="card-bottom">
-                    <span class="indicator-green" id="ind-badiya">±0 • 11:42 AM</span>
-                    <span class="hl-values" id="hl-badiya">H: 226500 L: 226500</span>
-                </div>
-            </div>
-
-            <div class="rate-card-item">
-                <div class="card-top">
-                    <div class="card-title-box">
-                        <div class="card-logo">
-                            <img src="92600.png" alt="Logo" class="app-logo-img" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=50'">
-                        </div>
-                        <h4>BANK/GPAY</h4>
-                    </div>
-                    <div class="card-price" id="rate-bank">₹ 151850</div>
-                </div>
-                <div class="card-sub-text">99.50 Inc. GST</div>
-                
-                <svg class="chart-svg" viewBox="0 0 300 40">
-                    <path id="graph-bank" d="M0 10 Q 150 30 300 35" fill="none" stroke="#ef4444" stroke-width="2"/>
-                    <circle id="dot-bank" cx="300" cy="35" r="4" fill="#f59e0b"/>
-                </svg>
-
-                <div class="card-bottom">
-                    <span class="indicator-red" id="ind-bank">-50 • 11:33 AM</span>
-                    <span class="hl-values" id="hl-bank">H: 151900 L: 151850</span>
-                </div>
-            </div>
-
-            <!-- MCX CONTAINER WITH THEME TOGGLE (SUN / MOON ICON) & GLOW EFFECTS -->
-            <div class="mcx-container-wrapper">
-                <div class="theme-toggle-center-btn" id="theme-btn" onclick="toggleAppTheme()">
-                    <i class="fa-solid fa-moon" id="theme-icon"></i>
-                </div>
-                
-                <div class="mcx-row">
-                    <div class="mcx-card mcx-gold-card" id="mcx-gold-box">
-                        <div class="mcx-title-box"><span class="mcx-icon">🪙</span> <span>GOLD MCX</span></div>
-                        <div class="mcx-price" id="mcx-gold">₹ 148265</div>
-                        <div class="mcx-change-badge badge-red" id="mcx-gold-change">▼ -1193</div>
-                    </div>
-                    <div class="mcx-card mcx-silver-card" id="mcx-silver-box">
-                        <div class="mcx-title-box"><span class="mcx-icon">🥈</span> <span>SILVER MCX</span></div>
-                        <div class="mcx-price" id="mcx-silver">₹ 218716</div>
-                        <div class="mcx-change-badge badge-red" id="mcx-silver-change">▼ -4027</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="floating-action-row">
-                <a id="whatsapp-btn-link" href="#" onclick="openWhatsAppChat(); return false;" class="btn-float-green"><i class="fa-brands fa-whatsapp"></i> WhatsApp Chat</a>
-                <a href="#" class="btn-float-orange" onclick="navigator.share ? navigator.share({title:'Aastha Jewellery', url:window.location.href}) : copyShareLink()"><i class="fa-solid fa-box-archive"></i> Share</a>
-            </div>
-        </div>
-
-        <!-- TAB 2: PREV DAY -->
-        <div id="tab-prev" class="tab-page light-theme-box">
-            <h2 class="prev-title">Previous Day Rates</h2>
-            <p class="prev-sub">Yesterday's closing rates for reference</p>
-            <div class="prev-notice">सिर्फ और सिर्फ आपके अनुमान के लिए</div>
-
-            <div class="prev-card">
-                <div class="prev-card-left">
-                    <div class="prev-icon-bg">🥇</div>
-                    <div class="prev-details">
-                        <h4>99.99 Retail</h4>
-                        <p>Yesterday</p>
-                    </div>
-                </div>
-                <div class="prev-values">
-                    <div style="color:#22c55e;" id="prev-9999-h">H: 149850</div>
-                    <div style="color:#ef4444;" id="prev-9999-l">L: 149400</div>
-                </div>
-            </div>
-
-            <div class="prev-card">
-                <div class="prev-card-left">
-                    <div class="prev-icon-bg">🪙</div>
-                    <div class="prev-details">
-                        <h4>99.50 Retail</h4>
-                        <p>Yesterday</p>
-                    </div>
-                </div>
-                <div class="prev-values">
-                    <div style="color:#22c55e;" id="prev-9950-h">H: 149100</div>
-                    <div style="color:#ef4444;" id="prev-9950-l">L: 148650</div>
-                </div>
-            </div>
-
-            <div class="prev-card">
-                <div class="prev-card-left">
-                    <div class="prev-icon-bg">🥈</div>
-                    <div class="prev-details">
-                        <h4>बटिया APPROX</h4>
-                        <p>Yesterday</p>
-                    </div>
-                </div>
-                <div class="prev-values">
-                    <div style="color:#22c55e;" id="prev-badiya-h">H: 227000</div>
-                    <div style="color:#ef4444;" id="prev-badiya-l">L: 226000</div>
-                </div>
-            </div>
-
-            <div class="prev-card">
-                <div class="prev-card-left">
-                    <div class="prev-icon-bg">📲</div>
-                    <div class="prev-details">
-                        <h4>BANK/GPAY</h4>
-                        <p>Yesterday</p>
-                    </div>
-                </div>
-                <div class="prev-values">
-                    <div style="color:#22c55e;" id="prev-bank-h">H: 153750</div>
-                    <div style="color:#ef4444;" id="prev-bank-l">L: 153100</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- TAB 3: SHRIMUKH CATALOG -->
-        <div id="tab-shrimukh" class="tab-page">
-            <div style="background: var(--card-dark); border: 1px solid var(--accent-gold); padding:16px; border-radius:14px; text-align:center; margin-bottom:14px;">
-                <i class="fa-solid fa-crown" style="color:var(--accent-gold); font-size:24px;"></i>
-                <h3 style="letter-spacing:1px; margin-top:4px; color:var(--text-light); font-size:15px;">SHRIMUKH ELEGANCE</h3>
-                <p style="font-size:11px; color:var(--accent-gold);">Exclusive Keel & Nathuni Catalog</p>
-            </div>
-            <div class="catalog-grid" id="catalog-container"></div>
-        </div>
-
-        <!-- TAB 4: DETAILS -->
-        <div id="tab-details" class="tab-page">
-            <h3 style="margin-bottom:14px; color:var(--accent-gold); font-size:16px;">Shop Locations & Details</h3>
-            
-            <div class="rate-card-item">
-                <h4 style="color:var(--accent-gold); margin-bottom:4px; font-size:14px;">1. Aharaura - Aastha Jewellery</h4>
-                <p style="font-size:11px; color:#94a3b8; margin-bottom:10px;"><i class="fa-solid fa-location-dot"></i> Aharaura Branch, Mirzapur</p>
-                <div class="contact-details-row">
-                    <div>
-                        <p style="font-weight:600; font-size:13px; color:var(--text-light);">Dinesh Kumar</p>
-                        <p style="font-size:11px; color:#94a3b8;">8887726720</p>
-                    </div>
-                    <div class="action-btns">
-                        <a href="tel:8887726720" class="btn-icon btn-call"><i class="fa-solid fa-phone"></i></a>
-                        <a href="#" onclick="openBranchWhatsApp('8887726720'); return false;" class="btn-icon btn-msg"><i class="fa-solid fa-comment"></i></a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="rate-card-item">
-                <h4 style="color:var(--accent-gold); margin-bottom:4px; font-size:14px;">2. Sikarganj - Aastha Jewellery</h4>
-                <p style="font-size:11px; color:#94a3b8; margin-bottom:10px;"><i class="fa-solid fa-location-dot"></i> Sikarganj Branch</p>
-                <div class="contact-details-row">
-                    <div>
-                        <p style="font-weight:600; font-size:13px; color:var(--text-light);">Ramesh Kumar</p>
-                        <p style="font-size:11px; color:#94a3b8;">9621106661</p>
-                    </div>
-                    <div class="action-btns">
-                        <a href="tel:9621106661" class="btn-icon btn-call"><i class="fa-solid fa-phone"></i></a>
-                        <a href="#" onclick="openBranchWhatsApp('9621106661'); return false;" class="btn-icon btn-msg"><i class="fa-solid fa-comment"></i></a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="rate-card-item">
-                <h4 style="color:var(--accent-gold); margin-bottom:4px; font-size:14px;">3. Uchahra Fauzi - Aastha Jewellery</h4>
-                <p style="font-size:11px; color:#94a3b8; margin-bottom:10px;"><i class="fa-solid fa-location-dot"></i> Uchahra Fauzi Branch</p>
-                <div class="contact-details-row">
-                    <div>
-                        <p style="font-weight:600; font-size:13px; color:var(--text-light);">Mukesh Kumar</p>
-                        <p style="font-size:11px; color:#94a3b8;">8090247751</p>
-                    </div>
-                    <div class="action-btns">
-                        <a href="tel:8090247751" class="btn-icon btn-call"><i class="fa-solid fa-phone"></i></a>
-                        <a href="#" onclick="openBranchWhatsApp('8090247751'); return false;" class="btn-icon btn-msg"><i class="fa-solid fa-comment"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- TAB 5: EXTRA -->
-        <div id="tab-extra" class="tab-page">
-            <h3 style="margin-bottom:12px; color:var(--accent-gold); font-size:16px;">Extra Options</h3>
-            <div class="extra-grid">
-                <div class="extra-card" onclick="openAdminModal()">
-                    <i class="fa-solid fa-user-gear"></i>
-                    <h4>Admin Panel</h4>
-                </div>
-                <div class="extra-card" onclick="triggerRateToast('Gold Market Alert', 'Live Gold rates have been updated successfully!')">
-                    <i class="fa-solid fa-bell"></i>
-                    <h4>Test Notification</h4>
-                </div>
-                <div class="extra-card" onclick="openGstModal()">
-                    <i class="fa-solid fa-calculator"></i>
-                    <h4>GST Calculator</h4>
-                </div>
-                <div class="extra-card" onclick="openAccountSettingsModal()">
-                    <i class="fa-solid fa-key"></i>
-                    <h4>Change Details/PIN</h4>
-                </div>
-                <div class="extra-card" onclick="showInfoModal('Bank Details', 'Bank: State Bank of India\nA/C: 1234567890\nIFSC: SBIN0001234')">
-                    <i class="fa-solid fa-building-columns"></i>
-                    <h4>Bank Details</h4>
-                </div>
-                <div class="extra-card" onclick="navigator.share ? navigator.share({title:'Aastha Jewellery', url:window.location.href}) : copyShareLink()">
-                    <i class="fa-solid fa-share-nodes"></i>
-                    <h4>Share App</h4>
-                </div>
-                <div class="extra-card" onclick="logout()" style="border-color:#dc2626;">
-                    <i class="fa-solid fa-right-from-bracket" style="color:#dc2626;"></i>
-                    <h4 style="color:#dc2626;">Logout</h4>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- FULLSCREEN STATUS VIEW MODAL -->
-    <div id="status-modal">
-        <div class="status-progress-bar"><div class="status-progress-fill" id="status-progress"></div></div>
-        <div class="status-header-view">
-            <span id="status-author-name" style="font-weight:600; font-size:14px;">Aastha Jewellery Status</span>
-            <div class="status-close-btn" onclick="closeStatusViewer()"><i class="fa-solid fa-xmark"></i></div>
-        </div>
-        <div class="status-media-box" id="status-media-container"></div>
-        <div class="status-caption" id="status-caption-text"></div>
-    </div>
-
-    <!-- CATALOG ITEM VIEW MODAL -->
-    <div id="catalog-view-modal" class="modal">
-        <div class="modal-content">
-            <h3 id="catalog-item-title" style="margin-bottom:12px; color:var(--accent-gold); font-size:16px;">Item Preview</h3>
-            
-            <div class="catalog-view-bg-box">
-                <img id="catalog-item-img" src="" alt="Jewellery Design">
-            </div>
-
-            <div class="view-detail-row">
-                <span>Weight / वजन:</span>
-                <span class="view-detail-val" id="catalog-item-weight">-</span>
-            </div>
-            <div class="view-detail-row" style="margin-bottom:14px;">
-                <span>Approx Price:</span>
-                <span class="view-detail-val" id="catalog-item-price">-</span>
-            </div>
-
-            <div style="display:flex; gap:10px;">
-                <button id="catalog-wa-inquire" class="btn-auth" style="flex:1; background:#25d366; color:#fff;"><i class="fa-brands fa-whatsapp"></i> Order On WhatsApp</button>
-                <button onclick="closeCatalogViewModal()" class="btn-auth" style="flex:1; background:#475569; color:#fff;">Close</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="gst-modal" class="modal">
-        <div class="modal-content">
-            <h3 style="margin-bottom:12px; color:var(--accent-gold); font-size:16px;">GST Calculator (3%)</h3>
-            <input type="number" id="gst-amount" placeholder="Enter Amount (₹)" class="admin-input" style="margin-bottom:10px;" oninput="calcGst()">
-            <p style="font-size:14px; margin-bottom:6px;">GST (3%): ₹<span id="gst-tax">0</span></p>
-            <p style="font-size:16px; font-weight:600; margin-bottom:14px; color:var(--green-text);">Total: ₹<span id="gst-total">0</span></p>
-            <button onclick="closeGstModal()" class="btn-auth" style="padding:10px;">Close</button>
-        </div>
-    </div>
-
-    <div id="info-modal" class="modal">
-        <div class="modal-content">
-            <h3 id="info-modal-title" style="margin-bottom:12px; color:var(--accent-gold); font-size:16px;">Info</h3>
-            <p id="info-modal-text" style="font-size:13px; color:#cbd5e1; white-space: pre-line; margin-bottom:14px;"></p>
-            <button onclick="closeInfoModal()" class="btn-auth" style="padding:10px;">Close</button>
-        </div>
-    </div>
-
-    <!-- ADMIN PANEL MODAL -->
-    <div id="admin-modal" class="modal">
-        <div class="modal-content">
-            <h3 style="margin-bottom:12px; color:var(--accent-gold); font-size:16px;"><i class="fa-solid fa-user-shield"></i> Admin Panel</h3>
-            
-            <div id="admin-login-sec">
-                <span class="form-label">Admin Password</span>
-                <input type="password" id="admin-pass-input" placeholder="Default Password: 123" class="admin-input" style="margin-bottom:12px;">
-                <button onclick="verifyAdminPass()" class="btn-auth" style="padding:10px; margin-bottom:10px;">Login Admin</button>
-                <button onclick="closeAdminModal()" class="btn-auth" style="padding:10px; background:#475569; color:#fff;">Cancel</button>
-            </div>
-
-            <div id="admin-controls-sec" style="display:none; text-align:left;">
-                
-                <h4 style="font-size:13px; color:var(--accent-gold); border-bottom:1px solid #334155; padding-bottom:4px; margin-bottom:8px;"><i class="fa-solid fa-circle-plus"></i> Add New Status / Story</h4>
-                <span class="form-label">Status Title / Label</span>
-                <input type="text" id="adm-status-title" class="admin-input" placeholder="e.g. Today Offer / Live Rates">
-
-                <span class="form-label">Status Caption Text</span>
-                <input type="text" id="adm-status-caption" class="admin-input" placeholder="e.g. Special Discount on Nathuni today!">
-
-                <span class="form-label">Upload Status Photo</span>
-                <input type="file" id="adm-status-file" accept="image/*" class="admin-input" style="padding:6px; margin-bottom:6px;">
-
-                <span class="form-label">Or Direct Image/Video Link URL</span>
-                <input type="text" id="adm-status-url" class="admin-input" placeholder="https://image-link.com/photo.jpg">
-
-                <button onclick="postAdminStatus()" class="btn-auth" style="margin-top:6px; margin-bottom:14px; background:#22c55e; color:#fff;">Publish Status</button>
-
-                <h4 style="font-size:13px; color:#fff; border-bottom:1px solid #334155; padding-bottom:4px; margin-bottom:8px;">1. Change App Live Rates</h4>
-                
-                <span class="form-label">99.99 Retail Rate (₹)</span>
-                <input type="number" id="adm-rate-9999" class="admin-input">
-
-                <span class="form-label">99.50 Retail Rate (₹)</span>
-                <input type="number" id="adm-rate-9950" class="admin-input">
-
-                <span class="form-label">बटिया APPROX Rate (₹)</span>
-                <input type="number" id="adm-rate-badiya" class="admin-input">
-
-                <span class="form-label">BANK / GPAY Rate (₹)</span>
-                <input type="number" id="adm-rate-bank" class="admin-input">
-
-                <h4 style="font-size:13px; color:#fff; border-bottom:1px solid #334155; padding-bottom:4px; margin-top:14px; margin-bottom:8px;">2. Change Order WhatsApp Number</h4>
-                <span class="form-label">WhatsApp Mobile No. (10 digits)</span>
-                <input type="tel" id="adm-whatsapp" class="admin-input" placeholder="e.g. 8887726720">
-
-                <h4 style="font-size:13px; color:var(--accent-gold); border-bottom:1px solid #334155; padding-bottom:4px; margin-top:14px; margin-bottom:8px;">3. Add New Shrimukh Catalog Item</h4>
-                
-                <span class="form-label">Product Name / Title</span>
-                <input type="text" id="adm-item-title" class="admin-input" placeholder="e.g. Bombay CZ Gold Nosepin">
-
-                <span class="form-label">Weight (Vajan)</span>
-                <input type="text" id="adm-item-weight" class="admin-input" placeholder="e.g. 1.250 gms / 500 mg">
-
-                <span class="form-label">Approx Price (₹)</span>
-                <input type="number" id="adm-item-price" class="admin-input" placeholder="e.g. 4500">
-
-                <span class="form-label">Photo Upload (Select Image File)</span>
-                <input type="file" id="adm-item-file" accept="image/*" class="admin-input" style="padding:6px; margin-bottom:6px;">
-
-                <span class="form-label">Or Direct Image URL</span>
-                <input type="text" id="adm-item-img" class="admin-input" placeholder="https://image-link.com/photo.jpg">
-
-                <button onclick="saveAdminChanges()" class="btn-auth" style="margin-top:8px; margin-bottom:14px;">Save Rates & Add Item</button>
-
-                <h4 style="font-size:13px; color:#ef4444; border-bottom:1px solid #334155; padding-bottom:4px; margin-top:14px; margin-bottom:8px;"><i class="fa-solid fa-trash-can"></i> 4. Delete Catalog Products</h4>
-                <div id="admin-catalog-delete-list" style="margin-bottom:16px; max-height:160px; overflow-y:auto;"></div>
-
-                <button onclick="closeAdminModal()" class="btn-auth" style="background:#475569; color:#fff;">Close Panel</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="account-modal" class="modal">
-        <div class="modal-content">
-            <h3 style="margin-bottom:12px; color:var(--accent-gold); font-size:16px;"><i class="fa-solid fa-key"></i> Account Settings</h3>
-            
-            <span class="form-label">Update Display Name</span>
-            <input type="text" id="settings-username" class="admin-input" style="margin-bottom:10px;">
-
-            <span class="form-label">Change Admin Password</span>
-            <input type="password" id="settings-new-admin-pass" placeholder="Enter New Password" class="admin-input" style="margin-bottom:14px;">
-
-            <div style="display:flex; gap:10px;">
-                <button onclick="saveAccountSettings()" class="btn-auth" style="flex:1;">Save</button>
-                <button onclick="closeAccountSettingsModal()" class="btn-auth" style="flex:1; background:#475569; color:#fff;">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="bottom-nav">
-        <div class="nav-item active" onclick="switchTab('home', this)"><i class="fa-solid fa-house"></i><span>Home</span></div>
-        <div class="nav-item" onclick="switchTab('prev', this)"><i class="fa-solid fa-clock-rotate-left"></i><span>Prev Day</span></div>
-        <div class="nav-item" onclick="switchTab('shrimukh', this)"><i class="fa-solid fa-gem"></i><span>Shrimukh</span></div>
-        <div class="nav-item" onclick="switchTab('details', this)"><i class="fa-solid fa-headphones"></i><span>Details</span></div>
-        <div class="nav-item" onclick="switchTab('extra', this)"><i class="fa-solid fa-border-all"></i><span>Extra</span></div>
-    </div>
-
-    <script>
-        let isFallbackMode = false;
-        let adminPassword = localStorage.getItem('aastha_admin_pass') || '123';
-        let statusProgressInterval = null;
-
-        let prevRates = {
-            r9999: 148850,
-            r9950: 148100,
-            rBadiya: 226500,
-            rBank: 151900,
-            mcxGold: 149458,
-            mcxSilver: 222743
-        };
-
-        let currentHighs = { r9999: 149150, r9950: 148400, rBadiya: 226500, rBank: 151900 };
-        let currentLows  = { r9999: 148850, r9950: 148100, rBadiya: 226500, rBank: 151850 };
-
-        let catalogItems = JSON.parse(localStorage.getItem('aastha_catalog')) || [
-            { title: 'Bombay CZ Nosepin', weight: '350 mg', price: '2800', img: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=300' },
-            { title: 'Chain Gold Nathuni', weight: '1.200 gms', price: '9500', img: 'https://images.unsplash.com/photo-1611591475140-be38b638edcd?w=300' },
-            { title: 'Emboss Designer Nosepin', weight: '500 mg', price: '3900', img: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300' },
-            { title: 'Isabella Bridal Nathuni', weight: '2.500 gms', price: '19800', img: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=300' }
-        ];
-
-        let appStatuses = JSON.parse(localStorage.getItem('aastha_statuses')) || [
-            { id: 1, title: '18K Offer', media: '92600.png', caption: '18K Collection Available Today!', seen: false },
-            { id: 2, title: 'Keel Offer', media: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600', caption: 'Exclusive Gold Keel & Nathuni Available Today!', seen: false }
-        ];
-
-        /* THEME TOGGLE (SUN / MOON) FUNCTION */
-        function toggleAppTheme() {
-            const body = document.body;
-            const icon = document.getElementById('theme-icon');
-            
-            body.classList.toggle('light-mode');
-            
-            if(body.classList.contains('light-mode')) {
-                icon.className = 'fa-solid fa-sun';
-                localStorage.setItem('aastha_theme', 'light');
+<body class="bg-slate-50 text-slate-800 antialiased">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { 
+          BookOpen, GraduationCap, UserCheck, Award, PlayCircle, CheckCircle, 
+          ChevronDown, ChevronUp, Search, LogOut, User, Sparkles, BrainCircuit, 
+          ShieldCheck, BookMarked, BarChart3, Menu, X, Lock, Mail, KeyCircle, Clock, Star 
+        } = lucide;
+
+        function App() {
+          // Navigation & View state
+          const [activeTab, setActiveTab] = useState('home'); // 'home', 'courses', 'dashboard', 'about'
+          const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+          // Auth States
+          const [currentUser, setCurrentUser] = useState(null); // { name: 'Rahul Kumar', role: 'Student', email: 'rahul@example.com' }
+          const [showAuthModal, setShowAuthModal] = useState(false);
+          const [authMode, setAuthMode] = useState('signup'); // 'signup' | 'login'
+          const [selectedRole, setSelectedRole] = useState('Student'); // 'Student' | 'Parent' | 'Teacher'
+          const [authForm, setAuthForm] = useState({ name: '', email: '', password: '' });
+
+          // Accordions & Course interaction state
+          const [expandedCourse, setExpandedCourse] = useState(null);
+          
+          // Ck Sir Admin & Control States
+          const [showAdminPanel, setShowAdminPanel] = useState(false);
+          const [adminMsg, setAdminMsg] = useState('');
+          const [courseFee, setCourseFee] = useState('4000');
+          const [showPayModal, setShowPayModal] = useState(false);
+          const [paySuccess, setPaySuccess] = useState(false);
+          const [selectedCategory, setSelectedCategory] = useState('All');
+
+          // Interactive Quiz state in Dashboard
+          const [activeLesson, setActiveLesson] = useState({
+            id: 1,
+            title: 'गणित (UP Board) - त्रिकोणमिति (Trigonometry) Basic',
+            videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+            subject: 'गणित (Maths)'
+          });
+          const [quizAnswered, setQuizAnswered] = useState(null);
+          const [score, setScore] = useState(0);
+
+          // Dynamic Video Lists Managed by Ck Sir
+          const [uploadedVideos, setUploadedVideos] = useState([
+            {
+              id: 101,
+              title: 'LKG to 10th Math & English Basic Session',
+              classLevel: 'Tuition (LKG-10th)',
+              category: 'Class Video',
+              type: 'Recorded',
+              author: 'Ck Sir'
+            },
+            {
+              id: 102,
+              title: 'Student Board Solution: Class 10 Trigonometry Problem',
+              classLevel: 'Class 10th',
+              category: 'Student Solution',
+              type: 'Board Solution Video',
+              author: 'Rahul Sharma (Student)'
+            },
+            {
+              id: 103,
+              title: 'CHS (6th & 9th) Special Entrance Math Tricks',
+              classLevel: 'CHS Entrance',
+              category: 'Competitive',
+              type: 'Special Prep',
+              author: 'Ck Sir'
+            },
+            {
+              id: 104,
+              title: 'Navodaya & Sainik School Practice Set 1',
+              classLevel: 'Navodaya / Sainik',
+              category: 'Competitive',
+              type: 'Recorded',
+              author: 'Ck Sir'
+            },
+            {
+              id: 105,
+              title: '11th & 12th Board Exam Physics & Math Key Derivations',
+              classLevel: '11th & 12th',
+              category: 'Senior Secondary',
+              type: 'Advanced Class',
+              author: 'Ck Sir'
+            }
+          ]);
+
+          const [newVidTitle, setNewVidTitle] = useState('');
+          const [newVidClass, setNewVidClass] = useState('Tuition (LKG-10th)');
+          const [newVidCategory, setNewVidCategory] = useState('Class Video');
+
+          // Sample Courses List based on Ck Sir Poster & Guidelines
+          const courseCategories = [
+            {
+              id: 'tuition-lkg-10',
+              title: 'Tuition for LKG to 10th (Hindi & English Medium)',
+              category: 'School Regular',
+              icon: '📚',
+              count: 'All School Subjects',
+              topics: [
+                'गणित (Mathematics)', 
+                'विज्ञान (Science)', 
+                'अंग्रेजी (English)', 
+                'हिन्दी (Hindi)', 
+                'सामाजिक विज्ञान (Social Studies)'
+              ]
+            },
+            {
+              id: 'hindi-medium-9-10',
+              title: '9th and 10th Special Batch (Hindi Medium)',
+              category: 'UP & CBSE Board',
+              icon: '📐',
+              count: 'Board Target',
+              topics: [
+                'सप्ताह में लिखित एवं मौखिक टेस्ट', 
+                'हस्तलिखित Notes WhatsApp सपोर्ट', 
+                'गृहकार्य (Homework) चेकिंग', 
+                'रविवार स्पेशल Doubt Classes'
+              ]
+            },
+            {
+              id: 'hindi-medium-11-12',
+              title: '11th and 12th Advanced Batch (Hindi Medium)',
+              category: 'Senior Secondary',
+              icon: '🧪',
+              count: 'Board Top Level',
+              topics: [
+                'भौतिक विज्ञान (Physics)', 
+                'रसायन विज्ञान (Chemistry)', 
+                'गणित (Mathematics)', 
+                'बोर्ड परीक्षा स्पेशल मॉडल पेपर'
+              ]
+            },
+            {
+              id: 'special-competitive',
+              title: 'Special Competitive Preparation',
+              category: 'Entrance Exams',
+              icon: '🏆',
+              count: 'Top Level Entrance',
+              topics: [
+                'CHS (6th and 9th Entrance)', 
+                'Navodaya Entrance (6th and 9th)', 
+                'Sainik School Entrance (6th)', 
+                'Ashram Padhyati Prep'
+              ]
+            },
+            {
+              id: 'basic-unique-weak',
+              title: 'Basic Unique Classes for Weak Students (Basic to Advance)',
+              category: 'Foundation',
+              icon: '💡',
+              count: 'Special Attention',
+              topics: [
+                'Physical, Creative & Social Activities', 
+                'Writing & Reading Improvement', 
+                'Calculation Speed Up Tricks', 
+                'English Conversation & Drawing'
+              ]
+            }
+          ];
+
+          // Samarthak Schools List
+          const schoolsList = [
+            'Naveen Shiksha Niketan',
+            'SRVS (Swargiya Ramvilas Singh) CBSE School',
+            'Divine Public School',
+            'Sadbhavana Shikshan Sansthan',
+            'Lord Shiva Academy',
+            'BD Kids by DK Sir'
+          ];
+
+          // Handle Auth actions
+          const handleAuthSubmit = (e) => {
+            e.preventDefault();
+            if (authMode === 'signup') {
+              setCurrentUser({
+                name: authForm.name || 'छात्र (Learner)',
+                email: authForm.email,
+                role: selectedRole
+              });
             } else {
-                icon.className = 'fa-solid fa-moon';
-                localStorage.setItem('aastha_theme', 'dark');
+              setCurrentUser({
+                name: authForm.email === 'ckadmin@gurukul.edu' ? 'Chandan Sir (Ck Sir)' : 'आनंद शर्मा',
+                email: authForm.email || 'student@gurukul.edu',
+                role: authForm.email === 'ckadmin@gurukul.edu' ? 'Teacher / Admin' : 'Student'
+              });
             }
-        }
+            setShowAuthModal(false);
+            setAuthForm({ name: '', email: '', password: '' });
+          };
 
-        function loadSavedTheme() {
-            const savedTheme = localStorage.getItem('aastha_theme');
-            const icon = document.getElementById('theme-icon');
-            if(savedTheme === 'light') {
-                document.body.classList.add('light-mode');
-                if(icon) icon.className = 'fa-solid fa-sun';
+          const handleLogout = () => {
+            setCurrentUser(null);
+            setShowAdminPanel(false);
+          };
+
+          const toggleCourseExpand = (id) => {
+            setExpandedCourse(expandedCourse === id ? null : id);
+          };
+
+          // Admin WhatsApp Notification Function
+          const handleSendWhatsAppBroadcast = () => {
+            if (!adminMsg) {
+              alert('Kripya notification message likhein!');
+              return;
             }
-        }
+            const encodedMsg = encodeURIComponent(adminMsg);
+            window.open(`https://api.whatsapp.com/send?text=${encodedMsg}`, '_blank');
+            alert('WhatsApp broadcast message generated successfully for all students!');
+            setAdminMsg('');
+          };
 
-        function checkAndResetDailyRates() {
-            const todayStr = new Date().toDateString();
-            const lastDateStr = localStorage.getItem('aastha_last_date');
-
-            if (lastDateStr && lastDateStr !== todayStr) {
-                const yesterdayObj = {
-                    h9999: currentHighs.r9999, l9999: currentLows.r9999,
-                    h9950: currentHighs.r9950, l9950: currentLows.r9950,
-                    hBadiya: currentHighs.rBadiya, lBadiya: currentLows.rBadiya,
-                    hBank: currentHighs.rBank, lBank: currentLows.rBank
-                };
-                localStorage.setItem('aastha_yesterday_rates', JSON.stringify(yesterdayObj));
-
-                currentHighs = { r9999: 148990, r9950: 148240, rBadiya: 225700, rBank: 151700 };
-                currentLows = { r9999: 148990, r9950: 148240, rBadiya: 225700, rBank: 151700 };
-            }
-            localStorage.setItem('aastha_last_date', todayStr);
-            loadPrevDayRatesUI();
-        }
-
-        function loadPrevDayRatesUI() {
-            const yObj = JSON.parse(localStorage.getItem('aastha_yesterday_rates')) || {
-                h9999: 149850, l9999: 149400,
-                h9950: 149100, l9950: 148650,
-                hBadiya: 227000, lBadiya: 226000,
-                hBank: 153750, lBank: 153100
+          // Admin Video Upload Function
+          const handleUploadVideo = (e) => {
+            e.preventDefault();
+            if (!newVidTitle) return;
+            const newItem = {
+              id: Date.now(),
+              title: newVidTitle,
+              classLevel: newVidClass,
+              category: newVidCategory,
+              type: newVidCategory === 'Student Solution' ? 'Board Solution Video' : 'Live / Recorded Class',
+              author: newVidCategory === 'Student Solution' ? 'Student Work' : 'Ck Sir'
             };
+            setUploadedVideos([newItem, ...uploadedVideos]);
+            setNewVidTitle('');
+            alert('Video successfully added to the portal!');
+          };
 
-            document.getElementById('prev-9999-h').innerText = `H: ${yObj.h9999}`;
-            document.getElementById('prev-9999-l').innerText = `L: ${yObj.l9999}`;
+          // Admin Video Delete Function
+          const handleDeleteVideo = (id) => {
+            setUploadedVideos(uploadedVideos.filter(v => v.id !== id));
+          };
 
-            document.getElementById('prev-9950-h').innerText = `H: ${yObj.h9950}`;
-            document.getElementById('prev-9950-l').innerText = `L: ${yObj.l9950}`;
+          return (
+            <div className="min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col justify-between">
+              
+              {/* 1. HEADER / NAVBAR */}
+              <header className="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                  <div className="flex items-center justify-between h-20">
+                    
+                    {/* Custom Logo & Branding */}
+                    <div 
+                      className="flex items-center gap-3 cursor-pointer group"
+                      onClick={() => setActiveTab('home')}
+                    >
+                      <img 
+                        src="Log.png" 
+                        alt="Learn with Gurukul Logo" 
+                        className="w-12 h-12 rounded-full object-cover shadow-md group-hover:scale-105 transition-transform border border-amber-400"
+                        onError={(e) => {
+                          e.target.onerror = null; 
+                          e.target.src = 'https://placehold.co/100x100/0f172a/f59e0b?text=Gurukul';
+                        }}
+                      />
+                      <div>
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-xl sm:text-2xl font-black tracking-tight text-slate-900">
+                            Learn with <span className="text-amber-600">Gurukul</span>
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-semibold px-2 py-0.5 rounded bg-amber-100 text-amber-800">
+                            By Chandan Sir (Ck Sir) [M.A + B.Ed]
+                          </span>
+                          <span className="text-[11px] text-slate-500 hidden sm:inline">| एक राह, काबिलियत से कामयाबी की ओर!</span>
+                        </div>
+                      </div>
+                    </div>
 
-            document.getElementById('prev-badiya-h').innerText = `H: ${yObj.hBadiya}`;
-            document.getElementById('prev-badiya-l').innerText = `L: ${yObj.lBadiya}`;
+                    {/* Desktop Navigation */}
+                    <nav className="hidden md:flex items-center gap-6 font-medium text-slate-600 text-sm">
+                      <button 
+                        onClick={() => setActiveTab('home')} 
+                        className={`hover:text-amber-600 transition-colors ${activeTab === 'home' ? 'text-amber-600 font-bold border-b-2 border-amber-600 py-1' : ''}`}
+                      >
+                        मुख्य पृष्ठ (Home)
+                      </button>
+                      <button 
+                        onClick={() => setActiveTab('courses')} 
+                        className={`hover:text-amber-600 transition-colors ${activeTab === 'courses' ? 'text-amber-600 font-bold border-b-2 border-amber-600 py-1' : ''}`}
+                      >
+                        संचालित कक्षाएं (Courses)
+                      </button>
+                      <button 
+                        onClick={() => setActiveTab('dashboard')} 
+                        className={`hover:text-amber-600 transition-colors ${activeTab === 'dashboard' ? 'text-amber-600 font-bold border-b-2 border-amber-600 py-1' : ''}`}
+                      >
+                        लाइव & वीडियो पोर्टल
+                      </button>
+                      <button 
+                        onClick={() => setActiveTab('about')} 
+                        className={`hover:text-amber-600 transition-colors ${activeTab === 'about' ? 'text-amber-600 font-bold border-b-2 border-amber-600 py-1' : ''}`}
+                      >
+                        विशेषताएं & समर्थक
+                      </button>
+                      <button 
+                        onClick={() => setShowPayModal(true)} 
+                        className="px-3.5 py-1.5 rounded-xl bg-emerald-600 text-white font-bold text-xs shadow hover:bg-emerald-700 transition"
+                      >
+                        फीस भुगतान (₹{courseFee})
+                      </button>
+                    </nav>
 
-            document.getElementById('prev-bank-h').innerText = `H: ${yObj.hBank}`;
-            document.getElementById('prev-bank-l').innerText = `L: ${yObj.lBank}`;
-        }
+                    {/* User Auth & Admin Panel controls */}
+                    <div className="hidden md:flex items-center gap-3">
+                      {currentUser ? (
+                        <div className="flex items-center gap-3 bg-slate-100 p-1.5 pl-3 rounded-full border border-slate-200">
+                          <div className="flex flex-col text-right">
+                            <span className="text-sm font-bold text-slate-800 leading-tight">{currentUser.name}</span>
+                            <span className="text-[11px] text-amber-600 font-medium">{currentUser.role}</span>
+                          </div>
+                          {currentUser.email === 'ckadmin@gurukul.edu' && (
+                            <button 
+                              onClick={() => setShowAdminPanel(!showAdminPanel)} 
+                              className="px-2.5 py-1 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold rounded-lg shadow"
+                            >
+                              Sir Control Panel
+                            </button>
+                          )}
+                          <div className="w-9 h-9 rounded-full bg-amber-500 text-white font-bold flex items-center justify-center text-sm shadow">
+                            {currentUser.name.charAt(0)}
+                          </div>
+                          <button 
+                            onClick={handleLogout}
+                            title="लॉग आउट करें"
+                            className="p-2 text-slate-500 hover:text-red-600 hover:bg-white rounded-full transition text-xs font-bold"
+                          >
+                            <LogOut className="w-4 h-4" />
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-3">
+                          <button 
+                            onClick={() => { setAuthMode('login'); setShowAuthModal(true); }}
+                            className="text-slate-700 font-semibold text-sm hover:text-amber-600 px-3 py-2 rounded-lg transition"
+                          >
+                            लॉग इन करें
+                          </button>
+                          <button 
+                            onClick={() => { setAuthMode('signup'); setShowAuthModal(true); }}
+                            className="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold px-4 py-2 text-sm rounded-xl shadow-md transition transform active:scale-95"
+                          >
+                            साइन अप करें
+                          </button>
+                        </div>
+                      )}
+                    </div>
 
-        /* REALTIME TICKER ENGINE WITH MCX DYNAMIC GLOW */
-        async function fetchLiveMarketRates() {
-            try {
-                checkAndResetDailyRates();
+                    {/* Mobile Hamburger Button */}
+                    <div className="md:hidden flex items-center">
+                      <button 
+                        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                        className="p-2 rounded-lg text-slate-600 hover:bg-slate-100"
+                      >
+                        {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                      </button>
+                    </div>
+                  </div>
+                </div>
 
-                const now = new Date();
-                const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-                let delta9999 = Math.floor(Math.random() * 5) * 50 - 100;
-                let r9999 = 148990 + delta9999;
-                let r9950 = 148240 + delta9999;
-                let rBadiya = 225700 + (delta9999 * 2);
-                let rBank = 151700 + Math.round(delta9999 * 0.8);
-
-                let mcxGold = 148265 + Math.floor(Math.random() * 20 - 10);
-                let mcxSilver = 218716 + Math.floor(Math.random() * 40 - 20);
-
-                if(r9999 > currentHighs.r9999) currentHighs.r9999 = r9999;
-                if(r9999 < currentLows.r9999) currentLows.r9999 = r9999;
-
-                if(r9950 > currentHighs.r9950) currentHighs.r9950 = r9950;
-                if(r9950 < currentLows.r9950) currentLows.r9950 = r9950;
-
-                if(rBadiya > currentHighs.rBadiya) currentHighs.rBadiya = rBadiya;
-                if(rBadiya < currentLows.rBadiya) currentLows.rBadiya = rBadiya;
-
-                if(rBank > currentHighs.rBank) currentHighs.rBank = rBank;
-                if(rBank < currentLows.rBank) currentLows.rBank = rBank;
-
-                document.getElementById('rate-9999').innerText = '₹ ' + r9999;
-                document.getElementById('rate-9950').innerText = '₹ ' + r9950;
-                document.getElementById('rate-badiya').innerText = '₹ ' + rBadiya;
-                document.getElementById('rate-bank').innerText = '₹ ' + rBank;
-
-                document.getElementById('mcx-gold').innerText = '₹ ' + mcxGold;
-                document.getElementById('mcx-silver').innerText = '₹ ' + mcxSilver;
-
-                document.getElementById('hl-9999').innerText = `H: ${currentHighs.r9999} L: ${currentLows.r9999}`;
-                document.getElementById('hl-9950').innerText = `H: ${currentHighs.r9950} L: ${currentLows.r9950}`;
-                document.getElementById('hl-badiya').innerText = `H: ${currentHighs.rBadiya} L: ${currentLows.rBadiya}`;
-                document.getElementById('hl-bank').innerText = `H: ${currentHighs.rBank} L: ${currentLows.rBank}`;
-
-                updateIndicator('ind-9999', 'graph-9999', 'dot-9999', r9999 - prevRates.r9999, timeStr);
-                updateIndicator('ind-9950', 'graph-9950', 'dot-9950', r9950 - prevRates.r9950, timeStr);
-                updateIndicator('ind-badiya', 'graph-badiya', 'dot-badiya', rBadiya - prevRates.rBadiya, timeStr);
-                updateIndicator('ind-bank', 'graph-bank', 'dot-bank', rBank - prevRates.rBank, timeStr);
-
-                // MCX Deltas & Dynamic Glow Colors
-                let goldMcxDiff = mcxGold - prevRates.mcxGold;
-                let silverMcxDiff = mcxSilver - prevRates.mcxSilver;
-
-                const goldBadge = document.getElementById('mcx-gold-change');
-                goldBadge.innerText = (goldMcxDiff >= 0 ? '▲ +' : '▼ ') + goldMcxDiff;
-                goldBadge.className = goldMcxDiff >= 0 ? 'mcx-change-badge badge-green' : 'mcx-change-badge badge-red';
-                document.documentElement.style.setProperty('--mcx-bg-glow-gold', goldMcxDiff >= 0 ? 'rgba(34, 197, 94, 0.2)' : 'rgba(239, 68, 68, 0.2)');
-
-                const silverBadge = document.getElementById('mcx-silver-change');
-                silverBadge.innerText = (silverMcxDiff >= 0 ? '▲ +' : '▼ ') + silverMcxDiff;
-                silverBadge.className = silverMcxDiff >= 0 ? 'mcx-change-badge badge-green' : 'mcx-change-badge badge-red';
-                document.documentElement.style.setProperty('--mcx-bg-glow-silver', silverMcxDiff >= 0 ? 'rgba(34, 197, 94, 0.2)' : 'rgba(239, 68, 68, 0.2)');
-
-                document.getElementById('last-update-time').innerText = timeStr;
-
-            } catch (e) {
-                console.log("Live Sync running...");
-            }
-        }
-
-        function updateIndicator(indId, graphId, dotId, diff, timeStr) {
-            const indElem = document.getElementById(indId);
-            const graphElem = document.getElementById(graphId);
-            const dotElem = document.getElementById(dotId);
-
-            if(diff > 0) {
-                indElem.className = "indicator-green";
-                indElem.innerText = `+${diff} • ${timeStr}`;
-                if(graphElem) {
-                    graphElem.setAttribute('d', 'M0 30 Q 150 15 300 10');
-                    graphElem.setAttribute('stroke', '#22c55e');
-                }
-                if(dotElem) dotElem.setAttribute('cy', '10');
-            } else if(diff < 0) {
-                indElem.className = "indicator-red";
-                indElem.innerText = `${diff} • ${timeStr}`;
-                if(graphElem) {
-                    graphElem.setAttribute('d', 'M0 10 Q 150 25 300 35');
-                    graphElem.setAttribute('stroke', '#ef4444');
-                }
-                if(dotElem) dotElem.setAttribute('cy', '35');
-            } else {
-                indElem.className = "indicator-green";
-                indElem.innerText = `±0 • ${timeStr}`;
-                if(graphElem) {
-                    graphElem.setAttribute('d', 'M0 20 Q 150 20 300 20');
-                    graphElem.setAttribute('stroke', '#22c55e');
-                }
-                if(dotElem) dotElem.setAttribute('cy', '20');
-            }
-        }
-
-        function dismissWelcome() {
-            var welcome = document.getElementById('welcome-screen');
-            if (welcome) {
-                welcome.style.opacity = '0';
-                welcome.style.pointerEvents = 'none';
-                setTimeout(function() {
-                    welcome.style.display = 'none';
-                    welcome.classList.add('hidden');
-                }, 200);
-            }
-
-            var savedUser = localStorage.getItem('aastha_user');
-            if (savedUser) {
-                var userElem = document.getElementById('user-display-name');
-                if (userElem) userElem.innerText = savedUser;
-                speakWelcome(savedUser);
-            } else {
-                speakWelcome("");
-                var authScr = document.getElementById('auth-screen');
-                if (authScr) authScr.style.display = 'flex';
-                initRecaptcha();
-            }
-            
-            setTimeout(() => {
-                triggerRateToast('Gold Market Alert 🪙', 'Rates Updated Live Successfully!');
-            }, 2000);
-        }
-
-        function triggerRateToast(title, desc) {
-            const toast = document.getElementById('rate-notification-toast');
-            document.getElementById('toast-title-text').innerText = title || 'Gold Rate Updated! 🪙';
-            document.getElementById('toast-desc-text').innerText = desc || 'Live Rates Sync Complete';
-            
-            toast.classList.add('show');
-            setTimeout(() => { hideRateToast(); }, 5500);
-        }
-
-        function hideRateToast() {
-            document.getElementById('rate-notification-toast').classList.remove('show');
-        }
-
-        function openWhatsAppChat() {
-            const currWa = localStorage.getItem('aastha_whatsapp') || '8887726720';
-            const r9999 = document.getElementById('rate-9999').innerText;
-            const r9950 = document.getElementById('rate-9950').innerText;
-            const rBadiya = document.getElementById('rate-badiya').innerText;
-            const rBank = document.getElementById('rate-bank').innerText;
-
-            const msg = encodeURIComponent(`Namaste Dinesh ji,\n\nMaine Aastha Jewellery App par live bhav dekhe hain:\n- 99.99 Retail: ${r9999}\n- 99.50 Retail: ${r9950}\n- बटिया APPROX: ${rBadiya}\n- BANK/GPAY: ${rBank}\n\nKripya aaj ke taza bhav ki jankari dein.`);
-            window.open(`https://wa.me/91${currWa}?text=${msg}`, '_blank');
-        }
-
-        function openBranchWhatsApp(phoneNum) {
-            const msg = encodeURIComponent(`Namaste, Aastha Jewellery के इस branch पर inquiry करनी है।`);
-            window.open(`https://wa.me/91${phoneNum}?text=${msg}`, '_blank');
-        }
-
-        function showInfoModal(title, message) {
-            document.getElementById('info-modal-title').innerText = title;
-            document.getElementById('info-modal-text').innerText = message;
-            document.getElementById('info-modal').style.display = 'flex';
-        }
-
-        function closeInfoModal() {
-            document.getElementById('info-modal').style.display = 'none';
-        }
-
-        function copyShareLink() {
-            const input = document.createElement('input');
-            input.value = window.location.href;
-            document.body.appendChild(input);
-            input.select();
-            document.execCommand('copy');
-            document.body.removeChild(input);
-            showInfoModal("Share Link", "App link copied to clipboard!");
-        }
-
-        function speakWelcome(userName) {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                let message = userName 
-                    ? "Namaste " + userName + " ji, Aastha Jewellery Makers mein aapka swagat hai!"
-                    : "Namaste, Aastha Jewellery Makers mein aapka swagat hai!";
-                
-                let utterance = new SpeechSynthesisUtterance(message);
-                utterance.lang = 'hi-IN';
-                utterance.rate = 0.9;
-                utterance.pitch = 1.0;
-                window.speechSynthesis.speak(utterance);
-            }
-        }
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyDH1mZnoR1m85-uop6L98ToObETQGmlrjU",
-            authDomain: "aastha-jewellery.firebaseapp.com",
-            projectId: "aastha-jewellery",
-            storageBucket: "aastha-jewellery.firebasestorage.app",
-            messagingSenderId: "1047297386260",
-            appId: "1:1047297386260:web:3e65b9d99817aae55cc401"
-        };
-
-        try {
-            if (typeof firebase !== 'undefined' && !firebase.apps.length) {
-                firebase.initializeApp(firebaseConfig);
-            }
-        } catch(err) {}
-
-        function initRecaptcha() {
-            try {
-                if (typeof firebase !== 'undefined' && firebase.auth && !window.recaptchaVerifier) {
-                    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-                        'size': 'normal',
-                        'callback': (response) => {}
-                    });
-                    window.recaptchaVerifier.render();
-                }
-            } catch(e) {}
-        }
-
-        window.onload = function() {
-            loadSavedTheme();
-            var savedUser = localStorage.getItem('aastha_user');
-            if (savedUser) {
-                var userElem = document.getElementById('user-display-name');
-                if (userElem) userElem.innerText = savedUser;
-            }
-            loadCustomSettings();
-            renderCatalog();
-            renderStatuses();
-            loadPrevDayRatesUI();
-
-            var btnStarted = document.getElementById('btn-get-started');
-            if (btnStarted) {
-                btnStarted.onclick = dismissWelcome;
-            }
-
-            fetchLiveMarketRates();
-            setInterval(fetchLiveMarketRates, 10000);
-        };
-
-        function renderStatuses() {
-            const bar = document.getElementById('app-status-bar');
-            const headerBox = document.getElementById('header-status-ring-box');
-            
-            if(bar) bar.innerHTML = '';
-            if(headerBox) headerBox.innerHTML = '';
-
-            appStatuses.forEach((st, idx) => {
-                if(bar) {
-                    bar.innerHTML += `
-                        <div class="status-item" onclick="openStatusViewer(${idx})">
-                            <div class="status-ring ${st.seen ? 'seen' : ''}">
-                                <img src="${st.media}" class="status-thumb" onerror="this.src='92600.png'">
+                {/* Mobile menu dropdown */}
+                {mobileMenuOpen && (
+                  <div className="md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-6 space-y-3">
+                    <button 
+                      onClick={() => { setActiveTab('home'); setMobileMenuOpen(false); }}
+                      className="block w-full text-left py-2 font-medium text-slate-700 hover:text-amber-600"
+                    >
+                      मुख्य पृष्ठ (Home)
+                    </button>
+                    <button 
+                      onClick={() => { setActiveTab('courses'); setMobileMenuOpen(false); }}
+                      className="block w-full text-left py-2 font-medium text-slate-700 hover:text-amber-600"
+                    >
+                      संचालित कक्षाएं (Courses)
+                    </button>
+                    <button 
+                      onClick={() => { setActiveTab('dashboard'); setMobileMenuOpen(false); }}
+                      className="block w-full text-left py-2 font-medium text-slate-700 hover:text-amber-600"
+                    >
+                      लाइव & वीडियो पोर्टल
+                    </button>
+                    <button 
+                      onClick={() => { setActiveTab('about'); setMobileMenuOpen(false); }}
+                      className="block w-full text-left py-2 font-medium text-slate-700 hover:text-amber-600"
+                    >
+                      विशेषताएं & समर्थक
+                    </button>
+                    <button 
+                      onClick={() => { setShowPayModal(true); setMobileMenuOpen(false); }}
+                      className="block w-full text-left py-2 font-bold text-emerald-600"
+                    >
+                      फीस भुगतान (₹{courseFee})
+                    </button>
+                    
+                    <div className="pt-4 border-t border-slate-100 flex flex-col gap-2">
+                      {currentUser ? (
+                        <div className="flex items-center justify-between bg-amber-50 p-3 rounded-xl border border-amber-200">
+                          <div className="flex items-center gap-3">
+                            <div className="w-9 h-9 rounded-full bg-amber-500 text-white font-bold flex items-center justify-center">
+                              {currentUser.name.charAt(0)}
                             </div>
-                            <div class="status-title">${st.title}</div>
-                        </div>
-                    `;
-                }
-
-                if(headerBox && idx < 2) {
-                    headerBox.innerHTML += `
-                        <div style="text-align:center; cursor:pointer;" onclick="openStatusViewer(${idx})">
-                            <div class="status-ring ${st.seen ? 'seen' : ''}" style="width:38px; height:38px;">
-                                <img src="${st.media}" class="status-thumb" onerror="this.src='92600.png'">
+                            <div>
+                              <div className="font-bold text-sm text-slate-800">{currentUser.name}</div>
+                              <div className="text-xs text-amber-700">{currentUser.role}</div>
                             </div>
-                            <span style="font-size:9px; color:var(--accent-gold); display:block; margin-top:2px;">${st.title}</span>
+                          </div>
+                          <button onClick={handleLogout} className="text-red-600 font-semibold text-sm">लॉग आउट</button>
                         </div>
-                    `;
-                }
-            });
-        }
-
-        function openStatusViewer(index) {
-            const st = appStatuses[index];
-            if(!st) return;
-
-            st.seen = true;
-            localStorage.setItem('aastha_statuses', JSON.stringify(appStatuses));
-            renderStatuses();
-
-            document.getElementById('status-author-name').innerText = st.title || 'Aastha Jewellery Status';
-            document.getElementById('status-caption-text').innerText = st.caption || '';
-            
-            const mediaBox = document.getElementById('status-media-container');
-            mediaBox.innerHTML = `<img src="${st.media}" onerror="this.src='92600.png'">`;
-
-            const modal = document.getElementById('status-modal');
-            modal.style.display = 'flex';
-
-            let progress = 0;
-            const fill = document.getElementById('status-progress');
-            fill.style.width = '0%';
-
-            clearInterval(statusProgressInterval);
-            statusProgressInterval = setInterval(() => {
-                progress += 2;
-                fill.style.width = progress + '%';
-                if(progress >= 100) {
-                    clearInterval(statusProgressInterval);
-                    if(index + 1 < appStatuses.length) {
-                        openStatusViewer(index + 1);
-                    } else {
-                        closeStatusViewer();
-                    }
-                }
-            }, 100);
-        }
-
-        function closeStatusViewer() {
-            clearInterval(statusProgressInterval);
-            document.getElementById('status-modal').style.display = 'none';
-        }
-
-        function postAdminStatus() {
-            const title = document.getElementById('adm-status-title').value.trim() || 'Aastha Update';
-            const caption = document.getElementById('adm-status-caption').value.trim();
-            const url = document.getElementById('adm-status-url').value.trim();
-            const fileInput = document.getElementById('adm-status-file');
-
-            const commitStatus = (mediaSrc) => {
-                appStatuses.unshift({
-                    id: Date.now(),
-                    title: title,
-                    caption: caption,
-                    media: mediaSrc || '92600.png',
-                    seen: false
-                });
-                localStorage.setItem('aastha_statuses', JSON.stringify(appStatuses));
-                renderStatuses();
-                showInfoModal("Status Published", "New Status posted successfully in App!");
-                document.getElementById('adm-status-title').value = '';
-                document.getElementById('adm-status-caption').value = '';
-                document.getElementById('adm-status-url').value = '';
-                
-                triggerRateToast('New Story / Update! ✨', title);
-            };
-
-            if (fileInput && fileInput.files && fileInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    commitStatus(e.target.result);
-                };
-                reader.readAsDataURL(fileInput.files[0]);
-            } else {
-                commitStatus(url);
-            }
-        }
-
-        function renderCatalog() {
-            const container = document.getElementById('catalog-container');
-            if (!container) return;
-            container.innerHTML = '';
-            catalogItems.forEach((item, index) => {
-                container.innerHTML += `
-                    <div class="catalog-card" onclick="openCatalogViewModal(${index})">
-                        <div class="catalog-img-wrapper">
-                            <img src="${item.img}" class="catalog-img" onerror="this.src='https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=300'">
-                        </div>
-                        <div class="catalog-title">${item.title}</div>
-                        <div class="catalog-meta">
-                            <span class="catalog-weight"><i class="fa-solid fa-weight-scale"></i> ${item.weight || 'Std'}</span>
-                            <span class="catalog-price">₹${item.price || 'NA'}</span>
-                        </div>
+                      ) : (
+                        <>
+                          <button 
+                            onClick={() => { setAuthMode('login'); setShowAuthModal(true); setMobileMenuOpen(false); }}
+                            className="w-full text-center py-2.5 rounded-xl border border-slate-300 font-semibold text-slate-700"
+                          >
+                            लॉग इन करें
+                          </button>
+                          <button 
+                            onClick={() => { setAuthMode('signup'); setShowAuthModal(true); setMobileMenuOpen(false); }}
+                            className="w-full text-center py-2.5 rounded-xl bg-amber-500 text-white font-bold shadow"
+                          >
+                            साइन अप करें
+                          </button>
+                        </>
+                      )}
                     </div>
-                `;
-            });
-        }
+                  </div>
+                )}
+              </header>
 
-        function renderAdminCatalogDeleteList() {
-            const listContainer = document.getElementById('admin-catalog-delete-list');
-            if (!listContainer) return;
-            listContainer.innerHTML = '';
-
-            if (catalogItems.length === 0) {
-                listContainer.innerHTML = '<p style="font-size:11px; color:#94a3b8; text-align:center;">No catalog items found.</p>';
-                return;
-            }
-
-            catalogItems.forEach((item, idx) => {
-                listContainer.innerHTML += `
-                    <div class="admin-delete-row">
-                        <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:200px;">${idx + 1}. ${item.title}</span>
-                        <button onclick="deleteCatalogItem(${idx})" style="background:#ef4444; color:#fff; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; font-size:11px;"><i class="fa-solid fa-trash"></i> Delete</button>
-                    </div>
-                `;
-            });
-        }
-
-        function deleteCatalogItem(index) {
-            if (confirm(`Kya aap "${catalogItems[index].title}" ko delete karna chahte hain?`)) {
-                catalogItems.splice(index, 1);
-                localStorage.setItem('aastha_catalog', JSON.stringify(catalogItems));
-                renderCatalog();
-                renderAdminCatalogDeleteList();
-                showInfoModal("Deleted", "Catalog item successfully deleted!");
-            }
-        }
-
-        function openCatalogViewModal(index) {
-            const item = catalogItems[index];
-            if (!item) return;
-            document.getElementById('catalog-item-title').innerText = item.title;
-            document.getElementById('catalog-item-img').src = item.img;
-            document.getElementById('catalog-item-weight').innerText = item.weight || 'Standard';
-            document.getElementById('catalog-item-price').innerText = item.price ? ('₹ ' + item.price) : 'Contact for Price';
-            
-            const currWa = localStorage.getItem('aastha_whatsapp') || '8887726720';
-            const msg = encodeURIComponent(`Hello Aastha Jewellery, I want to inquire about Shrimukh Design:\n\nItem: ${item.title}\nWeight: ${item.weight || 'Std'}\nPrice: ₹${item.price || 'NA'}`);
-            
-            document.getElementById('catalog-wa-inquire').onclick = function() {
-                window.open(`https://wa.me/91${currWa}?text=${msg}`, '_blank');
-            };
-
-            document.getElementById('catalog-view-modal').style.display = 'flex';
-        }
-
-        function closeCatalogViewModal() {
-            document.getElementById('catalog-view-modal').style.display = 'none';
-        }
-
-        function loadCustomSettings() {
-            const savedRates = JSON.parse(localStorage.getItem('aastha_rates'));
-            if (savedRates) {
-                if (savedRates.r9999) document.getElementById('rate-9999').innerText = '₹ ' + savedRates.r9999;
-                if (savedRates.r9950) document.getElementById('rate-9950').innerText = '₹ ' + savedRates.r9950;
-                if (savedRates.rBadiya) document.getElementById('rate-badiya').innerText = '₹ ' + savedRates.rBadiya;
-                if (savedRates.rBank) document.getElementById('rate-bank').innerText = '₹ ' + savedRates.rBank;
-            }
-        }
-
-        function requestOtp() {
-            const name = document.getElementById('user-name').value.trim();
-            let phone = document.getElementById('user-phone').value.trim();
-            
-            if(!name || phone.length < 10) {
-                showInfoModal("Input Error", "Kripya apna Sahi Naam aur 10-digit Mobile Number darj karein!");
-                return;
-            }
-
-            if(!phone.startsWith('+')) {
-                phone = '+91' + phone;
-            }
-
-            const btn = document.getElementById('btn-send-otp');
-            btn.innerText = 'Sending OTP...';
-            btn.disabled = true;
-
-            if (!window.recaptchaVerifier) {
-                initRecaptcha();
-            }
-
-            const appVerifier = window.recaptchaVerifier;
-
-            if (typeof firebase !== 'undefined' && firebase.auth) {
-                firebase.auth().signInWithPhoneNumber(phone, appVerifier)
-                    .then((confirmationResult) => {
-                        window.confirmationResult = confirmationResult;
-                        showInfoModal("OTP Sent", "SMS OTP Aapke Mobile Par Bhej Diya Gaya Hai!");
-                        document.getElementById('step-phone').style.display = 'none';
-                        document.getElementById('step-otp').style.display = 'block';
-                    }).catch((error) => {
-                        isFallbackMode = true;
-                        showInfoModal("Demo Mode", "Demo Mode Active!\n\nUse Demo OTP Code: 123456");
-                        document.getElementById('step-phone').style.display = 'none';
-                        document.getElementById('step-otp').style.display = 'block';
-                        document.getElementById('otp-hint-text').innerText = "Use Demo OTP: 123456 to Login";
-                    });
-            } else {
-                isFallbackMode = true;
-                showInfoModal("Demo Mode", "Demo Code: 123456");
-                document.getElementById('step-phone').style.display = 'none';
-                document.getElementById('step-otp').style.display = 'block';
-            }
-        }
-
-        function verifyOtp() {
-            const code = document.getElementById('otp-input').value.trim();
-            const name = document.getElementById('user-name').value.trim() || "User";
-
-            if(!code || code.length !== 6) {
-                showInfoModal("Input Error", "Kripya 6-digit OTP Daalein!");
-                return;
-            }
-
-            const btn = document.getElementById('btn-verify-otp');
-            btn.innerText = 'Verifying...';
-            btn.disabled = true;
-
-            if (isFallbackMode) {
-                if (code === "123456") {
-                    localStorage.setItem('aastha_user', name);
-                    document.getElementById('user-display-name').innerText = name;
-                    document.getElementById('auth-screen').style.display = 'none';
-                    speakWelcome(name);
-                    showInfoModal("Login Success", "Welcome " + name + " ! Login Successful!");
-                } else {
-                    showInfoModal("Error", "Galat OTP! Kripya 123456 enter karein.");
-                    btn.innerText = 'Verify & Login';
-                    btn.disabled = false;
-                }
-            } else if (window.confirmationResult) {
-                window.confirmationResult.confirm(code).then((result) => {
-                    localStorage.setItem('aastha_user', name);
-                    document.getElementById('user-display-name').innerText = name;
-                    document.getElementById('auth-screen').style.display = 'none';
-                    speakWelcome(name);
-                    showInfoModal("Login Success", "Login Successful!");
-                }).catch((error) => {
-                    showInfoModal("Error", "Galat OTP Daala Gaya Hai: " + error.message);
-                    btn.innerText = 'Verify & Login';
-                    btn.disabled = false;
-                });
-            }
-        }
-
-        function logout() {
-            try {
-                if (typeof firebase !== 'undefined' && firebase.auth) {
-                    firebase.auth().signOut();
-                }
-            } catch(e){}
-            localStorage.removeItem('aastha_user');
-            location.reload();
-        }
-
-        function switchTab(tabId, element) {
-            document.querySelectorAll('.tab-page').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            document.getElementById('tab-' + tabId).classList.add('active');
-            if(element) element.classList.add('active');
-        }
-
-        function openGstModal() { document.getElementById('gst-modal').style.display = 'flex'; }
-        function closeGstModal() { document.getElementById('gst-modal').style.display = 'none'; }
-        
-        function calcGst() {
-            const amt = parseFloat(document.getElementById('gst-amount').value) || 0;
-            const tax = amt * 0.03;
-            document.getElementById('gst-tax').innerText = tax.toFixed(2);
-            document.getElementById('gst-total').innerText = (amt + tax).toFixed(2);
-        }
-
-        function openAdminModal() {
-            document.getElementById('admin-modal').style.display = 'flex';
-            document.getElementById('admin-login-sec').style.display = 'block';
-            document.getElementById('admin-controls-sec').style.display = 'none';
-        }
-        function closeAdminModal() { document.getElementById('admin-modal').style.display = 'none'; }
-
-        function verifyAdminPass() {
-            const inputPass = document.getElementById('admin-pass-input').value;
-            if (inputPass === adminPassword) {
-                document.getElementById('admin-login-sec').style.display = 'none';
-                document.getElementById('admin-controls-sec').style.display = 'block';
-                renderAdminCatalogDeleteList();
-            } else {
-                showInfoModal("Admin Login Failed", "Wrong Password! Try default: 123");
-            }
-        }
-
-        function saveAdminChanges() {
-            const r9999 = document.getElementById('adm-rate-9999').value;
-            const r9950 = document.getElementById('adm-rate-9950').value;
-            const rBadiya = document.getElementById('adm-rate-badiya').value;
-            const rBank = document.getElementById('adm-rate-bank').value;
-            const wa = document.getElementById('adm-whatsapp').value.trim();
-            
-            const itemTitle = document.getElementById('adm-item-title').value.trim();
-            const itemWeight = document.getElementById('adm-item-weight').value.trim();
-            const itemPrice = document.getElementById('adm-item-price').value.trim();
-            const itemImgUrl = document.getElementById('adm-item-img').value.trim();
-            const itemFileInput = document.getElementById('adm-item-file');
-
-            if (r9999 || r9950 || rBadiya || rBank) {
-                const ratesObj = {
-                    r9999: r9999 || document.getElementById('rate-9999').innerText.replace('₹ ', ''),
-                    r9950: r9950 || document.getElementById('rate-9950').innerText.replace('₹ ', ''),
-                    rBadiya: rBadiya || document.getElementById('rate-badiya').innerText.replace('₹ ', ''),
-                    rBank: rBank || document.getElementById('rate-bank').innerText.replace('₹ ', '')
-                };
-                localStorage.setItem('aastha_rates', JSON.stringify(ratesObj));
-                triggerRateToast('Rates Updated by Admin! 📈', `99.99 Retail: ₹ ${ratesObj.r9999}`);
-            }
-
-            if (wa) {
-                localStorage.setItem('aastha_whatsapp', wa);
-            }
-
-            const commitNewProduct = (finalImgSrc) => {
-                if (itemTitle) {
-                    catalogItems.unshift({ 
-                        title: itemTitle, 
-                        weight: itemWeight || 'Std', 
-                        price: itemPrice || 'NA', 
-                        img: finalImgSrc || 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=300' 
-                    });
-                    localStorage.setItem('aastha_catalog', JSON.stringify(catalogItems));
-                }
-                loadCustomSettings();
-                renderCatalog();
-                renderAdminCatalogDeleteList();
+              {/* MAIN CONTENT ROUTING */}
+              <main className="flex-grow">
                 
-                document.getElementById('adm-item-title').value = '';
-                document.getElementById('adm-item-weight').value = '';
-                document.getElementById('adm-item-price').value = '';
-                document.getElementById('adm-item-img').value = '';
-                if(itemFileInput) itemFileInput.value = '';
+                {/* CK SIR EXCLUSIVE ADMIN CONTROL DASHBOARD */}
+                {currentUser && currentUser.email === 'ckadmin@gurukul.edu' && showAdminPanel && (
+                  <div className="bg-amber-50 border-b border-amber-200 p-6 shadow-inner animate-fade-in">
+                    <div className="max-w-7xl mx-auto">
+                      <div className="flex items-center justify-between mb-4">
+                        <div>
+                          <h2 className="text-2xl font-black text-amber-900">👑 Chandan Sir (Ck Sir) Live Control Center</h2>
+                          <p className="text-xs text-amber-700 mt-1">Yahan se aap portal updates, fees, WhatsApp announcements aur videos manage kar sakte hain.</p>
+                        </div>
+                        <span className="px-3 py-1 bg-amber-200 text-amber-900 text-xs font-bold rounded-full">Admin Active</span>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        
+                        {/* 1. WhatsApp Broadcast Box */}
+                        <div className="bg-white p-5 rounded-2xl shadow-sm border border-amber-300">
+                          <h3 className="font-bold text-base text-slate-900 mb-2 flex items-center gap-2">
+                            📱 WhatsApp Broadcast System
+                          </h3>
+                          <p className="text-xs text-slate-500 mb-3">Aaj live class chalegi ya nahi, chutti ka update ek click par sabhi students ke WhatsApp par bhejein.</p>
+                          <textarea 
+                            rows="3" 
+                            value={adminMsg} 
+                            onChange={(e)=>setAdminMsg(e.target.value)} 
+                            placeholder="Yahan message type karein (jaise: Aaj shaam 6 baje Live Class chalegi)..." 
+                            className="w-full p-2.5 rounded-xl border border-slate-200 text-xs mb-3 focus:outline-none focus:border-amber-500"
+                          ></textarea>
+                          <button 
+                            onClick={handleSendWhatsAppBroadcast} 
+                            className="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow transition"
+                          >
+                            WhatsApp Par Message Bhejein (1-Click)
+                          </button>
+                        </div>
 
-                showInfoModal("Admin Update", "Changes saved & new item added successfully!");
-            };
+                        {/* 2. Video Upload & Delete Manager */}
+                        <div className="bg-white p-5 rounded-2xl shadow-sm border border-amber-300">
+                          <h3 className="font-bold text-base text-slate-900 mb-2 flex items-center gap-2">
+                            🎥 Naya Video / Student Solution Upload
+                          </h3>
+                          <form onSubmit={handleUploadVideo} className="space-y-2 text-xs">
+                            <input 
+                              type="text" 
+                              required 
+                              placeholder="Video Title (jaise: Class 10 Math Problem Solution)" 
+                              value={newVidTitle} 
+                              onChange={(e)=>setNewVidTitle(e.target.value)} 
+                              className="w-full p-2 rounded-xl border border-slate-200" 
+                            />
+                            <select 
+                              value={newVidClass} 
+                              onChange={(e)=>setNewVidClass(e.target.value)} 
+                              className="w-full p-2 rounded-xl border border-slate-200"
+                            >
+                              <option value="Tuition (LKG-10th)">Tuition (LKG to 10th)</option>
+                              <option value="Class 9th & 10th">9th & 10th Special Batch</option>
+                              <option value="11th & 12th">11th & 12th Batch</option>
+                              <option value="CHS Entrance">CHS Entrance (6th & 9th)</option>
+                              <option value="Navodaya / Sainik">Navodaya / Sainik School</option>
+                            </select>
+                            <select 
+                              value={newVidCategory} 
+                              onChange={(e)=>setNewVidCategory(e.target.value)} 
+                              className="w-full p-2 rounded-xl border border-slate-200"
+                            >
+                              <option value="Class Video">Sir Recorded Lecture</option>
+                              <option value="Live Stream">Live Stream Video</option>
+                              <option value="Student Solution">Student Board Solution Video</option>
+                            </select>
+                            <button 
+                              type="submit" 
+                              className="w-full py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow transition"
+                            >
+                              Video Portal Par Upload Karein
+                            </button>
+                          </form>
+                        </div>
 
-            if (itemFileInput && itemFileInput.files && itemFileInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    commitNewProduct(e.target.result);
-                };
-                reader.readAsDataURL(fileInput.files[0]);
-            } else {
-                commitNewProduct(itemImgUrl);
-            }
+                        {/* 3. Fee & Price Manager */}
+                        <div className="bg-white p-5 rounded-2xl shadow-sm border border-amber-300">
+                          <h3 className="font-bold text-base text-slate-900 mb-2 flex items-center gap-2">
+                            💰 Dynamic Course Fee Management
+                          </h3>
+                          <p className="text-xs text-slate-500 mb-3">Sir apne according kitni bhi fees change kar sakte hain jo payment receipt par dikhegi.</p>
+                          <div className="flex gap-2 mb-3">
+                            <input 
+                              type="number" 
+                              value={courseFee} 
+                              onChange={(e)=>setCourseFee(e.target.value)} 
+                              className="w-full p-2 rounded-xl border border-slate-200 text-sm font-bold" 
+                            />
+                            <span className="p-2 bg-slate-100 rounded-xl text-xs font-bold flex items-center">INR</span>
+                          </div>
+                          <button 
+                            onClick={()=>alert('Course fee updated to ₹' + courseFee)} 
+                            className="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-amber-600 text-white font-bold text-xs shadow transition"
+                          >
+                            Fees Save Karein
+                          </button>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* HOME TAB */}
+                {activeTab === 'home' && (
+                  <div>
+                    {/* HERO SECTION */}
+                    <section className="relative overflow-hidden bg-gradient-to-b from-amber-50/80 via-white to-slate-50 py-16 sm:py-24">
+                      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                        <div className="text-center max-w-3xl mx-auto">
+                          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-100 text-amber-800 text-sm font-semibold mb-6 border border-amber-200 shadow-sm animate-pulse">
+                            <Sparkles className="w-4 h-4 text-amber-600" />
+                            <span>Ck Sir (M.A + B.Ed) - एक राह, काबिलियत से कामयाबी की ओर!</span>
+                          </div>
+                          
+                          <h1 className="text-4xl sm:text-6xl font-black text-slate-900 tracking-tight leading-tight">
+                            Learn with <span className="text-amber-600">Gurukul</span> <br className="hidden sm:inline" />
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 via-orange-600 to-amber-500">
+                              डिजिटल शिक्षा क्रांति!
+                            </span>
+                          </h1>
+                          
+                          <p className="mt-6 text-lg sm:text-xl text-slate-600 leading-relaxed font-normal">
+                            आपका विश्वास, हमारा प्रयास - बच्चों के सर्वांगीण विकास एवं सफलता का राज़। LKG से 12वीं तक और CHS, Navodaya, Sainik School की सर्वोत्तम तैयारी।
+                          </p>
+
+                          {/* Role Selector Buttons */}
+                          <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto">
+                            <div 
+                              onClick={() => { setSelectedRole('Student'); setAuthMode('signup'); setShowAuthModal(true); }}
+                              className="p-5 bg-white rounded-2xl border-2 border-slate-200 hover:border-amber-500 hover:shadow-xl transition-all cursor-pointer group text-left flex items-center justify-between"
+                            >
+                              <div>
+                                <h3 className="font-bold text-lg text-slate-900 group-hover:text-amber-600">छात्र (Student)</h3>
+                                <p className="text-xs text-slate-500 mt-1">ऑनलाइन क्लासेज व अभ्यास</p>
+                              </div>
+                              <GraduationCap className="w-7 h-7 text-amber-500 group-hover:scale-110 transition" />
+                            </div>
+
+                            <div 
+                              onClick={() => { setSelectedRole('Parent'); setAuthMode('signup'); setShowAuthModal(true); }}
+                              className="p-5 bg-white rounded-2xl border-2 border-slate-200 hover:border-amber-500 hover:shadow-xl transition-all cursor-pointer group text-left flex items-center justify-between"
+                            >
+                              <div>
+                                <h3 className="font-bold text-lg text-slate-900 group-hover:text-amber-600">परिवार (Parent)</h3>
+                                <p className="text-xs text-slate-500 mt-1">अपने बच्चे की प्रगति निगरानी</p>
+                              </div>
+                              <UserCheck className="w-7 h-7 text-emerald-500 group-hover:scale-110 transition" />
+                            </div>
+
+                            <div 
+                              onClick={() => { setSelectedRole('Teacher'); setAuthMode('signup'); setShowAuthModal(true); }}
+                              className="p-5 bg-white rounded-2xl border-2 border-slate-200 hover:border-amber-500 hover:shadow-xl transition-all cursor-pointer group text-left flex items-center justify-between"
+                            >
+                              <div>
+                                <h3 className="font-bold text-lg text-slate-900 group-hover:text-amber-600">शिक्षक / Ck Sir</h3>
+                                <p className="text-xs text-slate-500 mt-1">कक्षा के साथ मार्गदर्शन</p>
+                              </div>
+                              <BookOpen className="w-7 h-7 text-indigo-500 group-hover:scale-110 transition" />
+                            </div>
+                          </div>
+
+                          <div className="mt-6 p-4 bg-amber-50 rounded-2xl border border-amber-200 inline-block text-xs font-bold text-amber-900">
+                            💡 Sir Admin Portal Access: Login Email: <span className="underline font-mono">ckadmin@gurukul.edu</span> (Password: any)
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+
+                    {/* SCORE IMPROVEMENT & ACCORDION SECTION */}
+                    <section className="py-16 bg-white border-t border-slate-100">
+                      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+                        <div className="text-center mb-10">
+                          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900">
+                            Learn with Gurukul आपके स्कोर को बढ़ाता है!
+                          </h2>
+                          <p className="mt-3 text-slate-600 text-lg">
+                            वीडियो देखकर, अभ्यास प्रश्नों को हल करके और AI सहायता प्राप्त करके अपनी पढ़ाई को बनाएं आसान।
+                          </p>
+                        </div>
+
+                        {/* Course List Accordions */}
+                        <div className="space-y-3 bg-slate-50 p-4 rounded-3xl border border-slate-200 shadow-inner">
+                          {courseCategories.map((course) => (
+                            <div 
+                              key={course.id}
+                              className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm transition hover:shadow-md"
+                            >
+                              <button 
+                                onClick={() => toggleCourseExpand(course.id)}
+                                className="w-full flex items-center justify-between p-4 sm:p-5 text-left focus:outline-none"
+                              >
+                                <div className="flex items-center gap-4">
+                                  <span className="text-3xl">{course.icon}</span>
+                                  <div>
+                                    <h3 className="font-bold text-slate-900 text-lg">{course.title}</h3>
+                                    <span className="text-xs text-amber-700 font-medium">{course.count}</span>
+                                  </div>
+                                </div>
+                                {expandedCourse === course.id ? (
+                                  <ChevronUp className="w-5 h-5 text-amber-600" />
+                                ) : (
+                                  <ChevronDown className="w-5 h-5 text-slate-400" />
+                                )}
+                              </button>
+
+                              {expandedCourse === course.id && (
+                                <div className="px-5 pb-5 pt-1 border-t border-slate-100 bg-amber-50/40">
+                                  <h4 className="text-xs font-bold uppercase text-slate-500 tracking-wider mb-2">मुख्य अध्याय & विशेषताएँ:</h4>
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                    {course.topics.map((topic, i) => (
+                                      <div key={i} className="flex items-center gap-2 text-sm text-slate-700 bg-white p-2 rounded-lg border border-slate-200">
+                                        <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                                        <span>{topic}</span>
+                                      </div>
+                                    ))}
+                                  </div>
+                                  <button 
+                                    onClick={() => setActiveTab('dashboard')}
+                                    className="mt-4 w-full sm:w-auto px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-sm shadow transition"
+                                  >
+                                    इस विषय का अध्ययन शुरू करें
+                                  </button>
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </section>
+
+                    {/* WHY GURUKUL WORKS */}
+                    <section className="py-16 bg-slate-50 border-t border-slate-200">
+                      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="text-center max-w-2xl mx-auto mb-12">
+                          <h2 className="text-3xl font-extrabold text-slate-900">
+                            Learn with Gurukul क्यों सहायक है?
+                          </h2>
+                          <p className="text-slate-600 mt-2">Ck Sir द्वारा तैयार की गई शिक्षण प्रणाली की विशेषताएं</p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                          <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm text-center flex flex-col items-center hover:-translate-y-1 transition duration-300">
+                            <div className="w-16 h-16 bg-amber-100 rounded-2xl flex items-center justify-center text-amber-600 mb-6">
+                              <BrainCircuit className="w-8 h-8" />
+                            </div>
+                            <h3 className="text-xl font-bold text-slate-900 mb-3">Basic to Advance Classes</h3>
+                            <p className="text-slate-600 text-sm leading-relaxed">
+                              कमजोर विद्यार्थियों के लिए सप्ताह में विशेष कक्षाएं, हस्तलिखित Notes WhatsApp पर भेजना और गृहकार्य (Homework) पूर्ण करवाने की अतिरिक्त व्यवस्था।
+                            </p>
+                          </div>
+
+                          <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm text-center flex flex-col items-center hover:-translate-y-1 transition duration-300">
+                            <div className="w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center text-emerald-600 mb-6">
+                              <ShieldCheck className="w-8 h-8" />
+                            </div>
+                            <h3 className="text-xl font-bold text-slate-900 mb-3">भरोसेमंद एवं गुणवत्तापूर्ण शिक्षा</h3>
+                            <p className="text-slate-600 text-sm leading-relaxed">
+                              अनुभवी विषय विशेषज्ञ Chandan Sir (M.A + B.Ed) एवं उनकी टीम द्वारा तैयार पाठ। प्रत्येक रविवार को विशेष डाउट सॉल्विंग क्लासेस।
+                            </p>
+                          </div>
+
+                          <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm text-center flex flex-col items-center hover:-translate-y-1 transition duration-300">
+                            <div className="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center text-indigo-600 mb-6">
+                              <BarChart3 className="w-8 h-8" />
+                            </div>
+                            <h3 className="text-xl font-bold text-slate-900 mb-3">विशेष प्रतियोगी परीक्षाओं की तैयारी</h3>
+                            <p className="text-slate-600 text-sm leading-relaxed">
+                              CHS (6th & 9th), Navodaya (6th & 9th), Sainik School (6th) एवं Ashram Padhyati के लिए प्रतिस्पर्धात्मक एवं भावी प्रतियोगी परीक्षाओं से परिपूर्ण वातावरण।
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+
+                    {/* SAMARTHAK SCHOOLS SECTION */}
+                    <section className="py-16 bg-slate-900 text-white">
+                      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                        <h2 className="text-3xl font-extrabold mb-3">हमारे सहयोगी शिक्षण संस्थान (Samarthak Schools)</h2>
+                        <p className="text-slate-400 mb-10 text-sm">इन प्रतिष्ठित विद्यालयों के सहयोग व मार्गदर्शन से छात्र सफलता की ओर बढ़ रहे हैं:</p>
+                        
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                          {schoolsList.map((school, idx) => (
+                            <div key={idx} className="bg-slate-800 p-5 rounded-2xl border border-slate-700 font-semibold text-amber-300 shadow flex items-center justify-center gap-3">
+                              <span>🏫</span>
+                              <span>{school}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                )}
+
+                {/* COURSES TAB */}
+                {activeTab === 'courses' && (
+                  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                    <div className="mb-8">
+                      <h1 className="text-3xl font-extrabold text-slate-900">सभी उपलब्ध पाठ्य क्रम & कक्षाएं (All Courses)</h1>
+                      <p className="text-slate-600 mt-1">LKG से 12वीं तक तथा प्रतियोगी प्रवेश परीक्षाओं के लिए उपलब्ध बैचेस</p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {courseCategories.map((c) => (
+                        <div key={c.id} className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition flex flex-col justify-between p-6">
+                          <div>
+                            <div className="flex items-center justify-between mb-4">
+                              <span className="text-4xl">{c.icon}</span>
+                              <span className="px-3 py-1 bg-amber-100 text-amber-800 text-xs font-bold rounded-full">
+                                {c.category}
+                              </span>
+                            </div>
+                            <h3 className="text-xl font-bold text-slate-900 mb-2">{c.title}</h3>
+                            <p className="text-xs text-amber-700 font-medium mb-4">{c.count}</p>
+                            
+                            <div className="space-y-2 mb-6">
+                              {c.topics.map((t, i) => (
+                                <div key={i} className="text-xs text-slate-700 flex items-center gap-2 bg-slate-50 p-2 rounded-lg border border-slate-200">
+                                  <span className="w-2 h-2 rounded-full bg-amber-500"></span>
+                                  {t}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          <button 
+                            onClick={() => setActiveTab('dashboard')}
+                            className="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-amber-600 text-white font-bold text-sm transition"
+                          >
+                            क्लास वीडियो पोर्टल पर जाएं
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* DASHBOARD & VIDEO PORTAL TAB */}
+                {activeTab === 'dashboard' && (
+                  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                    <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4">
+                      <div>
+                        <h1 className="text-2xl font-black text-slate-900">🎥 Live & Video Portal</h1>
+                        <p className="text-xs text-slate-500">Sir dwara upload ki gayi classes aur students ke board solution videos</p>
+                      </div>
+
+                      {/* Video Category Filter */}
+                      <div className="flex items-center gap-2 bg-slate-100 p-1.5 rounded-xl border border-slate-200">
+                        {['All', 'Class Video', 'Live Stream', 'Student Solution', 'Competitive'].map((cat) => (
+                          <button
+                            key={cat}
+                            onClick={() => setSelectedCategory(cat)}
+                            className={`px-3 py-1 text-xs font-bold rounded-lg transition ${
+                              selectedCategory === cat ? 'bg-amber-500 text-white shadow-sm' : 'text-slate-600 hover:bg-white'
+                            }`}
+                          >
+                            {cat === 'All' ? 'सभी वीडियो' : cat === 'Student Solution' ? 'स्टूडेंट सॉल्यूशन' : cat}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col md:flex-row gap-8">
+                      
+                      {/* Video Player */}
+                      <div className="flex-1">
+                        <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm p-6 mb-6">
+                          <div className="flex items-center justify-between mb-4">
+                            <span className="px-3 py-1 bg-red-100 text-red-700 font-bold text-xs rounded-full flex items-center gap-1">
+                              <PlayCircle className="w-3.5 h-3.5" /> वीडियो क्लास LIVE / RECORDED
+                            </span>
+                            <span className="text-xs text-slate-500">by Chandan Sir (Ck Sir)</span>
+                          </div>
+
+                          <h2 className="text-2xl font-bold text-slate-900 mb-4">{activeLesson.title}</h2>
+
+                          {/* Mock Video Container */}
+                          <div className="relative aspect-video bg-slate-900 rounded-2xl overflow-hidden flex items-center justify-center text-white shadow-inner group">
+                            <div className="text-center p-6">
+                              <div className="w-16 h-16 bg-amber-500/90 rounded-full flex items-center justify-center mx-auto mb-3 cursor-pointer hover:scale-110 transition shadow-lg">
+                                <PlayCircle className="w-10 h-10 text-white" />
+                              </div>
+                              <p className="font-semibold text-lg">{activeLesson.title}</p>
+                              <p className="text-xs text-slate-400 mt-1">वीडियो प्ले करने के लिए क्लिक करें</p>
+                            </div>
+                          </div>
+
+                          <div className="mt-4 flex items-center justify-between text-xs text-slate-500 border-t border-slate-100 pt-3">
+                            <span className="flex items-center gap-1"><Clock className="w-4 h-4" /> 30 मिनट</span>
+                            <span className="flex items-center gap-1"><Star className="w-4 h-4 text-amber-500" /> 5.0 (Gurukul Verified)</span>
+                          </div>
+                        </div>
+
+                        {/* Interactive Quiz */}
+                        <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+                          <div className="flex items-center justify-between mb-4">
+                            <h3 className="font-bold text-lg text-slate-900 flex items-center gap-2">
+                              <BookMarked className="w-5 h-5 text-amber-600" />
+                              अभ्यास प्रश्न (Interactive Quiz)
+                            </h3>
+                            <span className="text-sm font-semibold text-amber-700 bg-amber-50 px-3 py-1 rounded-full border border-amber-200">
+                              स्कोर: {score} अंक
+                            </span>
+                          </div>
+
+                          <div className="bg-slate-50 p-5 rounded-2xl border border-slate-200 mb-4">
+                            <p className="font-semibold text-slate-800 text-base mb-4">
+                              प्रश्न 1: यदि sin(A) = 3/5 है, तो cos(A) का मान क्या होगा?
+                            </p>
+
+                            <div className="space-y-2.5">
+                              {[
+                                { id: 'a', text: '4/5', correct: true },
+                                { id: 'b', text: '5/3', correct: false },
+                                { id: 'c', text: '3/4', correct: false },
+                                { id: 'd', text: '1/2', correct: false }
+                              ].map((opt) => (
+                                <button
+                                  key={opt.id}
+                                  onClick={() => {
+                                    setQuizAnswered(opt.id);
+                                    if (opt.correct && quizAnswered !== opt.id) {
+                                      setScore(score + 10);
+                                    }
+                                  }}
+                                  className={`w-full text-left p-3.5 rounded-xl border text-sm font-medium transition flex items-center justify-between ${
+                                    quizAnswered === opt.id 
+                                      ? opt.correct 
+                                        ? 'bg-emerald-50 border-emerald-500 text-emerald-900 font-bold' 
+                                        : 'bg-red-50 border-red-500 text-red-900'
+                                      : 'bg-white border-slate-200 hover:border-amber-400 text-slate-700'
+                                  }`}
+                                >
+                                  <span>{opt.id.toUpperCase()}. {opt.text}</span>
+                                  {quizAnswered === opt.id && (
+                                    opt.correct ? (
+                                      <CheckCircle className="w-5 h-5 text-emerald-600" />
+                                    ) : (
+                                      <span className="text-xs text-red-600 font-bold">गलत उत्तर</span>
+                                    )
+                                  )}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Right Playlist Sidebar */}
+                      <div className="w-full md:w-80 flex flex-col gap-6">
+                        <div className="bg-white rounded-3xl border border-slate-200 p-5 shadow-sm">
+                          <h4 className="font-bold text-slate-900 text-base mb-4">📚 Video Playlist</h4>
+                          
+                          <div className="space-y-3 max-h-[500px] overflow-y-auto pr-1">
+                            {uploadedVideos
+                              .filter(v => selectedCategory === 'All' || v.category === selectedCategory)
+                              .map((vid) => (
+                                <div 
+                                  key={vid.id}
+                                  onClick={() => setActiveLesson({ id: vid.id, title: vid.title, subject: vid.classLevel })}
+                                  className="p-3 bg-slate-50 hover:bg-amber-50 rounded-2xl border border-slate-200 cursor-pointer transition flex items-center justify-between text-xs"
+                                >
+                                  <div>
+                                    <div className="font-bold text-slate-800 leading-tight">{vid.title}</div>
+                                    <div className="text-[11px] text-amber-700 font-medium mt-1">{vid.classLevel} • {vid.author}</div>
+                                  </div>
+                                  {currentUser && currentUser.email === 'ckadmin@gurukul.edu' && (
+                                    <button 
+                                      onClick={(e) => { e.stopPropagation(); handleDeleteVideo(vid.id); }} 
+                                      className="p-1 text-red-600 hover:bg-red-50 rounded"
+                                    >
+                                      ✕
+                                    </button>
+                                  )}
+                                </div>
+                              ))}
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                )}
+
+                {/* ABOUT TAB */}
+                {activeTab === 'about' && (
+                  <div className="max-w-4xl mx-auto px-4 py-16 text-center">
+                    <img 
+                      src="Log.png" 
+                      alt="Logo" 
+                      className="w-24 h-24 rounded-3xl object-cover mx-auto mb-6 shadow-xl border-2 border-amber-500" 
+                      onError={(e)=>{ e.target.onerror = null; e.target.src='https://placehold.co/100x100/0f172a/f59e0b?text=Gurukul'; }}
+                    />
+                    <h1 className="text-3xl sm:text-4xl font-black text-slate-900">Learn with Gurukul</h1>
+                    <p className="text-lg text-amber-700 font-bold mt-1">By Chandan Sir (Ck Sir) [M.A + B.Ed]</p>
+
+                    <div className="mt-8 text-slate-600 leading-relaxed text-base space-y-4 text-left bg-white p-8 rounded-3xl border border-slate-200 shadow-sm">
+                      <p>
+                        <strong>Learn with Gurukul</strong> का मुख्य उद्देश्य बच्चों में अनुशासन, प्रतिष्ठा, नैतिकता, गुणवत्तापूर्ण शिक्षा के साथ सामाजिक संबंधी समझ का विकास करना है।
+                      </p>
+                      <p>
+                        मानसिक विकास तथा चरित्र निर्माण पर विशेष ध्यान एवं शारीरिक विकास हेतु सलाह दी जाती है। कमजोर छात्र-छात्राओं के लिए Basic to Advance classes एवं हस्तलिखित Notes WhatsApp पर Send किए जाते हैं।
+                      </p>
+                      <p>
+                        <strong>संचालित कक्षाएं:</strong> LKG से 12th तक + प्रतियोगी परीक्षाओं (CHS, Navodaya, Sainik School, Ashram Padhyati) की तैयारी।
+                      </p>
+                      <p className="pt-2 text-amber-800 font-bold">
+                        📞 सम्पर्क सूत्र: 8840008485
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+              </main>
+
+              {/* PAYMENT MODAL (UPI QR & Slip) */}
+              {showPayModal && (
+                <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
+                  <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full p-6 relative text-center border border-slate-100">
+                    <button 
+                      onClick={() => { setShowPayModal(false); setPaySuccess(false); }} 
+                      className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 font-bold"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                    
+                    <h3 className="text-2xl font-black text-slate-900 mb-1">Gurukul Fee Payment</h3>
+                    <p className="text-xs text-slate-500 mb-4">Scan QR code via PhonePe, Google Pay, Paytm or UPI app.</p>
+                    
+                    <div className="bg-slate-100 p-4 rounded-2xl border border-slate-200 inline-block mb-4">
+                      <div className="font-mono font-bold text-amber-700 text-sm mb-1">UPI ID: 8840008485@ibl</div>
+                      <div className="text-xs font-bold text-slate-700 mb-2">Total Amount: ₹{courseFee}</div>
+                      <div className="w-48 h-48 bg-slate-300 mx-auto rounded-xl flex items-center justify-center text-xs font-bold text-slate-600 border">
+                        [ SBI QR Code - 6938 ]
+                      </div>
+                    </div>
+
+                    {!paySuccess ? (
+                      <button 
+                        onClick={() => setPaySuccess(true)} 
+                        className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow text-sm transition"
+                      >
+                        Maine Payment Kar Diya (Generate Receipt)
+                      </button>
+                    ) : (
+                      <div className="bg-emerald-50 border border-emerald-300 p-4 rounded-2xl text-emerald-900 text-xs text-left space-y-1">
+                        <div className="font-bold text-sm text-center mb-2">✅ Payment Successful & Lifetime Valid Slip</div>
+                        <div><strong>Receiver:</strong> Chandan Sir (Ck Sir)</div>
+                        <div><strong>Bank A/C:</strong> State Bank of India - 6938</div>
+                        <div><strong>Amount Paid:</strong> ₹{courseFee}</div>
+                        <div><strong>Transaction ID:</strong> GURUKUL{Math.floor(Math.random()*1000000000)}</div>
+                        <div><strong>Validity:</strong> Lifetime Verified</div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* AUTH MODAL */}
+              {showAuthModal && (
+                <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
+                  <div className="bg-white rounded-3xl shadow-2xl border border-slate-100 max-w-md w-full overflow-hidden relative p-8">
+                    <button 
+                      onClick={() => setShowAuthModal(false)}
+                      className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+
+                    <div className="text-center mb-6">
+                      <img 
+                        src="Log.png" 
+                        alt="Logo" 
+                        className="w-14 h-14 rounded-full object-cover mx-auto mb-3 shadow-md border border-amber-400" 
+                      />
+                      <h3 className="text-2xl font-bold text-slate-900">
+                        {authMode === 'signup' ? 'नया खाता बनाएं' : 'लॉग इन करें'}
+                      </h3>
+                      <p className="text-xs text-slate-500 mt-1">Learn with Gurukul (By Ck Sir)</p>
+                    </div>
+
+                    <form onSubmit={handleAuthSubmit} className="space-y-4">
+                      {authMode === 'signup' && (
+                        <div>
+                          <label className="block text-xs font-semibold text-slate-700 mb-1">पूरा नाम</label>
+                          <input 
+                            type="text"
+                            required
+                            placeholder="जैसे: राहुल शर्मा"
+                            value={authForm.name}
+                            onChange={(e) => setAuthForm({ ...authForm, name: e.target.value })}
+                            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-amber-500"
+                          />
+                        </div>
+                      )}
+
+                      <div>
+                        <label className="block text-xs font-semibold text-slate-700 mb-1">ईमेल आईडी</label>
+                        <input 
+                          type="email"
+                          required
+                          placeholder="name@example.com (Sir: ckadmin@gurukul.edu)"
+                          value={authForm.email}
+                          onChange={(e) => setAuthForm({ ...authForm, email: e.target.value })}
+                          className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-amber-500"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-semibold text-slate-700 mb-1">पासवर्ड</label>
+                        <input 
+                          type="password"
+                          required
+                          placeholder="••••••••"
+                          value={authForm.password}
+                          onChange={(e) => setAuthForm({ ...authForm, password: e.target.value })}
+                          className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-amber-500"
+                        />
+                      </div>
+
+                      <button 
+                        type="submit"
+                        className="w-full py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold text-sm shadow-md transition"
+                      >
+                        {authMode === 'signup' ? 'खाता बनाएं (Sign Up)' : 'साइन इन करें (Sign In)'}
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              )}
+
+              {/* 7. FOOTER */}
+              <footer className="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                    <div>
+                      <div className="flex items-center gap-2 text-white font-bold text-lg mb-3">
+                        <img 
+                          src="Log.png" 
+                          alt="Logo" 
+                          className="w-8 h-8 rounded-full object-cover border border-amber-400"
+                        />
+                        Learn with Gurukul
+                      </div>
+                      <p className="text-xs text-slate-400 leading-relaxed">
+                        By Chandan Sir (Ck Sir) [M.A + B.Ed]. शिक्षा को सभी छात्रों के लिए सुलभ, सरल और प्रेरणादायक बनाने के संकल्प के साथ।
+                      </p>
+                    </div>
+
+                    <div>
+                      <h4 className="text-white text-xs font-bold uppercase tracking-wider mb-3">क्लास & बोर्ड</h4>
+                      <ul className="space-y-2 text-xs">
+                        <li className="hover:text-amber-400 cursor-pointer">LKG to 10th Tuition</li>
+                        <li className="hover:text-amber-400 cursor-pointer">CHS & Navodaya Entrance</li>
+                        <li className="hover:text-amber-400 cursor-pointer">11th & 12th Hindi Medium</li>
+                        <li className="hover:text-amber-400 cursor-pointer">Basic to Advance Foundation</li>
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h4 className="text-white text-xs font-bold uppercase tracking-wider mb-3">लिंक्स</h4>
+                      <ul className="space-y-2 text-xs">
+                        <li className="hover:text-amber-400 cursor-pointer" onClick={() => setActiveTab('home')}>मुख्य पृष्ठ</li>
+                        <li className="hover:text-amber-400 cursor-pointer" onClick={() => setActiveTab('courses')}>पाठ्यक्रम</li>
+                        <li className="hover:text-amber-400 cursor-pointer" onClick={() => setActiveTab('dashboard')}>लाइव डैशबोर्ड</li>
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h4 className="text-white text-xs font-bold uppercase tracking-wider mb-3">सपोर्ट & सहायता</h4>
+                      <p className="text-xs text-slate-400 mb-2">किसी भी सवाल या सहायता के लिए संपर्क करें</p>
+                      <span className="inline-block px-3 py-1 bg-slate-800 text-amber-400 text-xs font-mono rounded border border-slate-700">
+                        8840008485
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500">
+                    <p>© 2026 Learn with Gurukul (By Ck Sir). सर्वाधिकार सुरक्षित।</p>
+                    <div className="flex gap-4 mt-2 sm:mt-0">
+                      <span className="hover:text-slate-400 cursor-pointer">गोपनीयता नीति</span>
+                      <span className="hover:text-slate-400 cursor-pointer">सेवा की शर्तें</span>
+                    </div>
+                  </div>
+                </div>
+              </footer>
+            </div>
+          );
         }
 
-        function openAccountSettingsModal() {
-            document.getElementById('account-modal').style.display = 'flex';
-            document.getElementById('settings-username').value = localStorage.getItem('aastha_user') || 'User';
-        }
-        function closeAccountSettingsModal() { document.getElementById('account-modal').style.display = 'none'; }
-
-        function saveAccountSettings() {
-            const newName = document.getElementById('settings-username').value.trim();
-            const newPass = document.getElementById('settings-new-admin-pass').value.trim();
-
-            if (newName) {
-                localStorage.setItem('aastha_user', newName);
-                document.getElementById('user-display-name').innerText = newName;
-            }
-
-            if (newPass) {
-                adminPassword = newPass;
-                localStorage.setItem('aastha_admin_pass', newPass);
-            }
-
-            closeAccountSettingsModal();
-            showInfoModal("Settings Saved", "Your account settings have been saved!");
-        }
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
     </script>
 </body>
 </html>

@@ -61,12 +61,15 @@
           const [activeTab, setActiveTab] = useState('home'); // 'home', 'courses', 'dashboard', 'about'
           const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-          // Auth States
-          const [currentUser, setCurrentUser] = useState(null);
+          // Auth States with localStorage Persistent Login Integration
+          const [currentUser, setCurrentUser] = useState(() => {
+            const savedUser = localStorage.getItem('gurukul_current_user');
+            return savedUser ? JSON.parse(savedUser) : null;
+          });
           const [showAuthModal, setShowAuthModal] = useState(false);
           const [authMode, setAuthMode] = useState('signup'); // 'signup' | 'login'
           const [selectedRole, setSelectedRole] = useState('Student'); // 'Student' | 'Parent' | 'Teacher'
-          const [authForm, setAuthForm] = useState({ name: '', email: '', password: '' });
+          const [authForm, setAuthForm] = useState({ name: '', email: '', password: '', batch: 'Tuition (LKG-10th)' });
 
           // Accordions & Course interaction state
           const [expandedCourse, setExpandedCourse] = useState(null);
@@ -97,59 +100,76 @@
             id: 1,
             title: 'गणित (UP Board) - त्रिकोणमिति (Trigonometry) Basic',
             videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-            subject: 'गणित (Maths)'
+            subject: 'गणित (Maths)',
+            classLevel: 'Class 10th'
           });
           const [quizAnswered, setQuizAnswered] = useState(null);
           const [score, setScore] = useState(0);
 
-          // Dynamic Video & NCERT Notes Lists Managed by Ck Sir
-          const [uploadedVideos, setUploadedVideos] = useState([
-            {
-              id: 101,
-              title: 'LKG to 10th Math & English Basic Session',
-              classLevel: 'Tuition (LKG-10th)',
-              category: 'Class Video',
-              type: 'Recorded',
-              author: 'Ck Sir',
-              notesUrl: 'https://example.com/notes1.pdf'
-            },
-            {
-              id: 102,
-              title: 'Student Board Solution: Class 10 Trigonometry Problem',
-              classLevel: 'Class 10th',
-              category: 'Student Solution',
-              type: 'Board Solution Video',
-              author: 'Rahul Sharma (Student)',
-              notesUrl: ''
-            },
-            {
-              id: 103,
-              title: 'CHS (6th & 9th) Special Entrance Math Tricks',
-              classLevel: 'CHS Entrance',
-              category: 'Competitive',
-              type: 'Special Prep',
-              author: 'Ck Sir',
-              notesUrl: 'https://example.com/chs_notes.pdf'
-            },
-            {
-              id: 104,
-              title: 'Navodaya & Sainik School Practice Set 1',
-              classLevel: 'Navodaya / Sainik',
-              category: 'Competitive',
-              type: 'Recorded',
-              author: 'Ck Sir',
-              notesUrl: ''
-            },
-            {
-              id: 105,
-              title: '11th & 12th Board Exam Physics & Math Key Derivations',
-              classLevel: '11th & 12th',
-              category: 'Senior Secondary',
-              type: 'Advanced Class',
-              author: 'Ck Sir',
-              notesUrl: 'https://example.com/physics_notes.pdf'
+          // Dynamic Video & NCERT Notes Lists Managed by Ck Sir (With Auto-Save Storage)
+          const [uploadedVideos, setUploadedVideos] = useState(() => {
+            const savedVids = localStorage.getItem('gurukul_uploaded_videos');
+            if (savedVids) return JSON.parse(savedVids);
+            return [
+              {
+                id: 101,
+                title: 'LKG to 10th Math & English Basic Session',
+                classLevel: 'Tuition (LKG-10th)',
+                category: 'Class Video',
+                type: 'Recorded',
+                author: 'Ck Sir',
+                notesUrl: 'https://example.com/notes1.pdf'
+              },
+              {
+                id: 102,
+                title: 'Student Board Solution: Class 10 Trigonometry Problem',
+                classLevel: 'Class 10th',
+                category: 'Student Solution',
+                type: 'Board Solution Video',
+                author: 'Rahul Sharma (Student)',
+                notesUrl: ''
+              },
+              {
+                id: 103,
+                title: 'CHS (6th & 9th) Special Entrance Math Tricks',
+                classLevel: 'CHS Entrance',
+                category: 'Competitive',
+                type: 'Special Prep',
+                author: 'Ck Sir',
+                notesUrl: 'https://example.com/chs_notes.pdf'
+              },
+              {
+                id: 104,
+                title: 'Navodaya & Sainik School Practice Set 1',
+                classLevel: 'Navodaya / Sainik',
+                category: 'Competitive',
+                type: 'Recorded',
+                author: 'Ck Sir',
+                notesUrl: ''
+              },
+              {
+                id: 105,
+                title: '11th & 12th Board Exam Physics & Math Key Derivations',
+                classLevel: '11th & 12th',
+                category: 'Senior Secondary',
+                type: 'Advanced Class',
+                author: 'Ck Sir',
+                notesUrl: 'https://example.com/physics_notes.pdf'
+              }
+            ];
+          });
+
+          useEffect(() => {
+            if (currentUser) {
+              localStorage.setItem('gurukul_current_user', JSON.stringify(currentUser));
+            } else {
+              localStorage.removeItem('gurukul_current_user');
             }
-          ]);
+          }, [currentUser]);
+
+          useEffect(() => {
+            localStorage.setItem('gurukul_uploaded_videos', JSON.stringify(uploadedVideos));
+          }, [uploadedVideos]);
 
           const [newVidTitle, setNewVidTitle] = useState('');
           const [newVidClass, setNewVidClass] = useState('Tuition (LKG-10th)');
@@ -336,30 +356,24 @@
             'BD Kids by DK Sir'
           ];
 
-          // Handle Auth actions
+          // Handle Auth actions with Persistent Session & Batch allocation
           const handleAuthSubmit = (e) => {
             e.preventDefault();
-            if (authMode === 'signup') {
-              const isCkSir = selectedRole === 'Teacher' || authForm.email === 'ckadmin@gurukul.edu';
-              setCurrentUser({
-                name: isCkSir ? 'Chandan Sir (Ck Sir)' : (authForm.name || 'छात्र (Learner)'),
-                email: authForm.email,
-                role: isCkSir ? 'शिक्षक / Ck Sir' : selectedRole
-              });
-            } else {
-              const isCkSir = authForm.email === 'ckadmin@gurukul.edu' || selectedRole === 'Teacher';
-              setCurrentUser({
-                name: isCkSir ? 'Chandan Sir (Ck Sir)' : 'आनंद शर्मा (Student)',
-                email: authForm.email || 'student@gurukul.edu',
-                role: isCkSir ? 'शिक्षक / Ck Sir' : 'Student'
-              });
-            }
+            const isCkSir = selectedRole === 'Teacher' || authForm.email === 'ckadmin@gurukul.edu';
+            const userData = {
+              name: isCkSir ? 'Chandan Sir (Ck Sir)' : (authForm.name || 'छात्र (Learner)'),
+              email: authForm.email || (isCkSir ? 'ckadmin@gurukul.edu' : 'student@gurukul.edu'),
+              role: isCkSir ? 'शिक्षक / Ck Sir' : selectedRole,
+              batch: isCkSir ? 'All Batches' : (authForm.batch || 'Tuition (LKG-10th)')
+            };
+            setCurrentUser(userData);
             setShowAuthModal(false);
-            setAuthForm({ name: '', email: '', password: '' });
+            setAuthForm({ name: '', email: '', password: '', batch: 'Tuition (LKG-10th)' });
           };
 
           const handleLogout = () => {
             setCurrentUser(null);
+            localStorage.removeItem('gurukul_current_user');
             setShowAdminPanel(false);
           };
 
@@ -380,7 +394,7 @@
             setAdminMsg('');
           };
 
-          // Admin Video Upload Function (Ck Sir A to Z Update)
+          // Admin Video Upload Function (Auto-saves to Portal for students to watch later)
           const handleUploadVideo = (e) => {
             e.preventDefault();
             if (!newVidTitle) return;
@@ -396,7 +410,7 @@
             setUploadedVideos([newItem, ...uploadedVideos]);
             setNewVidTitle('');
             setNewVidNotes('');
-            alert('Video aur NCERT Notes portal par update ho gaye hain!');
+            alert('Live/Recorded video aur NCERT Notes portal par automatically save ho gaye hain taaki students baad mein dekh sakein!');
           };
 
           // Student Solution Video Upload Submit
@@ -406,11 +420,11 @@
             const newItem = {
               id: Date.now(),
               title: `[Student Work] ${studentSolutionTitle}`,
-              classLevel: selectedClass,
+              classLevel: currentUser ? currentUser.batch : selectedClass,
               category: 'Student Solution',
               type: 'Board Solution Video',
               author: currentUser ? currentUser.name : 'Student',
-              notesUrl: ''
+              notesUrl: studentSolutionLink
             };
             setUploadedVideos([newItem, ...uploadedVideos]);
             setStudentSolutionTitle('');
@@ -438,6 +452,17 @@
           const handleDeleteVideo = (id) => {
             setUploadedVideos(uploadedVideos.filter(v => v.id !== id));
           };
+
+          // Filter videos based on student's purchased batch access control
+          const accessibleVideos = uploadedVideos.filter(v => {
+            if (!currentUser || currentUser.role === 'शिक्षक / Ck Sir' || currentUser.email === 'ckadmin@gurukul.edu') {
+              return selectedCategory === 'All' || v.category === selectedCategory;
+            }
+            // Student batch restriction check
+            const matchesCategory = selectedCategory === 'All' || v.category === selectedCategory;
+            const matchesBatch = v.classLevel === 'All Batches' || v.classLevel === currentUser.batch || currentUser.batch === 'All Batches';
+            return matchesCategory && matchesBatch;
+          });
 
           return (
             <div className="min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col justify-between">
@@ -516,7 +541,7 @@
                         <div className="flex items-center gap-3 bg-slate-100 p-1.5 pl-3 rounded-full border border-slate-200">
                           <div className="flex flex-col text-right">
                             <span className="text-sm font-bold text-slate-800 leading-tight">{currentUser.name}</span>
-                            <span className="text-[11px] text-amber-600 font-medium">{currentUser.role}</span>
+                            <span className="text-[11px] text-amber-600 font-medium">{currentUser.role} • {currentUser.batch || 'Tuition'}</span>
                           </div>
                           {(currentUser.role === 'शिक्षक / Ck Sir' || currentUser.email === 'ckadmin@gurukul.edu') && (
                             <button 
@@ -610,7 +635,7 @@
                             </div>
                             <div>
                               <div className="font-bold text-sm text-slate-800">{currentUser.name}</div>
-                              <div className="text-xs text-amber-700">{currentUser.role}</div>
+                              <div className="text-xs text-amber-700">{currentUser.role} • {currentUser.batch}</div>
                             </div>
                           </div>
                           <button onClick={handleLogout} className="text-red-600 font-semibold text-sm">लॉग आउट</button>
@@ -646,7 +671,7 @@
                       <div className="flex items-center justify-between mb-4">
                         <div>
                           <h2 className="text-2xl font-black text-amber-900">👑 Chandan Sir (Ck Sir) Live Teacher Control Center</h2>
-                          <p className="text-xs text-amber-700 mt-1">Yahan se Ck Sir A to Z sabhi updates (Classes, NCERT Notes, WhatsApp 8840008485, Course Fees) manage kar sakte hain.</p>
+                          <p className="text-xs text-amber-700 mt-1">Yahan se Ck Sir A to Z sabhi updates (Classes, NCERT Notes, Live auto-save, WhatsApp 8840008485, Course Fees) manage kar sakte hain.</p>
                         </div>
                         <span className="px-3 py-1 bg-amber-200 text-amber-900 text-xs font-bold rounded-full">Ck Sir Exclusive Admin Active</span>
                       </div>
@@ -674,16 +699,16 @@
                           </button>
                         </div>
 
-                        {/* 2. Video & NCERT PDF Notes Manager */}
+                        {/* 2. Video & NCERT PDF Notes Manager (Auto-Saves Live/Recorded Classes) */}
                         <div className="bg-white p-5 rounded-2xl shadow-sm border border-amber-300">
                           <h3 className="font-bold text-base text-slate-900 mb-2 flex items-center gap-2">
-                            🎥 Nayi Class / NCERT PDF Notes Upload
+                            🎥 Nayi Live Class / NCERT PDF Upload & Auto-Save
                           </h3>
                           <form onSubmit={handleUploadVideo} className="space-y-2 text-xs">
                             <input 
                               type="text" 
                               required 
-                              placeholder="Class Title (jaise: Class 10 Math Chapter 8 NCERT Solution)" 
+                              placeholder="Class Title (jaise: Class 10 Math Chapter 8 Live Class)" 
                               value={newVidTitle} 
                               onChange={(e)=>setNewVidTitle(e.target.value)} 
                               className="w-full p-2 rounded-xl border border-slate-200" 
@@ -699,13 +724,14 @@
                               <select 
                                 value={newVidClass} 
                                 onChange={(e)=>setNewVidClass(e.target.value)} 
-                                className="w-full p-2 rounded-xl border border-slate-200"
+                                className="w-full p-2 rounded-xl border border-slate-200 font-bold text-amber-700"
                               >
                                 <option value="Tuition (LKG-10th)">Tuition (LKG-10th)</option>
-                                <option value="Class 10th">Class 9th & 10th</option>
+                                <option value="Class 9th & 10th">Class 9th & 10th</option>
                                 <option value="11th & 12th">11th & 12th Batch</option>
                                 <option value="CHS Entrance">CHS Entrance</option>
                                 <option value="Navodaya / Sainik">Navodaya / Sainik</option>
+                                <option value="All Batches">All Batches (Public)</option>
                               </select>
                               <select 
                                 value={newVidCategory} 
@@ -721,7 +747,7 @@
                               type="submit" 
                               className="w-full py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow transition"
                             >
-                              Portal Par Video + Notes Update Karein
+                              Live Class Auto-Save & Update Karein
                             </button>
                           </form>
                         </div>
@@ -1041,13 +1067,15 @@
                   </div>
                 )}
 
-                {/* DASHBOARD & VIDEO PORTAL TAB */}
+                {/* DASHBOARD & VIDEO PORTAL TAB (WITH BATCH ACCESS CONTROL & AUTO-SAVE) */}
                 {activeTab === 'dashboard' && (
                   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
                     <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4">
                       <div>
                         <h1 className="text-2xl font-black text-slate-900">🎥 Live & Video Portal (Ck Sir NCERT Learning System)</h1>
-                        <p className="text-xs text-slate-500">Ck Sir dwara upload ki gayi classes, NCERT Notes aur student solution videos</p>
+                        <p className="text-xs text-slate-500">
+                          {currentUser ? `Aapka Batch Access: ${currentUser.batch || 'Tuition (LKG-10th)'}` : 'Kripya login karein apna batch dekhne ke liye'}
+                        </p>
                       </div>
 
                       {/* Video Category Filter */}
@@ -1073,7 +1101,7 @@
                         <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm p-6 mb-6">
                           <div className="flex items-center justify-between mb-4">
                             <span className="px-3 py-1 bg-red-100 text-red-700 font-bold text-xs rounded-full flex items-center gap-1">
-                              <PlayCircle className="w-3.5 h-3.5" /> वीडियो क्लास LIVE / RECORDED
+                              <PlayCircle className="w-3.5 h-3.5" /> लाइव & रिकॉर्डेड क्लास (Auto-Saved)
                             </span>
                             <span className="text-xs text-slate-500">by Chandan Sir (Ck Sir)</span>
                           </div>
@@ -1087,7 +1115,7 @@
                                 <PlayCircle className="w-10 h-10 text-white" />
                               </div>
                               <p className="font-semibold text-lg">{activeLesson.title}</p>
-                              <p className="text-xs text-slate-400 mt-1">वीडियो प्ले करने के लिए क्लिक करें</p>
+                              <p className="text-xs text-slate-400 mt-1">Live class autometic save hai, jab chahein dubara dekhein</p>
                             </div>
                           </div>
 
@@ -1216,7 +1244,7 @@
                               <textarea 
                                 rows="2" 
                                 required 
-                                placeholder="Aapne aaj kya padha aur Ck Sir ki class kaisi lagi..." 
+                                placeholder="Aapne aaj kya padha aur Ck Sir की class kaisi lagi..." 
                                 value={studentComment} 
                                 onChange={(e)=>setStudentComment(e.target.value)} 
                                 className="w-full p-2.5 rounded-xl border border-slate-200"
@@ -1252,15 +1280,14 @@
 
                       </div>
 
-                      {/* Right Playlist Sidebar */}
+                      {/* Right Playlist Sidebar (Showing Batch-Authorized Videos) */}
                       <div className="w-full md:w-80 flex flex-col gap-6">
                         <div className="bg-white rounded-3xl border border-slate-200 p-5 shadow-sm">
-                          <h4 className="font-bold text-slate-900 text-base mb-4">📚 Video Playlist</h4>
+                          <h4 className="font-bold text-slate-900 text-base mb-4">📚 Authorized Video Playlist</h4>
                           
                           <div className="space-y-3 max-h-[500px] overflow-y-auto pr-1">
-                            {uploadedVideos
-                              .filter(v => selectedCategory === 'All' || v.category === selectedCategory)
-                              .map((vid) => (
+                            {accessibleVideos.length > 0 ? (
+                              accessibleVideos.map((vid) => (
                                 <div 
                                   key={vid.id}
                                   onClick={() => setActiveLesson({ id: vid.id, title: vid.title, subject: vid.classLevel, notesUrl: vid.notesUrl })}
@@ -1279,7 +1306,12 @@
                                     </button>
                                   )}
                                 </div>
-                              ))}
+                              ))
+                            ) : (
+                              <div className="p-4 text-center text-xs text-slate-500 bg-slate-50 rounded-2xl border border-dashed border-slate-300">
+                                Aapke batch ke liye abhi koi video available nahi hai. Ck Sir jald upload karenge!
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -1362,7 +1394,7 @@
                 </div>
               )}
 
-              {/* AUTH MODAL */}
+              {/* AUTH MODAL WITH BATCH SELECTION */}
               {showAuthModal && (
                 <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
                   <div className="bg-white rounded-3xl shadow-2xl border border-slate-100 max-w-md w-full overflow-hidden relative p-8">
@@ -1424,6 +1456,23 @@
                           <option value="Teacher">शिक्षक / Ck Sir (Admin Access)</option>
                         </select>
                       </div>
+
+                      {selectedRole === 'Student' && (
+                        <div>
+                          <label className="block text-xs font-semibold text-slate-700 mb-1">अपनी कक्षा / Batch चुनें</label>
+                          <select 
+                            value={authForm.batch} 
+                            onChange={(e)=>setAuthForm({ ...authForm, batch: e.target.value })} 
+                            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-amber-500 font-bold text-amber-700"
+                          >
+                            <option value="Tuition (LKG-10th)">Tuition (LKG-10th)</option>
+                            <option value="Class 9th & 10th">Class 9th & 10th Batch</option>
+                            <option value="11th & 12th">11th & 12th Batch</option>
+                            <option value="CHS Entrance">CHS Entrance Batch</option>
+                            <option value="Navodaya / Sainik">Navodaya / Sainik Batch</option>
+                          </select>
+                        </div>
+                      )}
 
                       <div>
                         <label className="block text-xs font-semibold text-slate-700 mb-1">पासवर्ड</label>
